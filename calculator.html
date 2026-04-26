@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bully Vault – Breeding Calculator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --gold: #f5a623;
+    --amber: #c9830a;
+    --dark: #0a0a0a;
+    --card: #111008;
+    --card2: #161208;
+    --border: #2d2000;
+    --text: #e8d5b0;
+    --muted: #666;
+    --green: #4caf50;
+    --red: #e53935;
+    --blue: #42a5f5;
+    --purple: #ab47bc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at 20% 50%, #1a0e0033 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 20%, #c9830a11 0%, transparent 50%);
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* Header */
+  .header {
+    padding: 32px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .header-inner { display: flex; align-items: center; gap: 16px; }
+  .logo {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--amber), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; box-shadow: 0 0 32px #c9830a55; flex-shrink: 0;
+  }
+  .header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--gold); letter-spacing: 1px;
+  }
+  .header p { color: #888; font-size: 14px; margin-top: 2px; font-style: italic; }
+  .back-btn {
+    margin-left: auto; background: #161208; border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 16px; color: var(--gold);
+    font-family: 'Oswald', sans-serif; font-size: 13px;
+    cursor: pointer; text-decoration: none; letter-spacing: 0.5px;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .back-btn:hover { background: var(--amber); color: #000; }
+
+  /* Input Section */
+  .input-section {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .input-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(to right, var(--amber), var(--gold), transparent);
+  }
+  .input-section h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px; font-weight: 600;
+    color: var(--gold); margin-bottom: 8px; letter-spacing: 0.5px;
+  }
+  .input-section p { color: #888; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+
+  .input-row { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+  .input-group { flex: 1; min-width: 200px; }
+  .input-group label {
+    display: block; color: #aaa; font-size: 12px;
+    font-family: 'Oswald', sans-serif; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .input-group input, .input-group select {
+    width: 100%; background: #0d0d0d; border: 1px solid #2a2a2a;
+    border-radius: 10px; padding: 12px 16px; color: var(--text);
+    font-size: 15px; font-family: 'Crimson Pro', serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .input-group input:focus, .input-group select:focus { border-color: var(--amber); }
+  .input-group select option { background: #1a1a1a; }
+
+  .calc-btn {
+    background: linear-gradient(135deg, var(--amber), var(--gold));
+    border: none; border-radius: 10px;
+    padding: 12px 28px; color: #000;
+    font-family: 'Oswald', sans-serif; font-size: 15px;
+    font-weight: 600; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .calc-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px #c9830a44; }
+
+  /* Results */
+  .results { display: none; }
+  .results.show { display: block; }
+
+  .due-date-card {
+    background: linear-gradient(135deg, #1a1000, #161208);
+    border: 1px solid var(--amber);
+    border-radius: 20px; padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 40px #c9830a22;
+  }
+  .due-date-main { flex: 1; }
+  .due-date-label {
+    font-family: 'Oswald', sans-serif; font-size: 11px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .due-date-value {
+    font-family: 'Oswald', sans-serif; font-size: 36px;
+    font-weight: 700; color: var(--gold); line-height: 1;
+  }
+  .due-date-sub { color: #888; font-size: 14px; margin-top: 6px; font-style: italic; }
+  .due-date-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-val { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 600; color: var(--gold); }
+  .stat-label { font-size: 12px; color: #666; font-family: 'Oswald', sans-serif; letter-spacing: 0.5px; }
+
+  /* Timeline */
+  .section-title {
+    font-family: 'Oswald', sans-serif; font-size: 16px;
+    font-weight: 600; color: var(--gold);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .timeline { margin-bottom: 32px; }
+  .timeline-item {
+    display: flex; gap: 16px; margin-bottom: 4px;
+    align-items: stretch;
+  }
+  .timeline-left { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+  .timeline-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0; border: 2px solid;
+    background: var(--card2);
+  }
+  .timeline-line { width: 2px; flex: 1; min-height: 12px; margin: 2px 0; }
+  .timeline-content {
+    flex: 1; background: var(--card2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 8px;
+  }
+  .timeline-date {
+    font-family: 'Oswald', sans-serif; font-size: 13px;
+    letter-spacing: 0.5px; margin-bottom: 4px;
+  }
+  .timeline-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .timeline-desc { font-size: 13px; color: #888; line-height: 1.6; font-style: italic; }
+
+  /* Color variants */
+  .type-pregnancy .timeline-dot { border-color: var(--amber); color: var(--amber); }
+  .type-pregnancy .timeline-line { background: linear-gradient(to bottom, var(--amber), var(--border)); }
+  .type-pregnancy .timeline-date { color: var(--amber); }
+
+  .type-whelping .timeline-dot { border-color: var(--red); color: var(--red); }
+  .type-whelping .timeline-line { background: linear-gradient(to bottom, var(--red), var(--border)); }
+  .type-whelping .timeline-date { color: var(--red); }
+
+  .type-puppy .timeline-dot { border-color: var(--green); color: var(--green); }
+  .type-puppy .timeline-line { background: linear-gradient(to bottom, var(--green), var(--border)); }
+  .type-puppy .timeline-date { color: var(--green); }
+
+  .type-vaccine .timeline-dot { border-color: var(--blue); color: var(--blue); }
+  .type-vaccine .timeline-line { background: linear-gradient(to bottom, var(--blue), var(--border)); }
+  .type-vaccine .timeline-date { color: var(--blue); }
+
+  .type-milestone .timeline-dot { border-color: var(--purple); color: var(--purple); }
+  .type-milestone .timeline-line { background: linear-gradient(to bottom, var(--purple), var(--border)); }
+  .type-milestone .timeline-date { color: var(--purple); }
+
+  /* Feeding Schedule */
+  .feeding-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .feeding-card {
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+  }
+  .feeding-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .feeding-age {
+    font-family: 'Oswald', sans-serif; font-size: 13px;
+    color: var(--gold); letter-spacing: 0.5px;
+  }
+  .feeding-detail { font-size: 13px; color: #aaa; line-height: 1.7; }
+  .feeding-detail strong { color: var(--text); }
+
+  /* Print button */
+  .print-bar {
+    display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .print-btn {
+    background: #161208; border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 20px; color: var(--gold);
+    font-family: 'Oswald', sans-serif; font-size: 13px;
+    cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s;
+  }
+  .print-btn:hover { border-color: var(--gold); }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #888; font-family: 'Oswald', sans-serif; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  @media(max-width:600px){
+    .input-row { flex-direction: column; }
+    .due-date-card { flex-direction: column; }
+    .due-date-value { font-size: 28px; }
+    .header h1 { font-size: 20px; }
+  }
+  @media print {
+    body { background: white; color: black; }
+    .back-btn, .print-bar, .input-section { display: none; }
+    .timeline-content { border-color: #ccc; background: #f9f9f9; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo">🐾</div>
+      <div>
+        <h1>BULLY VAULT — BREEDING CALCULATOR</h1>
+        <p>American Bully Gestation, Whelping & Puppy Care Scheduler</p>
+      </div>
+      <a href="/" class="back-btn">← Back to AI</a>
+    </div>
+  </div>
+
+  <div class="input-section">
+    <h2>Enter Breeding Date</h2>
+    <p>Input the date your dam was bred. The calculator will generate a complete schedule covering gestation milestones, whelping preparation, puppy vaccination, deworming, and feeding — all tailored specifically for American Bullies.</p>
+    <div class="input-row">
+      <div class="input-group">
+        <label>Date of Breeding</label>
+        <input type="date" id="breedingDate" />
+      </div>
+      <div class="input-group">
+        <label>Dam's Name (optional)</label>
+        <input type="text" id="damName" placeholder="e.g. Blue Duchess" />
+      </div>
+      <button class="calc-btn" onclick="calculate()">CALCULATE SCHEDULE</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+
+    <div class="due-date-card" id="dueDateCard"></div>
+
+    <div class="print-bar">
+      <button class="print-btn" onclick="window.print()">🖨️ Print Schedule</button>
+      <button class="print-btn" onclick="resetCalc()">↺ New Calculation</button>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#c9830a"></div> Pregnancy</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e53935"></div> Whelping</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4caf50"></div> Puppy Development</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#42a5f5"></div> Vaccines</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ab47bc"></div> Milestones</div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+
+    <div class="section-title">🍖 PUPPY FEEDING SCHEDULE</div>
+    <div class="feeding-grid" id="feedingGrid"></div>
+
+  </div>
+
+</div>
+
+<script>
+function addDays(date, days) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function formatDate(date) {
+  return date.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function formatShort(date) {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function daysBetween(d1, d2) {
+  return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+}
+
+function calculate() {
+  var dateInput = document.getElementById('breedingDate').value;
+  if (!dateInput) { alert('Please enter the breeding date.'); return; }
+
+  var breeding = new Date(dateInput);
+  var damName = document.getElementById('damName').value.trim() || 'Your Dam';
+  var dueDate = addDays(breeding, 63);
+  var today = new Date();
+  var daysToGo = daysBetween(today, dueDate);
+  var weeksPregnant = Math.floor(daysBetween(breeding, today) / 7);
+
+  // Due date card
+  document.getElementById('dueDateCard').innerHTML =
+    '<div class="due-date-main">' +
+    '<div class="due-date-label">Estimated Whelping Date for ' + damName + '</div>' +
+    '<div class="due-date-value">' + formatDate(dueDate) + '</div>' +
+    '<div class="due-date-sub">63 days from breeding · American Bully average gestation</div>' +
+    '</div>' +
+    '<div class="due-date-stats">' +
+    '<div class="stat"><div class="stat-val">63</div><div class="stat-label">Days Total</div></div>' +
+    '<div class="stat"><div class="stat-val">' + (daysToGo > 0 ? daysToGo : 0) + '</div><div class="stat-label">Days to Go</div></div>' +
+    '<div class="stat"><div class="stat-val">' + (weeksPregnant > 0 && weeksPregnant <= 9 ? weeksPregnant : '-') + '</div><div class="stat-label">Weeks Along</div></div>' +
+    '</div>';
+
+  // Timeline events
+  var events = [
+    // Pregnancy milestones
+    { day: 0, type: 'pregnancy', icon: '❤️', title: 'Breeding Day', desc: 'Keep the dam calm and comfortable. Confirm tie was successful. Note the exact date and time.' },
+    { day: 7, type: 'pregnancy', icon: '🔬', title: 'Week 1 — Fertilization', desc: 'Eggs are fertilized and begin dividing. Keep dam on normal routine. Avoid stress and strenuous exercise.' },
+    { day: 14, type: 'pregnancy', icon: '🧬', title: 'Week 2 — Implantation', desc: 'Embryos begin implanting in the uterus. No visible signs yet. Keep diet normal — no supplements yet.' },
+    { day: 21, type: 'pregnancy', icon: '📍', title: 'Week 3 — Confirm Pregnancy', desc: 'Visit your vet for early pregnancy palpation or ultrasound. Embryos are now visible on ultrasound. Slight behavioral changes may appear.' },
+    { day: 28, type: 'pregnancy', icon: '💉', title: 'Week 4 — Progesterone Check / Ultrasound', desc: 'Best time for ultrasound to count puppies. Fetal heartbeats visible. Begin increasing food intake by 10%. Dam may show morning sickness.' },
+    { day: 35, type: 'pregnancy', icon: '📈', title: 'Week 5 — Rapid Growth', desc: 'Puppies growing rapidly — now look like tiny dogs. Increase food by 25-30%. Switch to high quality puppy food or pregnancy formula. Nipples become more prominent.' },
+    { day: 42, type: 'pregnancy', icon: '🏠', title: 'Week 6 — Prepare Whelping Box', desc: 'Set up whelping box in a quiet, warm location. Dam should start spending time in it. Increase food by 50%. Abdomen visibly enlarged.' },
+    { day: 49, type: 'pregnancy', icon: '📋', title: 'Week 7 — Pre-Whelping Vet Check', desc: 'Schedule vet appointment. Get X-ray to count puppies accurately. Discuss C-section plan if needed. Dam may start nesting behavior.' },
+    { day: 56, type: 'pregnancy', icon: '⚠️', title: 'Week 8 — Final Preparations', desc: 'Prepare whelping kit: thermometer, clean towels, dental floss for cords, iodine, heat lamp, scale. Monitor dam closely. Temperature drop signals labor within 24 hours.' },
+    { day: 58, type: 'whelping', icon: '🌡️', title: 'Day 58 — Begin Temperature Monitoring', desc: 'Take dam\'s rectal temperature twice daily. Normal is 101-102.5°F. When temperature drops below 99°F, whelping begins within 12-24 hours.' },
+    { day: 60, type: 'whelping', icon: '🏥', title: 'C-Section Window Opens', desc: 'If C-section was planned, coordinate with your vet. American Bullies often require C-sections due to large puppy heads. Have vet on standby from day 60-65.' },
+    { day: 63, type: 'whelping', icon: '🐾', title: '🎉 ESTIMATED WHELPING DAY', desc: 'Average gestation is 63 days. Normal range is 58-68 days. Have vet contact ready. Keep whelping area warm (85-90°F for newborns). Weigh each puppy at birth.' },
+    { day: 65, type: 'whelping', icon: '📞', title: 'Day 65+ — Contact Vet if No Whelping', desc: 'If dam has not whelped by day 65, contact your vet immediately. Do not wait past day 68 without veterinary guidance.' },
+
+    // Puppy development
+    { day: 63, type: 'puppy', icon: '👶', title: 'Week 1 (Birth) — Newborn Care', desc: 'Ensure all puppies are nursing within 2 hours of birth. Colostrum in first 24-48 hours is critical for immunity. Keep whelping box at 85-90°F. Weigh daily — should gain 10% of body weight per day.' },
+    { day: 70, type: 'puppy', icon: '🌡️', title: 'Week 2 — Eyes & Ears Closed', desc: 'Puppies still blind and deaf. Focus is nursing and sleeping. Reduce whelping box temperature to 80°F. Begin puppy weights 3x per week. Watch for any failing puppies.' },
+    { day: 77, type: 'puppy', icon: '👀', title: 'Week 3 — Eyes Open', desc: 'Eyes begin opening around day 10-14. Ears open around day 18-20. Puppies start standing and taking first steps. Begin socialization — gentle human handling daily.' },
+    { day: 84, type: 'puppy', icon: '🍼', title: 'Week 4 — Introduce Gruel', desc: 'Begin weaning process. Offer high quality puppy kibble soaked in warm water or puppy milk replacer. Dam will begin spending less time with puppies. Socialization is critical this week.' },
+    { day: 91, type: 'puppy', icon: '🦴', title: 'Week 5 — Solid Food Transition', desc: 'Gradually reduce liquid in food mix. Puppies should be eating soft solid food. Continue dam access for comfort nursing. Begin individual puppy personalities emerging.' },
+    { day: 98, type: 'puppy', icon: '🎓', title: 'Week 6 — Fully Weaned', desc: 'Puppies should be fully weaned from dam. Eating solid food 3-4 times daily. Begin basic socialization with people, sounds, and environments. First deworming if not already done.' },
+
+    // Dewormings
+    { day: 63 + 14, type: 'vaccine', icon: '💊', title: 'Deworming #1 — 2 Weeks Old', desc: 'First deworming with pyrantel pamoate. Dose based on puppy weight. Consult your vet for correct dosage. Repeat every 2 weeks until 8 weeks old.' },
+    { day: 63 + 28, type: 'vaccine', icon: '💊', title: 'Deworming #2 — 4 Weeks Old', desc: 'Second deworming treatment. Weigh puppies for accurate dosing. Check for roundworms and hookworms. Keep records for new owners.' },
+    { day: 63 + 42, type: 'vaccine', icon: '💊', title: 'Deworming #3 — 6 Weeks Old', desc: 'Third deworming treatment. Puppies should be visibly healthy with round bellies and shiny coats. Any pot-bellied appearance may indicate heavy worm burden.' },
+
+    // Vaccines
+    { day: 63 + 42, type: 'vaccine', icon: '💉', title: 'First Vaccines — 6 Weeks Old', desc: 'First round of puppy vaccines: Distemper, Parvovirus (DA2PP or DHPP). This is especially critical for American Bullies who can be susceptible to Parvo. Consult vet for your region\'s protocol.' },
+    { day: 63 + 56, type: 'vaccine', icon: '💉', title: 'Second Vaccines — 8 Weeks Old', desc: 'Second round of core vaccines (DA2PP booster). This is also the earliest safe age for puppies to go to new homes. Provide vaccination records to new owners.' },
+    { day: 63 + 84, type: 'vaccine', icon: '💉', title: 'Third Vaccines — 12 Weeks Old', desc: 'Third round of core vaccines plus Bordetella (kennel cough) if applicable. Begin Heartworm prevention. Rabies vaccine may be given depending on local laws (usually 12-16 weeks).' },
+    { day: 63 + 112, type: 'vaccine', icon: '💉', title: 'Fourth Vaccines — 16 Weeks Old', desc: 'Final puppy series vaccines. Rabies vaccine (if not given at 12 weeks). After this series puppies have full protection. Schedule annual boosters.' },
+
+    // Key milestones
+    { day: 63 + 56, type: 'milestone', icon: '🏡', title: 'Earliest Date for New Homes — 8 Weeks', desc: 'Puppies are legally and ethically ready for new homes at 8 weeks minimum. At this age they have completed initial socialization with littermates. Provide vaccination records, deworming history, and feeding instructions.' },
+    { day: 63 + 70, type: 'milestone', icon: '⭐', title: 'Puppy Evaluation — 10 Weeks', desc: 'Ideal age for structural evaluation of puppies for show potential. At 10 weeks a puppy\'s proportions most closely resemble their adult conformation. John\'s recommended age for serious puppy assessments.' },
+    { day: 63 + 84, type: 'milestone', icon: '🎯', title: 'Microchipping — 12 Weeks', desc: 'Recommended age for microchipping. Register all chips with your kennel name and contact info. Essential for ABKC registration and new owner documentation.' },
+  ];
+
+  // Sort by day
+  events.sort(function(a, b){ return a.day - b.day; });
+
+  var html = '<div class="section-title">📅 COMPLETE PREGNANCY & PUPPY SCHEDULE</div>';
+  events.forEach(function(ev, i) {
+    var evDate = addDays(breeding, ev.day);
+    var isPast = evDate < today;
+    var isToday = daysBetween(today, evDate) === 0;
+    html += '<div class="timeline-item type-' + ev.type + '">' +
+      '<div class="timeline-left">' +
+      '<div class="timeline-dot" style="' + (isPast ? 'opacity:0.5' : '') + (isToday ? ';box-shadow:0 0 12px currentColor' : '') + '">' + ev.icon + '</div>' +
+      (i < events.length - 1 ? '<div class="timeline-line"></div>' : '') +
+      '</div>' +
+      '<div class="timeline-content" style="' + (isPast ? 'opacity:0.6' : '') + (isToday ? ';border-color:var(--gold);box-shadow:0 0 20px #c9830a22' : '') + '">' +
+      '<div class="timeline-date">Day ' + ev.day + (ev.day >= 63 ? ' (Puppy Day ' + (ev.day - 63) + ')' : '') + ' &nbsp;·&nbsp; ' + formatShort(evDate) + (isToday ? ' &nbsp;⭐ TODAY' : isPast ? ' &nbsp;✓ Done' : '') + '</div>' +
+      '<div class="timeline-title">' + ev.title + '</div>' +
+      '<div class="timeline-desc">' + ev.desc + '</div>' +
+      '</div></div>';
+  });
+  document.getElementById('timeline').innerHTML = html;
+
+  // Feeding schedule
+  var feeding = [
+    { age: 'Birth — 3 Weeks', icon: '🍼', details: [
+      'Dam\'s milk only — no supplementation needed if dam is producing well',
+      'If dam cannot nurse: puppy milk replacer (NOT cow milk) every 2-3 hours',
+      'Weigh daily — 10% weight gain per day is ideal',
+      'Keep warm: 85-90°F environment critical'
+    ]},
+    { age: '3 — 4 Weeks', icon: '🥣', details: [
+      'Begin introducing gruel: high quality puppy kibble soaked in warm water or milk replacer',
+      'Offer 4x daily in shallow dish',
+      'Dam still nursing — gruel is supplemental',
+      'Consistency: thin oatmeal texture'
+    ]},
+    { age: '4 — 6 Weeks', icon: '🍖', details: [
+      'Gradually reduce liquid in gruel — move toward thicker consistency',
+      'Feed 4x daily',
+      'High quality puppy food: 28-30% protein, 18-20% fat',
+      'Fresh water available at all times'
+    ]},
+    { age: '6 — 8 Weeks', icon: '🦴', details: [
+      'Fully weaned — solid puppy food only',
+      'Feed 3-4 times daily',
+      'Amount: approximately 1-1.5 cups per day depending on size',
+      'Kibble softened slightly with warm water if needed'
+    ]},
+    { age: '8 — 12 Weeks', icon: '💪', details: [
+      'Feed 3 times daily',
+      'High quality large breed puppy food',
+      'Approximately 1.5-2 cups daily depending on size',
+      'Monitor weight weekly — American Bully puppies grow fast'
+    ]},
+    { age: '3 — 6 Months', icon: '📈', details: [
+      'Feed 3 times daily',
+      'Increase portions as puppy grows',
+      'Watch for bloat — do not exercise immediately after eating',
+      'Consider raw feeding or high quality kibble with real meat first ingredient'
+    ]},
+    { age: '6 — 12 Months', icon: '🏆', details: [
+      'Transition to 2 meals per day',
+      'Continue large breed puppy formula until 12 months',
+      'Monitor body condition — American Bullies should be muscular but not overweight',
+      'Supplements: fish oil for coat, joint support as needed'
+    ]},
+    { age: '12 Months+', icon: '⭐', details: [
+      'Transition to adult American Bully formula',
+      'Feed 2 times daily',
+      'High protein (30%+) for muscle maintenance',
+      'Fresh water always available — Bullies prone to dehydration'
+    ]}
+  ];
+
+  var fhtml = '';
+  feeding.forEach(function(f) {
+    fhtml += '<div class="feeding-card">' +
+      '<div class="feeding-card-header"><span style="font-size:20px">' + f.icon + '</span><div class="feeding-age">' + f.age + '</div></div>' +
+      '<div class="feeding-detail">' + f.details.map(function(d){ return '• ' + d; }).join('<br>') + '</div>' +
+      '</div>';
+  });
+  document.getElementById('feedingGrid').innerHTML = fhtml;
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetCalc() {
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('breedingDate').value = '';
+  document.getElementById('damName').value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
