@@ -17,18 +17,12 @@ export default async function handler(req, res) {
     });
 
     const text = await response.text();
-    
-    // Show us exactly what came back
-    res.status(200).json({
-      content: [{
-        type: 'text',
-        text: 'Status:' + response.status + ' Length:' + text.length + ' Preview:' + text.slice(0, 300)
-      }]
-    });
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).send(text);
 
   } catch (err) {
     res.status(200).json({
-      content: [{ type: 'text', text: 'Fetch error: ' + err.message }]
+      content: [{ type: 'text', text: 'Error: ' + err.message }]
     });
   }
 }
