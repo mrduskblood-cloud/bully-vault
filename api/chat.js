@@ -1,11 +1,17 @@
- export default async function handler(req, res) {
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(200).json({ error: 'Use POST method' });
   }
 
   try {
-    const body = req.body;
-    
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -13,19 +19,14 @@
         'x-api-key': process.env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01'
       },
-      body: typeof body === 'string' ? body : JSON.stringify(body)
+      body: JSON.stringify(req.body)
     });
 
     const text = await response.text();
-    
-    if (!text) {
-      return res.status(500).json({ error: 'Empty response from Anthropic' });
-    }
-
     res.setHeader('Content-Type', 'application/json');
-    res.status(response.status).send(text);
-    
+    res.status(200).send(text || '{"error":"empty"}');
+
   } catch (err) {
-    res.status(500).json({ error: err.message, stack: err.stack });
+    res.status(200).json({ error: err.message });
   }
 }
