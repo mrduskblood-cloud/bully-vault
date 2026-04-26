@@ -146,7 +146,7 @@
 </div>
 
 <script>
-const API_KEY = '%REACT_APP_ANTHROPIC_API_KEY%';
+const API_KEY = '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';
 
 const SYSTEM_PROMPT = `You are the Bully Vault AI, the official AI assistant of John Enerva — a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.
 
@@ -467,7 +467,7 @@ async function sendMessage(question) {
   showTyping();
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
