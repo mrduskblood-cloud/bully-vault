@@ -146,7 +146,7 @@
 </div>
 
 <script>
-const API_KEY = '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';
+const API_KEY = 'REMOVED-api03-NBpL7vXglqVes-JsnySH7lIWvVRelM4dmiSp3G3WR_sztgS4qgohyj1a88h8AU_8yukVE-aVjgxvnx4Ec0rE2w-8JCEhwAA';
 
 const SYSTEM_PROMPT = `You are the Bully Vault AI, the official AI assistant of John Enerva — a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.
 
@@ -478,7 +478,10 @@ async function sendMessage(question) {
       })
     });
 
-    const data = await res.json();
+    const text = await res.text();
+if (!text) throw new Error('Empty response from server');
+let data;
+try { data = JSON.parse(text
     removeTyping();
 
     if (!res.ok) throw new Error(data?.error?.message || `Error ${res.status}`);
