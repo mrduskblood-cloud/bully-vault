@@ -1,144 +1,512 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bully Vault – American Bully Expert AI</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #212121;
+    --sidebar: #171717;
+    --surface: #2f2f2f;
+    --surface2: #3a3a3a;
+    --border: #3a3a3a;
+    --text: #ececec;
+    --text2: #a0a0a0;
+    --text3: #666;
+    --accent: #c9830a;
+    --accent-light: #f5a623;
+    --user-bubble: #2f2f2f;
+    --ai-bubble: transparent;
+    --input-bg: #2f2f2f;
+    --input-border: #464646;
+    --btn-bg: #3a3a3a;
+    --btn-hover: #464646;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  [data-theme="light"] {
+    --bg: #ffffff;
+    --sidebar: #f5f5f5;
+    --surface: #f5f5f5;
+    --surface2: #ebebeb;
+    --border: #e0e0e0;
+    --text: #1a1a1a;
+    --text2: #666;
+    --text3: #999;
+    --user-bubble: #f5f5f5;
+    --ai-bubble: transparent;
+    --input-bg: #ffffff;
+    --input-border: #d0d0d0;
+    --btn-bg: #ebebeb;
+    --btn-hover: #e0e0e0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0d0d0d; font-family: Georgia, serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-  #app { width: 100%; max-width: 780px; display: flex; flex-direction: column; min-height: 100vh; }
-  .header { padding: 28px 24px 0; }
-  .header-top { display: flex; align-items: center; gap: 14px; }
-  .logo { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #c9830a, #f5a623); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; box-shadow: 0 0 28px #c9830a77; }
-  .header-text { flex: 1; }
-  .header-text h1 { color: #f5a623; font-size: 21px; font-weight: bold; margin: 0 0 2px; }
-  .header-text p { color: #777; font-size: 12px; margin: 0; font-family: sans-serif; }
-  .header-right { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-  .online-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; box-shadow: 0 0 7px #4caf50; }
-  .online-text { color: #4caf50; font-size: 11px; font-family: sans-serif; }
-  .videos-btn { background: #1c1c1c; border: 1px solid #2e2e2e; border-radius: 8px; padding: 5px 10px; color: #999; font-size: 11px; cursor: pointer; font-family: sans-serif; font-weight: bold; transition: all 0.2s; }
-  .videos-btn.active { background: #c9830a; border-color: #c9830a; color: #000; }
-  .badges { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
-  .badge { background: #1a1200; border: 1px solid #c9830a44; border-radius: 20px; padding: 3px 10px; color: #b8860b; font-size: 10px; font-family: sans-serif; }
-  .divider { height: 1px; background: linear-gradient(to right, #c9830a55, #c9830a22, transparent); margin-top: 16px; }
-  .transcript-panel { padding: 20px 24px; background: #0f0e0a; border-bottom: 1px solid #2d2000; display: none; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  /* Top Navigation */
+  .topnav {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+  .topnav-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+  .brand-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .brand-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--text2);
+    display: none;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn {
+    background: var(--btn-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { background: var(--btn-hover); color: var(--text); }
+  .nav-btn.accent { color: var(--accent-light); border-color: var(--accent); }
+  .theme-btn {
+    background: var(--btn-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .theme-btn:hover { background: var(--btn-hover); }
+
+  /* Transcript Panel */
+  .transcript-panel {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 12px;
+    display: none;
+  }
   .transcript-panel.open { display: block; }
-  .transcript-panel h3 { color: #f5a623; font-size: 14px; font-family: sans-serif; margin-bottom: 6px; font-weight: bold; }
-  .transcript-panel p { color: #555; font-size: 12px; font-family: sans-serif; margin-bottom: 14px; line-height: 1.6; }
-  .transcript-list { margin-bottom: 14px; }
-  .transcript-item { display: flex; justify-content: space-between; align-items: center; background: #161208; border: 1px solid #2d2000; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px; }
-  .transcript-item span { color: #e8d5b0; font-size: 13px; font-family: sans-serif; }
-  .transcript-item button { background: none; border: none; color: #555; cursor: pointer; font-size: 18px; }
-  .transcript-input { width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 10px 14px; color: #ddd; font-size: 13px; font-family: sans-serif; margin-bottom: 8px; outline: none; }
-  .transcript-textarea { width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 10px 14px; color: #ddd; font-size: 13px; font-family: sans-serif; resize: vertical; outline: none; min-height: 120px; }
-  .add-btn { margin-top: 10px; background: #1e1e1e; border: none; border-radius: 8px; padding: 10px 22px; color: #444; font-size: 13px; font-family: sans-serif; cursor: not-allowed; font-weight: bold; transition: all 0.2s; }
-  .add-btn.ready { background: linear-gradient(135deg, #c9830a, #f5a623); color: #000; cursor: pointer; }
-  .lang-bar { padding: 10px 24px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid #1a1a1a; }
-  .lang-btn { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 16px; padding: 4px 10px; color: #666; font-size: 11px; font-family: sans-serif; cursor: pointer; transition: all 0.2s; }
-  .lang-btn.active { background: #161208; border-color: #c9830a; color: #f5a623; }
-  .chat { flex: 1; padding: 24px 24px 0; min-height: 300px; overflow-y: auto; }
-  .suggestions { padding-bottom: 16px; }
-  .suggestions p { color: #444; font-size: 13px; font-family: sans-serif; text-align: center; margin-bottom: 16px; }
-  .suggestion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .suggestion-btn { background: #141414; border: 1px solid #252525; border-radius: 10px; padding: 11px 13px; color: #bbb; font-size: 12.5px; font-family: sans-serif; text-align: left; cursor: pointer; line-height: 1.45; transition: all 0.18s; }
-  .suggestion-btn:hover { border-color: #c9830a; color: #f5a623; background: #1a1208; }
-  .message { display: flex; gap: 10px; margin-bottom: 22px; align-items: flex-start; }
+  .transcript-panel h3 { font-size: 13px; font-weight: 600; color: var(--accent-light); margin-bottom: 6px; }
+  .transcript-panel p { font-size: 12px; color: var(--text2); margin-bottom: 14px; line-height: 1.6; }
+  .transcript-list { margin-bottom: 12px; }
+  .transcript-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
+  }
+  .transcript-item span { font-size: 13px; color: var(--text); }
+  .transcript-item button { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; }
+  .t-input {
+    width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text);
+    font-size: 13px; font-family: inherit; margin-bottom: 8px; outline: none;
+    transition: border-color 0.15s;
+  }
+  .t-input:focus { border-color: var(--accent); }
+  .t-textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text);
+    font-size: 13px; font-family: inherit; resize: vertical; outline: none;
+    min-height: 100px; transition: border-color 0.15s;
+  }
+  .t-textarea:focus { border-color: var(--accent); }
+  .add-btn {
+    margin-top: 10px; background: var(--btn-bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 18px; color: var(--text2);
+    font-size: 13px; font-family: inherit; cursor: not-allowed; transition: all 0.15s;
+  }
+  .add-btn.ready {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-color: transparent; color: #000; cursor: pointer; font-weight: 500;
+  }
+
+  /* Language bar */
+  .lang-bar {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+  }
+  .lang-btn {
+    background: none; border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 10px;
+    color: var(--text2); font-size: 11px; font-family: inherit;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .lang-btn:hover { border-color: var(--accent); color: var(--accent-light); }
+  .lang-btn.active { background: var(--surface); border-color: var(--accent); color: var(--accent-light); }
+
+  /* Main chat area */
+  .main {
+    width: 100%;
+    max-width: 760px;
+    flex: 1;
+    padding: 20px 20px 0;
+    margin: 0 auto;
+  }
+
+  /* Welcome / suggestions */
+  .welcome {
+    padding: 40px 0 20px;
+    text-align: center;
+  }
+  .welcome-icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin: 0 auto 16px;
+    box-shadow: 0 4px 20px rgba(201,131,10,0.3);
+  }
+  .welcome h2 {
+    font-size: 22px; font-weight: 600;
+    color: var(--text); margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .welcome p {
+    font-size: 14px; color: var(--text2);
+    max-width: 440px; margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+  .suggestion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .suggestion-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: var(--text2);
+    font-size: 13px;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    line-height: 1.45;
+    transition: all 0.15s;
+  }
+  .suggestion-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  /* Messages */
+  .messages { padding-bottom: 20px; }
+  .message {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
   .message.user { flex-direction: row-reverse; }
-  .avatar { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; }
-  .avatar.ai { background: linear-gradient(135deg, #c9830a, #f5a623); box-shadow: 0 0 14px #c9830a55; }
-  .avatar.human { background: #1e1e1e; border: 1px solid #2a2a2a; }
-  .bubble { max-width: 84%; padding: 13px 17px; font-size: 14px; line-height: 1.75; }
-  .bubble.ai { background: #161208; border: 1px solid #2d2000; border-radius: 4px 16px 16px 16px; color: #e8d5b0; font-family: Georgia, serif; }
-  .bubble.human { background: #1a1a1a; border: 1px solid #272727; border-radius: 16px 4px 16px 16px; color: #ccc; font-family: sans-serif; }
-  .typing { display: flex; gap: 7px; align-items: center; padding: 15px 20px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #c9830a; animation: pulse 1.3s ease-in-out infinite; }
-  .dot:nth-child(2) { animation-delay: 0.22s; }
-  .dot:nth-child(3) { animation-delay: 0.44s; }
-  @keyframes pulse { 0%,100%{opacity:.25;transform:scale(.75)} 50%{opacity:1;transform:scale(1.15)} }
-  .input-area { padding: 14px 24px 26px; position: sticky; bottom: 0; background: linear-gradient(to top, #0d0d0d 75%, transparent); }
-  .input-box { display: flex; gap: 10px; background: #141414; border: 1px solid #272727; border-radius: 14px; padding: 9px 11px; align-items: flex-end; }
-  .input-box textarea { flex: 1; background: transparent; border: none; outline: none; color: #ddd; font-size: 13.5px; font-family: sans-serif; resize: none; line-height: 1.5; max-height: 110px; overflow-y: auto; }
-  .send-btn { width: 35px; height: 35px; border-radius: 10px; border: none; background: #242424; color: #444; cursor: not-allowed; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; font-weight: bold; transition: all 0.2s; }
-  .send-btn.ready { background: linear-gradient(135deg, #c9830a, #f5a623); color: #000; cursor: pointer; }
-  .footer-text { color: #2e2e2e; font-size: 11px; font-family: sans-serif; text-align: center; margin-top: 7px; }
-  @media(max-width:500px){ .suggestion-grid{grid-template-columns:1fr;} .badges{display:none;} }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .avatar.ai {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    font-size: 16px;
+  }
+  .avatar.human {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text2);
+  }
+  .bubble {
+    max-width: 80%;
+    padding: 12px 16px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    border-radius: 16px;
+  }
+  .bubble.ai {
+    background: var(--ai-bubble);
+    color: var(--text);
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+    max-width: 90%;
+  }
+  .bubble.human {
+    background: var(--user-bubble);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 18px 18px 4px 18px;
+  }
+
+  /* Typing indicator */
+  .typing {
+    display: flex; gap: 5px; align-items: center;
+    padding: 8px 0;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--text3);
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,100%{ transform: translateY(0); opacity: 0.4; }
+    50%{ transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Input area */
+  .input-area {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 12px 20px 24px;
+    position: sticky;
+    bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+  .input-box {
+    display: flex;
+    gap: 8px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    align-items: flex-end;
+    transition: border-color 0.15s;
+    box-shadow: var(--shadow);
+  }
+  .input-box:focus-within { border-color: var(--accent); }
+  .input-box textarea {
+    flex: 1;
+    background: transparent;
+    border: none; outline: none;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    resize: none;
+    line-height: 1.5;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .input-box textarea::placeholder { color: var(--text3); }
+  .send-btn {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    border: none;
+    background: var(--surface2);
+    color: var(--text3);
+    cursor: not-allowed;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .send-btn.ready {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: #000;
+    cursor: pointer;
+  }
+  .send-btn.ready:hover { opacity: 0.9; }
+  .input-footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 8px;
+  }
+  .input-footer a { color: var(--accent-light); text-decoration: none; }
+  .input-footer a:hover { text-decoration: underline; }
+
+  /* Transcript count badge */
+  .transcript-badge {
+    background: var(--accent);
+    color: #000;
+    border-radius: 10px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  @media(max-width: 560px) {
+    .suggestion-grid { grid-template-columns: 1fr; }
+    .nav-btn span { display: none; }
+    .brand-sub { display: none; }
+    .bubble.ai { max-width: 100%; }
+    .bubble.human { max-width: 85%; }
+  }
 </style>
 </head>
 <body>
-<div id="app">
-  <div class="header">
-    <div class="header-top">
-      <div class="logo">&#128062;</div>
-      <div class="header-text">
-        <h1>Bully Vault</h1>
-        <p>Powered by John Enerva &middot; ABKC International Senior Judge &middot; 20+ Years Experience</p>
-      </div>
-      <div class="header-right">
-        <div style="display:flex;align-items:center;gap:5px;">
-          <div class="online-dot"></div>
-          <span class="online-text">Online</span>
-        </div>
-        <button class="videos-btn" id="videosBtn" onclick="toggleTranscripts()">&#128249; My Videos</button>
-      </div>
-    </div>
-    <div class="badges">
-      <span class="badge">&#127942; 2019 ABKC Nationals Judge</span>
-      <span class="badge">&#127759; First ABKC Judge Based in Asia</span>
-      <span class="badge">&#127477;&#127469; Built PH Bully Community</span>
-      <span class="badge">&#9992;&#65039; Judged Multiple Countries</span>
-      <span class="badge">&#128214; Official ABKC Standard</span>
-    </div>
-    <div class="divider"></div>
-  </div>
 
+<!-- Top Navigation -->
+<div class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">
+      <div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer">🐾</div>
+      <div>
+        <div class="brand-name">Bully Vault</div>
+        <div class="brand-sub">by John Enerva · ABKC International Senior Judge</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a href="https://www.youtube.com/@JohnEnerva" target="_blank" class="nav-btn">
+        ▶ <span>YouTube</span>
+      </a>
+      <a href="/calculator.html" class="nav-btn">
+        🧮 <span>Calculator</span>
+      </a>
+      <button class="nav-btn" onclick="newChat()">
+        ✏️ <span>New Chat</span>
+      </button>
+      <button class="nav-btn" id="videosBtn" onclick="toggleTranscripts()" style="display:none">
+        📹 <span>My Videos</span><span class="transcript-badge" id="transcriptBadge" style="display:none">0</span>
+      </button>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- Transcript Panel -->
+<div style="width:100%;max-width:760px;margin:0 auto;padding:0 20px;">
   <div class="transcript-panel" id="transcriptPanel">
-    <h3>&#128249; Add Your YouTube Video Transcripts</h3>
-    <p>The AI treats your own words as the highest priority. On YouTube: open your video, click the three dots, Show transcript, select all and copy. Timestamps are fine.</p>
+    <h3>📹 Add Your YouTube Video Transcripts</h3>
+    <p>Your words become the AI's highest priority source. On YouTube: open your video → click … → Show transcript → copy all. Timestamps are fine.</p>
     <div class="transcript-list" id="transcriptList"></div>
-    <input class="transcript-input" id="transcriptTitle" placeholder="Video title (e.g. How to Pick a Quality American Bully Puppy)" oninput="checkAddBtn()" />
-    <textarea class="transcript-textarea" id="transcriptContent" placeholder="Paste your video transcript here..." oninput="checkAddBtn()"></textarea>
+    <input class="t-input" id="transcriptTitle" placeholder="Video title (e.g. How to Pick a Quality American Bully Puppy)" oninput="checkAddBtn()" />
+    <textarea class="t-textarea" id="transcriptContent" placeholder="Paste your video transcript here..." oninput="checkAddBtn()"></textarea>
     <button class="add-btn" id="addBtn" onclick="addTranscript()">+ Add to Knowledge Base</button>
   </div>
+</div>
 
-  <div class="lang-bar">
-    <button class="lang-btn active" onclick="setLang('en',this)">&#127482;&#127480; English</button>
-    <button class="lang-btn" onclick="setLang('tl',this)">&#127477;&#127469; Filipino</button>
-    <button class="lang-btn" onclick="setLang('ru',this)">&#127479;&#127482; Russian</button>
-    <button class="lang-btn" onclick="setLang('th',this)">&#127481;&#127469; Thai</button>
-    <button class="lang-btn" onclick="setLang('id',this)">&#127470;&#127465; Indonesian</button>
-    <button class="lang-btn" onclick="setLang('it',this)">&#127470;&#127481; Italian</button>
-    <button class="lang-btn" onclick="setLang('es',this)">&#127474;&#127485; Spanish</button>
-    <button class="lang-btn" onclick="setLang('zh',this)">&#127464;&#127475; Chinese</button>
-    <button class="lang-btn" onclick="setLang('vi',this)">&#127483;&#127475; Vietnamese</button>
+<!-- Language Bar -->
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 EN</button>
+  <button class="lang-btn" onclick="setLang('tl',this)">🇵🇭 FIL</button>
+  <button class="lang-btn" onclick="setLang('ru',this)">🇷🇺 RU</button>
+  <button class="lang-btn" onclick="setLang('th',this)">🇹🇭 TH</button>
+  <button class="lang-btn" onclick="setLang('id',this)">🇮🇩 ID</button>
+  <button class="lang-btn" onclick="setLang('it',this)">🇮🇹 IT</button>
+  <button class="lang-btn" onclick="setLang('es',this)">🇲🇽 ES</button>
+  <button class="lang-btn" onclick="setLang('zh',this)">🇨🇳 ZH</button>
+  <button class="lang-btn" onclick="setLang('vi',this)">🇻🇳 VI</button>
+</div>
+
+<!-- Main Content -->
+<div class="main" id="main">
+  <div class="welcome" id="welcome">
+    <div class="welcome-icon">🐾</div>
+    <h2>Ask the Bully Vault</h2>
+    <p>Powered by John Enerva's 20+ years of experience, firsthand research, and knowledge from the people who built this breed.</p>
+    <div class="suggestion-grid" id="suggestionGrid"></div>
   </div>
+  <div class="messages" id="messages"></div>
+</div>
 
-  <div class="chat" id="chat">
-    <div class="suggestions" id="suggestions">
-      <p>Ask John anything about American Bullies &mdash; breeding, showing, nutrition, health, and more.</p>
-      <div class="suggestion-grid" id="suggestionGrid"></div>
-    </div>
+<!-- Input Area -->
+<div class="input-area">
+  <div class="input-box">
+    <textarea
+      id="userInput"
+      rows="1"
+      placeholder="Ask anything about American Bullies..."
+      oninput="handleInput(this)"
+      onkeydown="handleKey(event)"
+    ></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
   </div>
-
-  <div class="input-area">
-    <div class="input-box">
-      <textarea id="userInput" rows="1" placeholder="Ask about breeding, showing, nutrition, health, ABKC standards..." oninput="handleInput(this)" onkeydown="handleKey(event)"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">&#8593;</button>
-    </div>
-    <p class="footer-text" id="footerText">John Enerva &middot; ABKC International Senior Judge &middot; Official ABKC Breed Standard &middot; 20+ Years Expertise</p>
+  <div class="input-footer">
+    Bully Vault · by <a href="https://www.youtube.com/@JohnEnerva" target="_blank">John Enerva</a> · ABKC International Senior Judge
   </div>
 </div>
 
 <script>
-var SYSTEM_PROMPT = "You are the Bully Vault AI, the official AI assistant of John Enerva — a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.\n\nABOUT JOHN ENERVA:\n- Over 20 years of hands-on experience in American Bully breeding and showing\n- The first person of Asian descent living in Asia (specifically the Philippines) to become an official ABKC show judge\n- Promoted to ABKC International Senior Judge\n- Judged the 2019 ABKC Nationals in Houston, Texas\n- Organized the first-ever ABKC show in the Philippines: the Philippine Bully Extravaganza (January 19, 2014)\n- Judged in: Multiple states across the USA, Italy (twice), Guam (multiple times), Indonesia, Thailand, Philippines\n- Visited China multiple times as an educator with Dave Wilson — ABKC Seminar in Beijing hosted by Nan Bai\n- Former President of the National Pitbull Terrier Club (NPTC) of the Philippines\n- Based in western Canada with his wife and son\n- Founded KOBA (King Of Breeds Apparel)\n\nOFFICIAL ABKC BREED STANDARD:\n- STANDARD: Males 17-20 inches. Females 16-19 inches.\n- POCKET: Males under 17 inches (no less than 14). Females under 16 inches (no less than 13).\n- XL: Males over 20-23 inches. Females over 19-22 inches.\n- CLASSIC: Same height as Standard but lighter bone and less overall mass.\n- All classes same build — separated only by height (except Classic which is separated by mass)\n- Merle IS allowed for competition (October 2025 ruling by Dave Wilson)\n- Merle dogs CAN have blue and bi-colored eyes — cannot be held against them\n- American Bully is a MASCULINE breed — females with heavy masculine heads are CORRECT breed type\n- First judge MUST measure all questionable dogs and lock the books\n- If dog does not allow judge to view bite: MANDATORY WITHHOLD\n- Once DQd a dog cannot re-enter that weekend\n- For show schedules: https://abkcdogs.org\n\nDISQUALIFICATIONS: Human aggression, pink/albino eyes, cryptorchidism, deafness, screwed/bobbed/docked tail, extreme undershot/wry mouth.\n\nJOHN'S 20 LESSONS:\n1. American Bully is the best looking breed in the world\n2. The community is dynamic — people come and go but the love stays\n3. Most people connect for selfish reasons — that is okay\n4. No breeder can 100% guarantee breeding results\n5. Most famous breeders have as many rejected pups as show dogs\n6. You can make money breeding if you know what you are doing\n7. People from all walks of life join — be smart and learn from some of them\n8. Expect to be heartbroken — anything you put your heart into can break it\n9. Peaks and valleys — the market always has ups and downs\n10. Blue Fawn is still John's favourite color — next is blue and champagne\n11. No greater feeling than waking up after 2 hours sleep helping your bitch nurse puppies\n12. China shocked John the most — so many original bloodlines\n13. Thailand and China breeders are the innovators\n14. America still has the prettiest show bullies\n15. European bullies have super extremes because of Dax/Magoo/Rocko/Grimm blood\n16. Canada is huge — John hopes its community grows\n17. Philippine breeders are the most passionate American Bully breeders in the world\n18. Mexico trains their bullies the best\n19. Russia has great mix of breeders and handlers\n20. John misses having American Bullies — this breed gets deep into your soul\n\nDAVE WILSON KEY FACTS:\n- Founded Razor's Edge bloodline and created the American Bully breed in early 1990s\n- Never mixed breeds into Razor's Edge\n- Cairo was his ultimate dog — the perfection of Razor's Edge\n- Remy Martin is a pure Razor's Edge dog — parents Blue and Sage created by Dave\n- Little Row was the first Pocket-style dog — trend setter for all pocket dogs\n- The ABKC was founded after discrimination at UKC shows\n- Does NOT support the Exotic Bully movement — health concerns, shortened lifespan, deformities\n- XL Bully UK ban was based on false breed identification data\n\nYOUR BEHAVIOR:\n1. Always answer as John's voice and expertise\n2. Give clear direct answers first then practical detail\n3. For health/medical questions recommend consulting a vet\n4. Keep answers to 3-5 paragraphs max\n5. End with: Want me to go deeper on any part of this?\n6. When asked about John's background share his story proudly\n7. Respond in whatever language the user selects";
+var SYSTEM_PROMPT = "You are the Bully Vault AI, the official AI assistant of John Enerva — a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.\n\nABOUT JOHN ENERVA:\n- Over 20 years of hands-on experience in American Bully breeding and showing\n- The first person of Asian descent living in Asia (specifically the Philippines) to become an official ABKC show judge — there were Asian-American judges before him, but John was the first judge actually living and based in Asia\n- Promoted to ABKC International Senior Judge — one of the highest judging ranks in the breed\n- Judged the 2019 ABKC Nationals in Houston, Texas — the biggest American Bully show in the world\n- Organized the first-ever ABKC show in the Philippines: the Philippine Bully Extravaganza (January 19, 2014), attended by ABKC founder Dave Wilson himself\n- Personally invited by Dave Wilson to apprentice as a judge in Jakarta, Indonesia\n- Judged in: Multiple states across the USA, Italy (twice), Guam (multiple times), Indonesia (multiple times), Thailand (multiple times), Philippines (multiple times)\n- Judged a dog show in Vietnam (non-ABKC sanctioned)\n- Visited China multiple times as an educator — ABKC Seminar in Beijing alongside Dave Wilson, hosted by Nan Bai\n- Former President of the National Pitbull Terrier Club (NPTC) of the Philippines\n- Originally from Pangasinan, Philippines. Now based in western Canada with his wife and son\n- YouTube channel: youtube.com/@JohnEnerva\n- Founded KOBA (King Of Breeds Apparel)\n\nABOUT BULLY VAULT:\nBully Vault was built by John Enerva — but what powers it is 20+ years of research, study, and firsthand relationships with the people who shaped this breed. The knowledge inside comes from John's own experience in the ring, his personal study of breed literature and videos, and direct conversations with key figures like Dave Wilson (founder of Razor's Edge and the ABKC). This is not recycled internet information — it is the real thing, curated by someone who lived it.\n\nOFFICIAL ABKC BREED STANDARD:\n- STANDARD: Males 17-20 inches. Females 16-19 inches.\n- POCKET: Males under 17 inches (no less than 14). Females under 16 inches (no less than 13).\n- XL: Males over 20-23 inches. Females over 19-22 inches.\n- CLASSIC: Same height as Standard but lighter bone and less overall mass. Still shows strength, breed type, and balance — just in a leaner frame.\n- All classes same build — separated only by height except Classic which is separated by mass\n- Merle IS allowed for competition (October 2025 official ruling by Dave Wilson)\n- Merle dogs CAN have blue and bi-colored eyes — cannot be held against them in the show ring\n- American Bully is a MASCULINE breed — females with heavy masculine blocky heads are CORRECT breed type, not a fault\n- First judge MUST measure all questionable dogs and lock the books for the entire show\n- If dog does not allow judge to view bite: MANDATORY WITHHOLD — no exceptions\n- Once DQd a dog cannot re-enter that weekend\n- For show schedules and official info: https://abkcdogs.org\n\nDISQUALIFICATIONS: Human aggression, pink/albino eyes, cryptorchidism, deafness, screwed/bobbed/docked tail, extreme undershot/wry mouth, lame or physically unsound.\n\nWITHHOLD vs DQ:\n- WITHHOLD: lacks breed type, serious non-DQ faults, uncooperative, only entry but does not merit ribbon\n- DQ: human aggression, extreme shyness, lame/unsound, ill/unhealthy, pink eyes, deaf, undescended testicles, extreme undershot, wry mouth, screwed/bobbed/docked tail\n\nABKC REGISTRATION — COUNTRY REPRESENTATIVES:\n- The ABKC has representatives in most countries where the breed is active\n- Country reps serve as local facilitators — owners pay rep locally, rep submits paperwork to ABKC main office, ABKC processes and sends papers back to rep who distributes to applicants\n- Makes registration easier for international owners — no international shipping, local currency often accepted\n- To find your country rep: contact abkcoffice@gmail.com or visit https://abkcdogs.org\n- Local Facebook groups in your country will often know who the current rep is\n- John has connections to reps across Asia — Philippines, Indonesia, Thailand and beyond\n- Always verify rep status through official ABKC channels before sending payment\n- General registration requirements: completed form, ownership certificate, 4-generation pedigree, photos, $30 fee, 3-4 weeks processing\n\nJOHN'S 20 LESSONS FROM 20+ YEARS:\n1. American Bully is the best looking breed in the world\n2. The community is dynamic — people come and go but the love stays\n3. Most people connect for selfish reasons — that is okay, you do not need to be friends with everyone\n4. No breeder can 100% guarantee breeding results\n5. Most famous breeders have as many rejected pups as show dogs — that is what makes the journey enjoyable\n6. You can make money breeding if you know what you are doing — selling pups is just part of it\n7. People from all walks of life join — be smart and learn from some of them\n8. Expect to be heartbroken — anything you put your heart into can break it\n9. Peaks and valleys — the market always has its ups and downs\n10. Blue Fawn is still John's favourite color — next is a tie between blue and champagne\n11. No greater feeling than waking up after 2 hours sleep helping your bitch nurse puppies and seeing them all crying for more\n12. China shocked John the most — so many original bloodlines even before the Exotic boom\n13. Thailand and China breeders are the innovators — good at taking risks and experimenting\n14. America still has the prettiest show bullies — frequency of shows breeds competitive nature\n15. European bullies have super extremes because of Dax/Magoo/Rocko/Grimm blood\n16. Canada is huge — John hopes its community grows. Australia and NZ can become big too\n17. Philippine breeders are the most passionate American Bully breeders in the world\n18. Mexico trains their bullies the best — most Latin American trainers are awesome\n19. Russia has a great mix of breeders and handlers — can become the next great source\n20. John misses having American Bullies — this breed gets deep into your soul\n\nDAVE WILSON — ABKC FOUNDER KEY FACTS:\n- Founded Razor's Edge bloodline and created the American Bully breed in early 1990s — took 7-8 years to achieve the look\n- NEVER mixed breeds into Razor's Edge — would take a lie detector test to prove it\n- Cairo (Cyro) was his ultimate dog — the perfection of Razor's Edge. Cairo disappeared after escaping with Tootsie — Dave spent 6 months searching, offered $10,000 reward, never found him\n- Remy Martin is a pure Razor's Edge dog — parents Blue and Sage created by Dave, bred by Byron, promoted by Fabian Callin\n- Little Row was the first Pocket-style dog — trend setter for all pocket dogs today\n- Paco (produced from Little Row line) popularized the Pocket movement with Marco\n- The ABKC was founded after discrimination at UKC shows — people being removed because of how they looked\n- Does NOT support the Exotic Bully movement — health concerns, shortened 3-5 year lifespan, deformities, dwarfism\n- XL Bully UK ban was based on false breed identification data — same dogs shown at family shows worldwide without incident\n- Razor's Edge philosophy: no bloodline can stay pure forever — must freshen blood every few generations\n- Fabian Callin was a trend setter — first to build a line off one famous dog (Remy)\n- Name Razor's Edge came from friend Carlos Barale: 'your dogs are cut like a Razor's Edge'\n- American Bully name came from Elite Edge Board in early 1990s — Dave suggested combining 'American' with 'Bullies' nickname\n\nSILHOUETTE AND SHOW RING:\n- Judges form first opinion based on dog's outline — how it stands, moves, carries itself\n- A strong silhouette draws the judge in — a weak one can lose the class before the dog is touched\n- Red flags: roached back, straight rear, off proportions, poor tail carriage\n- Win the silhouette and you start the evaluation ahead\n\nJUNIOR HANDLER PROGRAM:\n- Judges evaluate the HANDLER not the dog\n- Judged on: knowledge of breed standards, handling skills, interaction with dog\n- Judges should ask juniors questions and give specific individual feedback\n- Juniors may NOT accept compensation for handling other dogs\n- Parents/guardians may NOT contact judges about placements\n\nYOUR BEHAVIOR:\n1. Always answer as John's voice and expertise — warm, direct, peer-level\n2. Give clear direct answers first then add practical detail\n3. For health/medical questions recommend consulting a vet\n4. Keep answers focused — 3 to 5 paragraphs max unless a full breakdown is truly needed\n5. End responses with: Want me to go deeper on any part of this?\n6. When asked about John's background share his story proudly\n7. When asked about Bully Vault explain it as John's platform backed by his own research and firsthand interactions with key community figures\n8. Respond in whatever language the user selects";
 
 var SUGGESTIONS = {
   en: ["How do I pick the best puppy from a litter?","What is the difference between Pocket, Standard, Classic and XL?","What should I feed my American Bully puppy?","How do ABKC show judges evaluate structure?","What health tests should I do before breeding?","How do I prepare my dog for the show ring?","How do I register my dog with the ABKC?","What is the origin of the Exotic Bully?"],
   tl: ["Paano pumili ng pinakamahusay na tuta mula sa isang kumpol?","Ano ang pagkakaiba ng Pocket, Standard, Classic at XL?","Ano ang dapat pakainin sa aking American Bully na tuta?","Paano sinusuri ng mga hukom ang istraktura?","Anong mga health test ang dapat gawin bago mag-breed?","Paano ihahanda ang aking aso para sa dog show?","Paano irehistro ang aking aso sa ABKC?","Ano ang pinagmulan ng Exotic Bully?"],
   ru: ["Как выбрать лучшего щенка из помёта?","В чём разница между Pocket, Standard, Classic и XL?","Чем кормить щенка американского булли?","Как судьи ABKC оценивают структуру?","Какие тесты здоровья нужны перед разведением?","Как подготовить собаку к выставке?","Как зарегистрировать собаку в ABKC?","Каково происхождение Exotic Bully?"],
   th: ["วิธีเลือกลูกสุนัขที่ดีที่สุดจากครอก?","ความแตกต่างระหว่าง Pocket, Standard, Classic และ XL?","ควรให้อาหารอะไรแก่ลูก American Bully?","กรรมการ ABKC ประเมินโครงสร้างอย่างไร?","ควรทำการทดสอบสุขภาพอะไรก่อนผสมพันธุ์?","วิธีเตรียมสุนัขสำหรับการแสดง?","วิธีลงทะเบียนสุนัขกับ ABKC?","Exotic Bully มีต้นกำเนิดอย่างไร?"],
-  id: ["Bagaimana memilih anak anjing terbaik?","Apa perbedaan Pocket, Standard, Classic dan XL?","Apa yang harus diberikan pada anak American Bully?","Bagaimana hakim ABKC mengevaluasi struktur?","Tes kesehatan apa yang diperlukan sebelum breeding?","Bagaimana mempersiapkan anjing untuk dog show?","Bagaimana mendaftarkan anjing ke ABKC?","Apa asal usul Exotic Bully?"],
-  it: ["Come scelgo il miglior cucciolo da una cucciolata?","Qual e la differenza tra Pocket, Standard, Classic e XL?","Cosa dovrei dare da mangiare al mio cucciolo?","Come i giudici ABKC valutano la struttura?","Quali test sanitari devo fare prima di allevare?","Come preparo il mio cane per il ring?","Come registro il mio cane con ABKC?","Qual e l'origine dell'Exotic Bully?"],
+  id: ["Bagaimana memilih anak anjing terbaik dari satu kelahiran?","Apa perbedaan Pocket, Standard, Classic dan XL?","Apa yang harus diberikan pada anak American Bully?","Bagaimana hakim ABKC mengevaluasi struktur?","Tes kesehatan apa yang diperlukan sebelum breeding?","Bagaimana mempersiapkan anjing untuk dog show?","Bagaimana mendaftarkan anjing ke ABKC?","Apa asal usul Exotic Bully?"],
+  it: ["Come scelgo il miglior cucciolo da una cucciolata?","Qual e la differenza tra Pocket, Standard, Classic e XL?","Cosa dovrei dare da mangiare al mio cucciolo?","Come i giudici ABKC valutano la struttura?","Quali test sanitari devo fare prima di allevare?","Come preparo il mio cane per il ring?","Come registro il mio cane con ABKC?","Qual e l origine dell Exotic Bully?"],
   es: ["Como elijo el mejor cachorro de una camada?","Cual es la diferencia entre Pocket, Standard, Classic y XL?","Que debo alimentar a mi cachorro American Bully?","Como evaluan los jueces ABKC la estructura?","Que pruebas de salud debo hacer antes de criar?","Como preparo mi perro para el ring?","Como registro mi perro con ABKC?","Cual es el origen del Exotic Bully?"],
   zh: ["如何从一窝中选择最好的幼犬？","Pocket、Standard、Classic和XL有什么区别？","我应该给美国恶霸幼犬喂什么？","ABKC评委如何评估结构？","繁殖前需要做哪些健康测试？","如何为狗狗准备犬展？","如何在ABKC注册我的狗？","异域恶霸犬的起源是什么？"],
   vi: ["Lam the nao de chon cho con tot nhat tu mot lua?","Su khac biet giua Pocket, Standard, Classic va XL?","Toi nen cho cho con American Bully an gi?","Giam khao ABKC danh gia cau truc the nao?","Nen lam xet nghiem suc khoe gi truoc khi nhan giong?","Lam the nao de chuan bi cho cho show?","Lam the nao de dang ky cho voi ABKC?","Nguon goc cua Exotic Bully la gi?"]
@@ -156,6 +524,35 @@ var messages = [];
 var transcripts = [];
 var currentLang = 'en';
 var showingSuggestions = true;
+var isDark = true;
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
+}
+
+var secretTapCount = 0;
+var secretTapTimer = null;
+function secretTap() {
+  secretTapCount++;
+  clearTimeout(secretTapTimer);
+  secretTapTimer = setTimeout(function(){ secretTapCount = 0; }, 2000);
+  if (secretTapCount >= 5) {
+    secretTapCount = 0;
+    var btn = document.getElementById('videosBtn');
+    btn.style.display = btn.style.display === 'none' ? 'flex' : 'none';
+  }
+}
+
+function newChat() {
+  messages = [];
+  showingSuggestions = true;
+  document.getElementById('messages').innerHTML = '';
+  document.getElementById('welcome').style.display = 'block';
+  renderSuggestions();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 function setLang(lang, btn) {
   currentLang = lang;
@@ -179,9 +576,7 @@ function renderSuggestions() {
 
 function toggleTranscripts() {
   var panel = document.getElementById('transcriptPanel');
-  var btn = document.getElementById('videosBtn');
   panel.classList.toggle('open');
-  btn.classList.toggle('active');
 }
 
 function checkAddBtn() {
@@ -200,13 +595,13 @@ function addTranscript() {
   document.getElementById('transcriptContent').value = '';
   checkAddBtn();
   renderTranscripts();
-  updateFooter();
+  updateTranscriptBadge();
 }
 
 function removeTranscript(id) {
   transcripts = transcripts.filter(function(t){ return t.id !== id; });
   renderTranscripts();
-  updateFooter();
+  updateTranscriptBadge();
 }
 
 function renderTranscripts() {
@@ -215,17 +610,18 @@ function renderTranscripts() {
   transcripts.forEach(function(t) {
     var item = document.createElement('div');
     item.className = 'transcript-item';
-    item.innerHTML = '<span>&#10003; ' + t.title + '</span><button onclick="removeTranscript(' + t.id + ')">&#215;</button>';
+    item.innerHTML = '<span>✅ ' + t.title + '</span><button onclick="removeTranscript(' + t.id + ')">×</button>';
     list.appendChild(item);
   });
 }
 
-function updateFooter() {
-  var footer = document.getElementById('footerText');
+function updateTranscriptBadge() {
+  var badge = document.getElementById('transcriptBadge');
   if (transcripts.length > 0) {
-    footer.textContent = transcripts.length + ' video transcript' + (transcripts.length > 1 ? 's' : '') + ' loaded · Official ABKC Standard · John Enerva 20+ years';
+    badge.style.display = 'inline';
+    badge.textContent = transcripts.length;
   } else {
-    footer.textContent = 'John Enerva · ABKC International Senior Judge · Official ABKC Breed Standard · 20+ Years Expertise';
+    badge.style.display = 'none';
   }
 }
 
@@ -233,7 +629,7 @@ function buildSystemPrompt() {
   var prompt = SYSTEM_PROMPT;
   if (LANG_INSTRUCTIONS[currentLang]) { prompt += '\n\n' + LANG_INSTRUCTIONS[currentLang]; }
   if (transcripts.length > 0) {
-    prompt += '\n\nJOHNS OWN VIDEO TRANSCRIPTS (highest priority — use these as Johns direct words):\n\n';
+    prompt += '\n\nJOHNS OWN VIDEO TRANSCRIPTS — treat these as Johns direct words, highest priority:\n\n';
     transcripts.forEach(function(t){ prompt += '=== VIDEO: "' + t.title + '" ===\n' + t.content + '\n\n'; });
   }
   return prompt;
@@ -241,7 +637,7 @@ function buildSystemPrompt() {
 
 function handleInput(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
   var btn = document.getElementById('sendBtn');
   if (el.value.trim().length > 0) { btn.classList.add('ready'); } else { btn.classList.remove('ready'); }
 }
@@ -251,32 +647,37 @@ function handleKey(e) {
 }
 
 function addMessageToChat(role, content) {
-  var chat = document.getElementById('chat');
+  var container = document.getElementById('messages');
   var div = document.createElement('div');
   div.className = 'message ' + role;
   var avatar = document.createElement('div');
   avatar.className = 'avatar ' + (role === 'human' ? 'human' : 'ai');
-  avatar.textContent = role === 'human' ? '👤' : '🐾';
+  avatar.textContent = role === 'human' ? 'J' : '🐾';
   var bubble = document.createElement('div');
   bubble.className = 'bubble ' + (role === 'human' ? 'human' : 'ai');
   if (role === 'ai') { bubble.innerHTML = formatText(content); } else { bubble.textContent = content; }
   div.appendChild(avatar);
   div.appendChild(bubble);
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 function formatText(text) {
   return text.split('\n').map(function(line) {
     if (!line.trim()) return '<div style="height:6px"></div>';
     var html = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    if (/^[-•]\s/.test(line)) return '<li style="margin-left:18px;margin-bottom:5px;list-style-type:disc">' + html.slice(2) + '</li>';
+    if (/^#{1,3}\s/.test(line)) {
+      var clean = line.replace(/^#{1,3}\s/, '');
+      return '<p style="font-weight:600;font-size:15px;margin-bottom:6px;margin-top:12px;color:var(--text)">' + clean + '</p>';
+    }
+    if (/^[-•]\s/.test(line)) return '<div style="display:flex;gap:8px;margin-bottom:4px"><span style="color:var(--accent-light);flex-shrink:0">·</span><span>' + html.slice(2) + '</span></div>';
     return '<p style="margin-bottom:8px;line-height:1.75">' + html + '</p>';
   }).join('');
 }
 
 function showTyping() {
-  var chat = document.getElementById('chat');
+  var container = document.getElementById('messages');
   var div = document.createElement('div');
   div.className = 'message ai';
   div.id = 'typingIndicator';
@@ -288,8 +689,8 @@ function showTyping() {
   bubble.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   div.appendChild(avatar);
   div.appendChild(bubble);
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+  container.appendChild(div);
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
 function removeTyping() {
@@ -303,7 +704,7 @@ function sendMessage(question) {
   if (!text) return;
 
   if (showingSuggestions) {
-    document.getElementById('suggestions').style.display = 'none';
+    document.getElementById('welcome').style.display = 'none';
     showingSuggestions = false;
   }
 
@@ -315,31 +716,25 @@ function sendMessage(question) {
   addMessageToChat('human', text);
   showTyping();
 
-  var payload = JSON.stringify({
-    model: 'claude-haiku-4-5-20251001',
-    max_tokens: 1000,
-    system: buildSystemPrompt(),
-    messages: messages
-  });
-
   fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: payload
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1000,
+      system: buildSystemPrompt(),
+      messages: messages
+    })
   })
   .then(function(res) {
-    return res.text().then(function(text) {
-      return { status: res.status, text: text };
-    });
+    return res.text().then(function(text) { return { status: res.status, text: text }; });
   })
   .then(function(result) {
     removeTyping();
-    if (!result.text || result.text.trim() === '') {
-      throw new Error('Empty response from server (status ' + result.status + ')');
-    }
+    if (!result.text || result.text.trim() === '') throw new Error('Empty response (status ' + result.status + ')');
     var data;
-    try { data = JSON.parse(result.text); } catch(e) { throw new Error('Server said: ' + result.text.slice(0, 200)); }
-    if (result.status !== 200) { throw new Error(data.error && data.error.message ? data.error.message : 'API error ' + result.status); }
+    try { data = JSON.parse(result.text); } catch(e) { throw new Error('Bad response: ' + result.text.slice(0, 100)); }
+    if (result.status !== 200) throw new Error(data.error && data.error.message ? data.error.message : 'API error ' + result.status);
     var content = '';
     if (data.content && Array.isArray(data.content)) {
       data.content.forEach(function(b){ if (b.type === 'text') content += b.text; });
@@ -350,7 +745,7 @@ function sendMessage(question) {
   })
   .catch(function(err) {
     removeTyping();
-    addMessageToChat('ai', 'Error: ' + err.message);
+    addMessageToChat('ai', 'Something went wrong. Please try again. (' + err.message + ')');
   });
 }
 
