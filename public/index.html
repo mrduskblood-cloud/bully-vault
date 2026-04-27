@@ -420,7 +420,7 @@
 <div class="topnav">
   <div class="topnav-inner">
     <div class="brand">
-      <div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer">🐾</div>
+      <div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><img src="/logo.png" alt="Bully Vault" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/></div></div>
       <div>
         <div class="brand-name">Bully Vault</div>
         <div class="brand-sub">by John Enerva · ABKC International Senior Judge</div>
@@ -472,7 +472,7 @@
 <!-- Main Content -->
 <div class="main" id="main">
   <div class="welcome" id="welcome">
-    <div class="welcome-icon">🐾</div>
+    <div class="welcome-icon"><div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><img src="/logo.png" alt="Bully Vault" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/></div></div>
     <h2>Ask the Bully Vault</h2>
     <p>Powered by John Enerva's 20+ years of experience, firsthand research, and knowledge from the people who built this breed.</p>
     <div class="suggestion-grid" id="suggestionGrid"></div>
@@ -652,7 +652,7 @@ function addMessageToChat(role, content) {
   div.className = 'message ' + role;
   var avatar = document.createElement('div');
   avatar.className = 'avatar ' + (role === 'human' ? 'human' : 'ai');
-  avatar.textContent = role === 'human' ? 'J' : '🐾';
+  avatar.textContent = role === 'human' ? 'J' : '<div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><img src="/logo.png" alt="Bully Vault" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/></div>';
   var bubble = document.createElement('div');
   bubble.className = 'bubble ' + (role === 'human' ? 'human' : 'ai');
   if (role === 'ai') { bubble.innerHTML = formatText(content); } else { bubble.textContent = content; }
@@ -683,7 +683,7 @@ function showTyping() {
   div.id = 'typingIndicator';
   var avatar = document.createElement('div');
   avatar.className = 'avatar ai';
-  avatar.textContent = '🐾';
+  avatar.textContent = '<div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><img src="/logo.png" alt="Bully Vault" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/></div>';
   var bubble = document.createElement('div');
   bubble.className = 'bubble ai';
   bubble.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
