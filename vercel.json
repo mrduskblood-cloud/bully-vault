@@ -8,6 +8,8 @@
     { "src": "/api/chat", "dest": "/api/chat.js" },
     { "src": "/logo.png", "dest": "/public/logo.png" },
     { "src": "/calculator.html", "dest": "/public/calculator.html" },
+    { "src": "/app", "dest": "/public/app.html" },
+    { "src": "/app.html", "dest": "/public/app.html" },
     { "src": "/(.*)", "dest": "/public/index.html" }
   ]
 }
