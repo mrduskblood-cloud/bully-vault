@@ -933,10 +933,9 @@ Sent from: bully-vault.vercel.app');
 function checkPassword() {
   var input = document.getElementById('passwordInput').value.trim();
   var error = document.getElementById('passwordError');
-  var pw = 'Johnjudge2026';
-  if (input.toLowerCase() === pw.toLowerCase()) {
-    document.getElementById('passwordGate').style.display = 'none';
+  if (input.toLowerCase() === 'johnjudge2026') {
     sessionStorage.setItem('bvAccess', '1');
+    document.getElementById('passwordGate').style.display = 'none';
   } else {
     error.style.display = 'block';
     document.getElementById('passwordInput').value = '';
@@ -944,13 +943,12 @@ function checkPassword() {
   }
 }
 
-// Check if already authenticated
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
   if (sessionStorage.getItem('bvAccess') === '1') {
     var gate = document.getElementById('passwordGate');
     if (gate) gate.style.display = 'none';
   }
-})();
+});
 
 var secretTapCount = 0;
 var secretTapTimer = null;
