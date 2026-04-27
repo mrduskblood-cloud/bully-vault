@@ -412,11 +412,59 @@
     .bubble.ai { max-width: 100%; }
     .bubble.human { max-width: 85%; }
   }
+
+  /* PASSWORD GATE */
+  #passwordGate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #0a0a0a;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 24px;
+    padding: 40px;
+  }
+  #passwordGate img { width: 100px; height: 100px; object-fit: contain; border-radius: 20px; margin-bottom: 8px; }
+  #passwordGate h2 { font-family: Oswald, sans-serif; font-size: 28px; color: #c9a96e; letter-spacing: 2px; text-align: center; }
+  #passwordGate p { font-size: 15px; color: #888; text-align: center; max-width: 340px; line-height: 1.6; }
+  #passwordInput {
+    width: 100%; max-width: 340px;
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    border-radius: 10px; padding: 14px 18px;
+    color: #e8d5b0; font-size: 16px; font-family: Oswald, sans-serif;
+    letter-spacing: 2px; text-align: center; outline: none;
+    transition: border-color 0.2s;
+  }
+  #passwordInput:focus { border-color: #c9a96e; }
+  #passwordBtn {
+    width: 100%; max-width: 340px;
+    background: linear-gradient(135deg, #8b1a1a, #6b1a1a);
+    border: 1px solid #c9a96e;
+    border-radius: 10px; padding: 14px;
+    color: #c9a96e; font-family: Oswald, sans-serif;
+    font-size: 15px; font-weight: 600; letter-spacing: 2px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  #passwordBtn:hover { background: #c9a96e; color: #000; }
+  #passwordError { color: #e53935; font-size: 14px; display: none; font-family: Oswald, sans-serif; letter-spacing: 1px; }
+  #passwordGate .gate-link { font-size: 13px; color: #555; text-align: center; }
+  #passwordGate .gate-link a { color: #c9a96e; text-decoration: none; }
 </style>
 </head>
 <body>
 
 <!-- Top Navigation -->
+
+<!-- PASSWORD GATE -->
+<div id="passwordGate">
+  <img src="/logo.png" alt="American Bully Vault"/>
+  <h2>AMERICAN BULLY VAULT</h2>
+  <p>Enter your access password to unlock the vault. Purchase lifetime access at <a href="https://duskblood.gumroad.com/l/pxbgx" style="color:#c9a96e;">our store</a>.</p>
+  <input type="password" id="passwordInput" placeholder="ENTER PASSWORD" onkeydown="if(event.key==='Enter')checkPassword()"/>
+  <button id="passwordBtn" onclick="checkPassword()">ENTER THE VAULT</button>
+  <div id="passwordError">❌ Incorrect password. Please try again.</div>
+  <div class="gate-link">Don't have access? <a href="https://duskblood.gumroad.com/l/pxbgx" target="_blank">Get Lifetime Access — $25</a></div>
+  <div class="gate-link"><a href="/" >← Back to Homepage</a></div>
+</div>
+
 <div class="topnav">
   <div class="topnav-inner">
     <div class="brand">
@@ -534,6 +582,29 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
   document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
 }
+
+
+// PASSWORD GATE
+function checkPassword() {
+  var input = document.getElementById('passwordInput').value.trim();
+  var error = document.getElementById('passwordError');
+  if (input === 'Johnjudge2026') {
+    document.getElementById('passwordGate').style.display = 'none';
+    sessionStorage.setItem('bvAccess', '1');
+  } else {
+    error.style.display = 'block';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+  }
+}
+
+// Check if already authenticated
+(function() {
+  if (sessionStorage.getItem('bvAccess') === '1') {
+    var gate = document.getElementById('passwordGate');
+    if (gate) gate.style.display = 'none';
+  }
+})();
 
 var secretTapCount = 0;
 var secretTapTimer = null;
