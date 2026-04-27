@@ -933,7 +933,8 @@ Sent from: bully-vault.vercel.app');
 function checkPassword() {
   var input = document.getElementById('passwordInput').value.trim();
   var error = document.getElementById('passwordError');
-  if (input === 'Johnjudge2026' || input === 'JohnJudge2026' || input.toLowerCase() === 'johnjudge2026') {
+  var pw = 'Johnjudge2026';
+  if (input.toLowerCase() === pw.toLowerCase()) {
     document.getElementById('passwordGate').style.display = 'none';
     sessionStorage.setItem('bvAccess', '1');
   } else {
