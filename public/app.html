@@ -605,15 +605,13 @@
 <!-- Top Navigation -->
 
 <!-- PASSWORD GATE -->
-<div id="passwordGate">
-  <img src="/logo.png" alt="American Bully Vault"/>
-  <h2>AMERICAN BULLY VAULT</h2>
-  <p>Enter your access password to unlock the vault. Purchase lifetime access at <a href="https://duskblood.gumroad.com/l/pxbgx" style="color:#c9a96e;">our store</a>.</p>
-  <input type="password" id="passwordInput" placeholder="ENTER PASSWORD" onkeydown="if(event.key==='Enter')checkPassword()"/>
-  <button id="passwordBtn" onclick="checkPassword()">ENTER THE VAULT</button>
-  <div id="passwordError">❌ Incorrect password. Please try again.</div>
-  <div class="gate-link">Don't have access? <a href="https://duskblood.gumroad.com/l/pxbgx" target="_blank">Get Lifetime Access — $25</a></div>
-  <div class="gate-link"><a href="/" >← Back to Homepage</a></div>
+<div id="passwordGate" style="position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;">
+  <img src="/logo.png" style="width:100px;height:100px;object-fit:contain;border-radius:20px;"/>
+  <h2 style="font-family:sans-serif;color:#c9a96e;letter-spacing:2px;">AMERICAN BULLY VAULT</h2>
+  <p style="color:#888;text-align:center;max-width:340px;">Enter your access password. <a href="https://duskblood.gumroad.com/l/pxbgx" style="color:#c9a96e;">Get access here</a>.</p>
+  <input id="pw" type="password" placeholder="Enter password" style="padding:12px 18px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:10px;font-size:16px;width:100%;max-width:320px;text-align:center;"/>
+  <button onclick="var v=document.getElementById('pw').value.trim().toLowerCase();if(v==='johnjudge2026'){document.getElementById('passwordGate').style.display='none';sessionStorage.setItem('ok',1);}else{alert('Wrong password. Try again.');}" style="background:#8b1a1a;color:#c9a96e;border:1px solid #c9a96e;padding:14px 40px;border-radius:10px;font-size:15px;cursor:pointer;font-weight:bold;width:100%;max-width:320px;">ENTER THE VAULT</button>
+  <a href="/" style="color:#555;font-size:13px;">← Back to Homepage</a>
 </div>
 
 
@@ -931,22 +929,18 @@ Sent from: bully-vault.vercel.app');
 
 // PASSWORD GATE
 function checkPassword() {
-  var input = document.getElementById('passwordInput').value.trim();
-  var error = document.getElementById('passwordError');
-  if (input.toLowerCase() === 'johnjudge2026') {
-    sessionStorage.setItem('bvAccess', '1');
+  var v = document.getElementById('pw').value.trim().toLowerCase();
+  if (v === 'johnjudge2026') {
     document.getElementById('passwordGate').style.display = 'none';
+    sessionStorage.setItem('ok', '1');
   } else {
-    error.style.display = 'block';
-    document.getElementById('passwordInput').value = '';
-    document.getElementById('passwordInput').focus();
+    alert('Wrong password. Try again.');
   }
 }
-
 document.addEventListener('DOMContentLoaded', function() {
-  if (sessionStorage.getItem('bvAccess') === '1') {
-    var gate = document.getElementById('passwordGate');
-    if (gate) gate.style.display = 'none';
+  if (sessionStorage.getItem('ok') === '1') {
+    var g = document.getElementById('passwordGate');
+    if (g) g.style.display = 'none';
   }
 });
 
