@@ -431,14 +431,7 @@
   }
 
   /* PASSWORD GATE */
-  #passwordGate {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #0a0a0a;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    gap: 24px;
-    padding: 40px;
-  }
+    /* password gate uses inline styles */
   #passwordGate img { width: 100px; height: 100px; object-fit: contain; border-radius: 20px; margin-bottom: 8px; }
   #passwordGate h2 { font-family: Oswald, sans-serif; font-size: 28px; color: #c9a96e; letter-spacing: 2px; text-align: center; }
   #passwordGate p { font-size: 15px; color: #888; text-align: center; max-width: 340px; line-height: 1.6; }
@@ -490,8 +483,11 @@
     display: none;
     position: fixed; inset: 0; z-index: 999;
     background: rgba(0,0,0,0.85);
-    align-items: center; justify-content: center;
     padding: 20px;
+  }
+  #feedbackModal.open {
+    display: flex;
+    align-items: center; justify-content: center;
   }
   #feedbackModal.open { display: flex; }
   .feedback-modal-box {
@@ -639,9 +635,9 @@
       </div>
     </div>
     <div class="nav-actions">
-      <a href="/" class="nav-btn">
+      <button class="nav-btn" onclick="goHome()">
         🏠 <span>Homepage</span>
-      </a>
+      </button>
       <a href="https://www.youtube.com/@JohnEnerva" target="_blank" class="nav-btn">
         ▶ <span>YouTube</span>
       </a>
@@ -672,16 +668,36 @@
 </div>
 
 <!-- Language Bar -->
-<div class="lang-bar">
-  <button class="lang-btn active" onclick="setLang('en',this)">🇺🇸 EN</button>
-  <button class="lang-btn" onclick="setLang('tl',this)">🇵🇭 FIL</button>
-  <button class="lang-btn" onclick="setLang('ru',this)">🇷🇺 RU</button>
-  <button class="lang-btn" onclick="setLang('th',this)">🇹🇭 TH</button>
-  <button class="lang-btn" onclick="setLang('id',this)">🇮🇩 ID</button>
-  <button class="lang-btn" onclick="setLang('it',this)">🇮🇹 IT</button>
-  <button class="lang-btn" onclick="setLang('es',this)">🇲🇽 ES</button>
-  <button class="lang-btn" onclick="setLang('zh',this)">🇨🇳 ZH</button>
-  <button class="lang-btn" onclick="setLang('vi',this)">🇻🇳 VI</button>
+<div class="lang-bar" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:8px 16px;border-bottom:1px solid var(--border);">
+  <span style="font-size:11px;color:var(--muted);">🌐</span>
+  <button class="lang-btn active" id="lb-en" onclick="setLang('en',this)">🇺🇸 EN</button>
+  <button class="lang-btn" id="lb-tl" onclick="setLang('tl',this)">🇵🇭 FIL</button>
+  <button class="lang-btn" id="lb-it" onclick="setLang('it',this)">🇮🇹 IT</button>
+  <button class="lang-btn" id="lb-ru" onclick="setLang('ru',this)">🇷🇺 RU</button>
+  <button class="lang-btn" id="lb-es" onclick="setLang('es',this)">🇲🇽 ES</button>
+  <button class="lang-btn" id="lb-id" onclick="setLang('id',this)">🇮🇩 ID</button>
+  <button class="lang-btn" id="lb-th" onclick="setLang('th',this)">🇹🇭 TH</button>
+  <select id="moreLangs" onchange="setLangExtra(this.value)" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;color:var(--accent-light);font-size:12px;padding:5px 8px;cursor:pointer;outline:none;font-weight:600;">
+    <option value="">+ More Languages</option>
+    <option value="zh">🇨🇳 Chinese</option>
+    <option value="ja">🇯🇵 Japanese</option>
+    <option value="ko">🇰🇷 Korean</option>
+    <option value="vi">🇻🇳 Vietnamese</option>
+    <option value="ms">🇲🇾 Malay</option>
+    <option value="hi">🇮🇳 Hindi</option>
+    <option value="ar">🇦🇪 Arabic</option>
+    <option value="pt">🇧🇷 Portuguese</option>
+    <option value="fr">🇫🇷 French</option>
+    <option value="de">🇩🇪 German</option>
+    <option value="nl">🇳🇱 Dutch</option>
+    <option value="pl">🇵🇱 Polish</option>
+    <option value="tr">🇹🇷 Turkish</option>
+    <option value="ro">🇷🇴 Romanian</option>
+    <option value="uk">🇺🇦 Ukrainian</option>
+    <option value="sr">🇷🇸 Serbian</option>
+    <option value="el">🇬🇷 Greek</option>
+    <option value="lo">🇱🇦 Lao</option>
+  </select>
 </div>
 
 <!-- Main Content -->
@@ -753,7 +769,7 @@
     <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
   </div>
       <div class="feedback-bar">
-      <button class="feedback-btn" onclick="openFeedback()">📬 Submit Feedback or Unanswered Questions</button>
+      <button class="feedback-btn" onclick="openFeedback()" style="cursor:pointer;">📬 Submit Feedback or Unanswered Questions</button>
     </div>
 <div class="input-footer">
     American Bully Vault · by <a href="https://www.youtube.com/@JohnEnerva" target="_blank">John Enerva</a> · ABKC International Senior Judge
@@ -894,6 +910,15 @@ var currentLang = 'en';
 var showingSuggestions = true;
 var isDark = true;
 
+function goHome() {
+  sessionStorage.setItem('ok', '1');
+  window.location.href = '/';
+}
+
+function goApp() {
+  window.location.href = '/app';
+}
+
 function toggleTheme() {
   isDark = !isDark;
   document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -931,7 +956,10 @@ Sent from: americanbullyvault.com");
 function checkPassword() {
   var v = document.getElementById('pw').value.trim().toLowerCase();
   if (v === 'johnjudge2026') {
-    document.getElementById('passwordGate').style.display = 'none';
+    var gate = document.getElementById('passwordGate');
+    gate.style.display = 'none';
+    gate.style.visibility = 'hidden';
+    gate.style.zIndex = '-1';
     sessionStorage.setItem('ok', '1');
   } else {
     alert('Wrong password. Try again.');
@@ -940,7 +968,11 @@ function checkPassword() {
 document.addEventListener('DOMContentLoaded', function() {
   if (sessionStorage.getItem('ok') === '1') {
     var g = document.getElementById('passwordGate');
-    if (g) g.style.display = 'none';
+    if (g) {
+      g.style.display = 'none';
+      g.style.visibility = 'hidden';
+      g.style.zIndex = '-1';
+    }
   }
 });
 
@@ -979,6 +1011,17 @@ function setLangNew(val, btn) {
 
 function setLangDropdown(val) {
   currentLang = val;
+}
+
+function setLangExtra(val) {
+  if (!val) return;
+  currentLang = val;
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('moreLangs').value = '';
+  if (document.getElementById('suggestionsScreen') && 
+      document.getElementById('suggestionsScreen').style.display !== 'none') {
+    renderSuggestions();
+  }
 }
 
 function setLang(lang, btn) {
