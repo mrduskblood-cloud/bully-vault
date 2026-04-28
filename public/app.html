@@ -601,7 +601,7 @@
 <!-- Top Navigation -->
 
 <!-- PASSWORD GATE -->
-<div id="passwordGate" style="position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;">
+<div id="passwordGate" style="position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;">
   <img src="/logo.png" style="width:100px;height:100px;object-fit:contain;border-radius:20px;"/>
   <h2 style="font-family:sans-serif;color:#c9a96e;letter-spacing:2px;">AMERICAN BULLY VAULT</h2>
   <p style="color:#888;text-align:center;max-width:340px;">Enter your access password. <a href="https://duskblood.gumroad.com/l/pxbgx" style="color:#c9a96e;">Get access here</a>.</p>
@@ -956,23 +956,19 @@ Sent from: americanbullyvault.com");
 function checkPassword() {
   var v = document.getElementById('pw').value.trim().toLowerCase();
   if (v === 'johnjudge2026') {
-    var gate = document.getElementById('passwordGate');
-    gate.style.display = 'none';
-    gate.style.visibility = 'hidden';
-    gate.style.zIndex = '-1';
     sessionStorage.setItem('ok', '1');
+    document.getElementById('passwordGate').style.display = 'none';
   } else {
     alert('Wrong password. Try again.');
   }
 }
+
 document.addEventListener('DOMContentLoaded', function() {
+  var gate = document.getElementById('passwordGate');
   if (sessionStorage.getItem('ok') === '1') {
-    var g = document.getElementById('passwordGate');
-    if (g) {
-      g.style.display = 'none';
-      g.style.visibility = 'hidden';
-      g.style.zIndex = '-1';
-    }
+    gate.style.display = 'none';
+  } else {
+    gate.style.display = 'flex';
   }
 });
 
@@ -1025,6 +1021,16 @@ function setLangExtra(val) {
 }
 
 function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  if (document.getElementById('suggestionsScreen') && 
+      document.getElementById('suggestionsScreen').style.display !== 'none') {
+    renderSuggestions();
+  }
+  return false;
+}
+function setLang_orig(lang, btn) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
