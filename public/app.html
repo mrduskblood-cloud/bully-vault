@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>American Bully Vault – American Bully Expert AI</title>
+<title>American Bully Vault - American Bully Expert AI</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
@@ -663,7 +663,7 @@
 <div style="width:100%;max-width:760px;margin:0 auto;padding:0 20px;">
   <div class="transcript-panel" id="transcriptPanel">
     <h3>📹 Add Your YouTube Video Transcripts</h3>
-    <p>Your words become the AI's highest priority source. On YouTube: open your video → click … → Show transcript → copy all. Timestamps are fine.</p>
+    <p>Your words become the AI's highest priority source. On YouTube: open your video → click ... → Show transcript → copy all. Timestamps are fine.</p>
     <div class="transcript-list" id="transcriptList"></div>
     <input class="t-input" id="transcriptTitle" placeholder="Video title (e.g. How to Pick a Quality American Bully Puppy)" oninput="checkAddBtn()" />
     <textarea class="t-textarea" id="transcriptContent" placeholder="Paste your video transcript here..." oninput="checkAddBtn()"></textarea>
@@ -692,40 +692,40 @@
     <div class="category-screen" id="categoryScreen">
       <div class="welcome-icon"><img src="/logo.png" alt="American Bully Vault" style="width:64px;height:64px;object-fit:contain;border-radius:12px;"/></div>
       <h2>Welcome to the American Bully Vault</h2>
-      <p>Powered by John Enerva — ABKC International Senior Judge. Who are you?</p>
+      <p>Powered by John Enerva -- ABKC International Senior Judge. Who are you?</p>
       <div class="category-grid">
-        <div class="category-card" onclick="selectCategory('owner')">
+        <div class="category-card" onclick="selectCategory('owner')>"
           <div class="category-icon">🏠</div>
           <div class="category-title">New Dog Owner</div>
           <div class="category-desc">Just got my first American Bully</div>
         </div>
-        <div class="category-card" onclick="selectCategory('breeder')">
+        <div class="category-card" onclick="selectCategory('breeder')>"
           <div class="category-icon">🧬</div>
           <div class="category-title">Breeder</div>
           <div class="category-desc">Breeding programs and bloodlines</div>
         </div>
-        <div class="category-card" onclick="selectCategory('showperson')">
+        <div class="category-card" onclick="selectCategory('showperson')>"
           <div class="category-icon">🏆</div>
           <div class="category-title">Show Person</div>
-          <div class="category-desc">Competing in ABKC shows</div>
+          <div class="category-desc">Competing in American Bully Shows</div>
         </div>
-        <div class="category-card" onclick="selectCategory('judge')">
+        <div class="category-card" onclick="selectCategory('judge')>"
           <div class="category-icon">⚖️</div>
           <div class="category-title">Aspiring Judge</div>
           <div class="category-desc">Learning to judge the breed</div>
         </div>
-        <div class="category-card" onclick="selectCategory('community')">
+        <div class="category-card" onclick="selectCategory('community')>"
           <div class="category-icon">🌍</div>
           <div class="category-title">Community Member</div>
           <div class="category-desc">Part of the bully world</div>
         </div>
-        <div class="category-card" onclick="selectCategory('enthusiast')">
+        <div class="category-card" onclick="selectCategory('enthusiast')>"
           <div class="category-icon">❤️</div>
           <div class="category-title">Enthusiast</div>
           <div class="category-desc">I love the breed and want to learn</div>
         </div>
       </div>
-      <button class="category-skip" onclick="selectCategory('general')">Skip — just ask a question</button>
+      <button class="category-skip" onclick="selectCategory('general')>"Skip -- just ask a question</button>
     </div>
 
     <!-- SUGGESTIONS (shown after category selected) -->
@@ -753,7 +753,7 @@
     <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
   </div>
       <div class="feedback-bar">
-      <button class="feedback-btn" onclick="openFeedback()">📬 Submit feedback or missing question to John</button>
+      <button class="feedback-btn" onclick="openFeedback()">📬 Submit Feedback or Unanswered Questions</button>
     </div>
 <div class="input-footer">
     American Bully Vault · by <a href="https://www.youtube.com/@JohnEnerva" target="_blank">John Enerva</a> · ABKC International Senior Judge
@@ -912,18 +912,18 @@ function closeFeedback() {
   document.getElementById('feedbackText').value = '';
   document.getElementById('feedbackSuccess').style.display = 'none';
 }
-async function submitFeedback() {
-  var text = document.getElementById('feedbackText').value.trim();
-  if (!text) return;
-  var subject = encodeURIComponent('Bully Vault Feedback');
-  var body = encodeURIComponent('FEEDBACK FROM BULLY VAULT USER:
+function submitFeedback() {
+  var text = document.getElementById("feedbackText").value.trim();
+  if (!text) { alert("Please enter your feedback first."); return; }
+  var subject = encodeURIComponent("Bully Vault Feedback");
+  var body = encodeURIComponent("FEEDBACK FROM BULLY VAULT USER:
 
-' + text + '
+" + text + "
 
-Sent from: bully-vault.vercel.app');
-  window.open('mailto:mrduskblood@gmail.com?subject=' + subject + '&body=' + body);
-  document.getElementById('feedbackSuccess').style.display = 'block';
-  document.getElementById('feedbackText').value = '';
+Sent from: americanbullyvault.com");
+  window.location.href = "mailto:mrduskblood@gmail.com?subject=" + subject + "&body=" + body;
+  document.getElementById("feedbackSuccess").style.display = "block";
+  document.getElementById("feedbackText").value = "";
   setTimeout(closeFeedback, 2000);
 }
 
@@ -964,6 +964,17 @@ function newChat() {
   document.getElementById('welcome').style.display = 'block';
   renderSuggestions();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setLangNew(val, btn) {
+  if (!val) return;
+  currentLang = val;
+  // Remove active from all lang buttons
+  document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  if (document.getElementById('suggestionsScreen') && document.getElementById('suggestionsScreen').style.display !== 'none') {
+    renderSuggestions();
+  }
 }
 
 function setLangDropdown(val) {
@@ -1055,6 +1066,14 @@ var CATEGORY_CONFIG = {
   }
 };
 
+
+function selectCategory__owner(){ selectCategory('owner'); }
+function selectCategory__breeder(){ selectCategory('breeder'); }
+function selectCategory__showperson(){ selectCategory('showperson'); }
+function selectCategory__judge(){ selectCategory('judge'); }
+function selectCategory__community(){ selectCategory('community'); }
+function selectCategory__enthusiast(){ selectCategory('enthusiast'); }
+function selectCategory__general(){ selectCategory('general'); }
 function selectCategory(cat) {
   currentCategory = cat;
   var config = CATEGORY_CONFIG[cat];
