@@ -1,1333 +1,697 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>American Bully Vault - American Bully Expert AI</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>American Bully Vault — Ask the Judge</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --border: #222;
+  --text: #e8d5b0;
+  --muted: #666;
+  --accent: #c9830a;
+  --accent-light: #f5a623;
+  --red: #8b1a1a;
+  --btn-hover: #1e1e1e;
+}
+[data-theme="light"] {
+  --bg: #faf8f5;
+  --surface: #ffffff;
+  --border: #e0d8cc;
+  --text: #2a1f0e;
+  --muted: #888;
+  --btn-hover: #f0ebe3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--text); font-family: "Crimson Pro", Georgia, serif; display: flex; flex-direction: column; }
 
-  :root {
-    --bg: #212121;
-    --sidebar: #171717;
-    --surface: #2f2f2f;
-    --surface2: #3a3a3a;
-    --border: #3a3a3a;
-    --text: #ececec;
-    --text2: #a0a0a0;
-    --text3: #666;
-    --accent: #c9830a;
-    --accent-light: #f5a623;
-    --user-bubble: #2f2f2f;
-    --ai-bubble: transparent;
-    --input-bg: #2f2f2f;
-    --input-border: #464646;
-    --btn-bg: #3a3a3a;
-    --btn-hover: #464646;
-    --shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
+/* TOPNAV */
+.topnav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 16px; height: 56px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.topnav-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { width: 40px; height: 40px; border-radius: 8px; overflow: hidden; background: transparent; flex-shrink: 0; }
+.brand-icon img { width: 100%; height: 100%; object-fit: contain; }
+.brand-name { font-family: "Oswald", sans-serif; font-size: 14px; font-weight: 700; color: var(--accent-light); letter-spacing: 0.5px; }
+.brand-sub { font-size: 11px; color: var(--muted); }
+.nav-actions { display: flex; gap: 6px; align-items: center; }
+.nav-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; color: var(--muted); font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 4px; text-decoration: none; }
+.nav-btn:hover { background: var(--btn-hover); color: var(--text); }
+.theme-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 14px; }
 
-  [data-theme="light"] {
-    --bg: #ffffff;
-    --sidebar: #f5f5f5;
-    --surface: #f5f5f5;
-    --surface2: #ebebeb;
-    --border: #e0e0e0;
-    --text: #1a1a1a;
-    --text2: #666;
-    --text3: #999;
-    --user-bubble: #f5f5f5;
-    --ai-bubble: transparent;
-    --input-bg: #ffffff;
-    --input-border: #d0d0d0;
-    --btn-bg: #ebebeb;
-    --btn-hover: #e0e0e0;
-    --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
+/* LANGUAGE BAR */
+.lang-bar { display: flex; align-items: center; gap: 5px; padding: 6px 16px; border-bottom: 1px solid var(--border); background: var(--bg); flex-wrap: wrap; flex-shrink: 0; }
+.lang-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; color: var(--muted); font-size: 11px; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.lang-btn:hover, .lang-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.lang-select { background: var(--surface); border: 1px solid var(--accent); border-radius: 6px; color: var(--accent-light); font-size: 11px; padding: 4px 8px; cursor: pointer; outline: none; font-weight: 600; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* MAIN */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.chat-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: background 0.2s, color 0.2s;
-  }
+/* WELCOME */
+.welcome { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 24px 16px; gap: 12px; }
+.welcome img { width: 72px; height: 72px; object-fit: contain; border-radius: 16px; }
+.welcome h2 { font-family: "Oswald", sans-serif; font-size: 20px; color: var(--text); }
+.welcome p { font-size: 14px; color: var(--muted); max-width: 380px; line-height: 1.5; }
 
-  /* Top Navigation */
-  .topnav {
-    width: 100%;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(8px);
-  }
-  .topnav-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-  }
-  .brand-icon {
-    width: 48px; height: 48px;
-    border-radius: 10px;
-    background: transparent;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-  .brand-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.2px;
-  }
-  .brand-sub {
-    font-size: 11px;
-    color: var(--text2);
-    display: none;
-  }
-  .nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .nav-btn {
-    background: var(--btn-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 12px;
-    color: var(--text2);
-    font-size: 12px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .nav-btn:hover { background: var(--btn-hover); color: var(--text); }
-  .nav-btn.accent { color: var(--accent-light); border-color: var(--accent); }
-  .theme-btn {
-    background: var(--btn-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 34px; height: 34px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.15s;
-    flex-shrink: 0;
-  }
-  .theme-btn:hover { background: var(--btn-hover); }
+/* CATEGORY GRID */
+.cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 440px; margin-top: 8px; }
+.cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; cursor: pointer; text-align: center; transition: all 0.2s; }
+.cat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.cat-icon { font-size: 24px; margin-bottom: 8px; }
+.cat-title { font-family: "Oswald", sans-serif; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+.cat-desc { font-size: 11px; color: var(--muted); }
+.cat-skip { background: transparent; border: none; color: var(--muted); font-size: 12px; cursor: pointer; text-decoration: underline; font-family: inherit; margin-top: 8px; padding: 4px 8px; }
+.cat-skip:hover { color: var(--accent-light); }
 
-  /* Transcript Panel */
-  .transcript-panel {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 12px;
-    display: none;
-  }
-  .transcript-panel.open { display: block; }
-  .transcript-panel h3 { font-size: 13px; font-weight: 600; color: var(--accent-light); margin-bottom: 6px; }
-  .transcript-panel p { font-size: 12px; color: var(--text2); margin-bottom: 14px; line-height: 1.6; }
-  .transcript-list { margin-bottom: 12px; }
-  .transcript-item {
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
-  }
-  .transcript-item span { font-size: 13px; color: var(--text); }
-  .transcript-item button { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; }
-  .t-input {
-    width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
-    border-radius: 8px; padding: 10px 14px; color: var(--text);
-    font-size: 13px; font-family: inherit; margin-bottom: 8px; outline: none;
-    transition: border-color 0.15s;
-  }
-  .t-input:focus { border-color: var(--accent); }
-  .t-textarea {
-    width: 100%; background: var(--input-bg); border: 1px solid var(--input-border);
-    border-radius: 8px; padding: 10px 14px; color: var(--text);
-    font-size: 13px; font-family: inherit; resize: vertical; outline: none;
-    min-height: 100px; transition: border-color 0.15s;
-  }
-  .t-textarea:focus { border-color: var(--accent); }
-  .add-btn {
-    margin-top: 10px; background: var(--btn-bg); border: 1px solid var(--border);
-    border-radius: 8px; padding: 8px 18px; color: var(--text2);
-    font-size: 13px; font-family: inherit; cursor: not-allowed; transition: all 0.15s;
-  }
-  .add-btn.ready {
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    border-color: transparent; color: #000; cursor: pointer; font-weight: 500;
-  }
+/* SUGGESTIONS */
+.suggestion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; width: 100%; max-width: 600px; margin-top: 8px; }
+.suggestion-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; color: var(--text); font-size: 13px; cursor: pointer; text-align: left; font-family: inherit; line-height: 1.4; transition: all 0.2s; }
+.suggestion-btn:hover { border-color: var(--accent); background: var(--btn-hover); }
 
-  /* Language dropdown */
-  .lang-dropdown-wrap { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: var(--bg); }
-  .lang-dropdown-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
-  .lang-select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 13px;
-    padding: 6px 10px;
-    cursor: pointer;
-    outline: none;
-    font-family: inherit;
-    flex: 1; max-width: 280px;
-    transition: border-color 0.2s;
-  }
-  .lang-select:focus { border-color: var(--accent); }
-  /* Language bar */
-  .lang-bar {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 10px 20px;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    border-bottom: 1px solid var(--border);
-  }
-  .lang-btn {
-    background: none; border: 1px solid var(--border);
-    border-radius: 20px; padding: 3px 10px;
-    color: var(--text2); font-size: 11px; font-family: inherit;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .lang-btn:hover { border-color: var(--accent); color: var(--accent-light); }
-  .lang-btn.active { background: var(--surface); border-color: var(--accent); color: var(--accent-light); }
+/* MESSAGES */
+.message { display: flex; gap: 10px; max-width: 800px; width: 100%; }
+.message.user { flex-direction: row-reverse; margin-left: auto; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; overflow: hidden; }
+.avatar.ai { background: var(--accent); color: #000; }
+.avatar.user { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+.bubble { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; font-size: 15px; line-height: 1.6; max-width: calc(100% - 44px); }
+.message.user .bubble { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bubble p { margin-bottom: 8px; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble strong { color: var(--accent-light); }
+.bubble ul, .bubble ol { padding-left: 20px; margin: 8px 0; }
+.bubble li { margin-bottom: 4px; }
+.typing { display: flex; gap: 4px; padding: 12px 16px; }
+.typing span { width: 6px; height: 6px; background: var(--muted); border-radius: 50%; animation: bounce 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
 
-  /* Main chat area */
-  .main {
-    width: 100%;
-    max-width: 760px;
-    flex: 1;
-    padding: 20px 20px 0;
-    margin: 0 auto;
-  }
+/* INPUT */
+.input-area { padding: 10px 16px; border-top: 1px solid var(--border); background: var(--bg); flex-shrink: 0; }
+.input-row { display: flex; gap: 8px; align-items: flex-end; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; }
+.input-row:focus-within { border-color: var(--accent); }
+textarea#msgInput { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-size: 15px; font-family: inherit; resize: none; line-height: 1.5; max-height: 120px; overflow-y: auto; }
+.send-btn { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; width: 34px; height: 34px; cursor: pointer; font-size: 16px; color: var(--muted); transition: all 0.2s; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.send-btn.ready { background: var(--accent); border-color: var(--accent); color: #fff; }
+.input-footer { text-align: center; padding: 4px 0; }
+.footer-text { font-size: 11px; color: var(--muted); }
 
-  /* Welcome / suggestions */
-  .welcome {
-    padding: 40px 0 20px;
-    text-align: center;
-  }
-  .welcome-icon {
-    width: 56px; height: 56px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; margin: 0 auto 16px;
-    box-shadow: 0 4px 20px rgba(201,131,10,0.3);
-  }
-  .welcome h2 {
-    font-size: 22px; font-weight: 600;
-    color: var(--text); margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-  .welcome p {
-    font-size: 14px; color: var(--text2);
-    max-width: 440px; margin: 0 auto 32px;
-    line-height: 1.6;
-  }
-  .suggestion-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    text-align: left;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  .suggestion-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 14px;
-    color: var(--text2);
-    font-size: 13px;
-    font-family: inherit;
-    text-align: left;
-    cursor: pointer;
-    line-height: 1.45;
-    transition: all 0.15s;
-  }
-  .suggestion-btn:hover {
-    border-color: var(--accent);
-    color: var(--text);
-    background: var(--surface2);
-  }
+/* FEEDBACK */
+.feedback-bar { text-align: center; padding: 8px 16px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.feedback-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 5px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.feedback-btn:hover { border-color: var(--accent); color: var(--accent-light); }
+.fb-modal { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; padding: 20px; }
+.fb-modal.open { display: flex; }
+.fb-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; width: 100%; max-width: 400px; }
+.fb-box h3 { font-size: 16px; color: var(--accent-light); margin-bottom: 8px; font-family: "Oswald", sans-serif; }
+.fb-box p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.fb-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px; color: var(--text); font-size: 14px; font-family: inherit; resize: none; height: 100px; outline: none; margin-bottom: 10px; }
+.fb-textarea:focus { border-color: var(--accent); }
+.fb-btns { display: flex; gap: 8px; }
+.fb-submit { flex: 1; background: var(--accent); border: none; border-radius: 8px; padding: 10px; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.fb-cancel { background: transparent; border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; color: var(--muted); font-size: 13px; cursor: pointer; font-family: inherit; }
+.fb-ok { color: #4caf50; font-size: 13px; text-align: center; display: none; margin-top: 8px; }
 
-  /* Messages */
-  .messages { padding-bottom: 20px; }
-  .message {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    align-items: flex-start;
-  }
-  .message.user { flex-direction: row-reverse; }
-  .avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-  }
-  .avatar.ai {
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    font-size: 16px;
-  }
-  .avatar.human {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text2);
-  }
-  .bubble {
-    max-width: 80%;
-    padding: 12px 16px;
-    font-size: 14.5px;
-    line-height: 1.7;
-    border-radius: 16px;
-  }
-  .bubble.ai {
-    background: var(--ai-bubble);
-    color: var(--text);
-    padding-left: 0;
-    padding-right: 0;
-    border-radius: 0;
-    max-width: 90%;
-  }
-  .bubble.human {
-    background: var(--user-bubble);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-radius: 18px 18px 4px 18px;
-  }
+/* PASSWORD GATE */
+.gate { display: none; position: fixed; inset: 0; z-index: 9999; background: #0a0a0a; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; }
+.gate.show { display: flex; }
+.gate img { width: 90px; height: 90px; object-fit: contain; border-radius: 18px; }
+.gate h2 { font-family: "Oswald", sans-serif; font-size: 26px; color: #c9a96e; letter-spacing: 2px; text-align: center; }
+.gate p { color: #666; text-align: center; max-width: 320px; font-size: 14px; line-height: 1.5; }
+.gate input { padding: 12px 18px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 10px; font-size: 16px; width: 100%; max-width: 300px; text-align: center; outline: none; font-family: inherit; }
+.gate input:focus { border-color: #c9a96e; }
+.gate button { background: #8b1a1a; color: #c9a96e; border: 1px solid #c9a96e; padding: 13px 40px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; width: 100%; max-width: 300px; font-family: "Oswald", sans-serif; letter-spacing: 1px; transition: all 0.2s; }
+.gate button:hover { background: #c9a96e; color: #000; }
+.gate a { color: #444; font-size: 12px; text-decoration: none; }
+.gate a:hover { color: #c9a96e; }
 
-  /* Typing indicator */
-  .typing {
-    display: flex; gap: 5px; align-items: center;
-    padding: 8px 0;
-  }
-  .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--text3);
-    animation: bounce 1.2s ease-in-out infinite;
-  }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce {
-    0%,100%{ transform: translateY(0); opacity: 0.4; }
-    50%{ transform: translateY(-4px); opacity: 1; }
-  }
-
-  /* Input area */
-  .input-area {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 12px 20px 24px;
-    position: sticky;
-    bottom: 0;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-  }
-  .input-box {
-    display: flex;
-    gap: 8px;
-    background: var(--input-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 14px;
-    padding: 10px 12px;
-    align-items: flex-end;
-    transition: border-color 0.15s;
-    box-shadow: var(--shadow);
-  }
-  .input-box:focus-within { border-color: var(--accent); }
-  .input-box textarea {
-    flex: 1;
-    background: transparent;
-    border: none; outline: none;
-    color: var(--text);
-    font-size: 14px;
-    font-family: inherit;
-    resize: none;
-    line-height: 1.5;
-    max-height: 120px;
-    overflow-y: auto;
-  }
-  .input-box textarea::placeholder { color: var(--text3); }
-  .send-btn {
-    width: 34px; height: 34px;
-    border-radius: 10px;
-    border: none;
-    background: var(--surface2);
-    color: var(--text3);
-    cursor: not-allowed;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-    transition: all 0.15s;
-  }
-  .send-btn.ready {
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: #000;
-    cursor: pointer;
-  }
-  .send-btn.ready:hover { opacity: 0.9; }
-  .input-footer {
-    text-align: center;
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 8px;
-  }
-  .input-footer a { color: var(--accent-light); text-decoration: none; }
-  .input-footer a:hover { text-decoration: underline; }
-
-  /* Transcript count badge */
-  .transcript-badge {
-    background: var(--accent);
-    color: #000;
-    border-radius: 10px;
-    padding: 1px 6px;
-    font-size: 10px;
-    font-weight: 600;
-    margin-left: 4px;
-  }
-
-  @media(max-width: 560px) {
-    .suggestion-grid { grid-template-columns: 1fr; }
-    .nav-btn span { display: none; }
-    .brand-sub { display: none; }
-    .bubble.ai { max-width: 100%; }
-    .bubble.human { max-width: 85%; }
-  }
-
-  /* PASSWORD GATE */
-    /* password gate uses inline styles */
-  #passwordGate img { width: 100px; height: 100px; object-fit: contain; border-radius: 20px; margin-bottom: 8px; }
-  #passwordGate h2 { font-family: Oswald, sans-serif; font-size: 28px; color: #c9a96e; letter-spacing: 2px; text-align: center; }
-  #passwordGate p { font-size: 15px; color: #888; text-align: center; max-width: 340px; line-height: 1.6; }
-  #passwordInput {
-    width: 100%; max-width: 340px;
-    background: #1a1a1a; border: 1px solid #2a2a2a;
-    border-radius: 10px; padding: 14px 18px;
-    color: #e8d5b0; font-size: 16px; font-family: Oswald, sans-serif;
-    letter-spacing: 2px; text-align: center; outline: none;
-    transition: border-color 0.2s;
-  }
-  #passwordInput:focus { border-color: #c9a96e; }
-  #passwordBtn {
-    width: 100%; max-width: 340px;
-    background: linear-gradient(135deg, #8b1a1a, #6b1a1a);
-    border: 1px solid #c9a96e;
-    border-radius: 10px; padding: 14px;
-    color: #c9a96e; font-family: Oswald, sans-serif;
-    font-size: 15px; font-weight: 600; letter-spacing: 2px;
-    cursor: pointer; transition: all 0.2s;
-  }
-  #passwordBtn:hover { background: #c9a96e; color: #000; }
-  #passwordError { color: #e53935; font-size: 14px; display: none; font-family: Oswald, sans-serif; letter-spacing: 1px; }
-  #passwordGate .gate-link { font-size: 13px; color: #555; text-align: center; }
-  #passwordGate .gate-link a { color: #c9a96e; text-decoration: none; }
-
-  /* FEEDBACK BUTTON */
-  .feedback-bar {
-    text-align: center;
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-  }
-  .feedback-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-  .feedback-btn:hover { border-color: var(--accent); color: var(--accent-light); }
-
-  /* FEEDBACK MODAL */
-  #feedbackModal {
-    display: none;
-    position: fixed; inset: 0; z-index: 999;
-    background: rgba(0,0,0,0.85);
-    padding: 20px;
-  }
-  #feedbackModal.open {
-    display: flex;
-    align-items: center; justify-content: center;
-  }
-  #feedbackModal.open { display: flex; }
-  .feedback-modal-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    width: 100%; max-width: 420px;
-  }
-  .feedback-modal-box h3 {
-    font-size: 16px; font-weight: 600;
-    color: var(--accent-light);
-    margin-bottom: 8px;
-  }
-  .feedback-modal-box p {
-    font-size: 13px; color: var(--muted);
-    margin-bottom: 16px; line-height: 1.5;
-  }
-  .feedback-textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    color: var(--text);
-    font-size: 14px;
-    font-family: inherit;
-    resize: none; height: 120px;
-    outline: none;
-    margin-bottom: 12px;
-    transition: border-color 0.2s;
-  }
-  .feedback-textarea:focus { border-color: var(--accent); }
-  .feedback-modal-buttons { display: flex; gap: 10px; }
-  .feedback-submit {
-    flex: 1;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    border: none; border-radius: 8px;
-    padding: 10px; color: #000;
-    font-size: 13px; font-weight: 600;
-    cursor: pointer; font-family: inherit;
-    transition: opacity 0.2s;
-  }
-  .feedback-submit:hover { opacity: 0.85; }
-  .feedback-cancel {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px; padding: 10px 16px;
-    color: var(--muted); font-size: 13px;
-    cursor: pointer; font-family: inherit;
-  }
-  .feedback-success { color: #4caf50; font-size: 13px; text-align: center; display: none; margin-top: 8px; }
-
-  /* CATEGORY SELECTOR */
-  .category-screen {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 32px 20px; text-align: center;
-    gap: 20px;
-  }
-  .category-screen h2 {
-    font-size: 20px; font-weight: 600;
-    color: var(--text); margin-bottom: 4px;
-  }
-  .category-screen p {
-    font-size: 14px; color: var(--muted);
-    max-width: 360px; line-height: 1.5;
-    margin-bottom: 8px;
-  }
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px; width: 100%; max-width: 480px;
-  }
-  .category-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px 16px;
-    cursor: pointer; text-align: center;
-    transition: all 0.2s; display: flex;
-    flex-direction: column; align-items: center; gap: 10px;
-  }
-  .category-card:hover {
-    border-color: var(--accent);
-    background: var(--surface);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  }
-  .category-card:active { transform: scale(0.97); }
-  .category-icon { font-size: 30px; }
-  .category-title {
-    font-size: 13px; font-weight: 600;
-    color: var(--text); letter-spacing: 0.3px;
-    line-height: 1.3;
-  }
-  .category-desc {
-    font-size: 11px; color: var(--muted);
-    line-height: 1.4;
-  }
-  .category-skip {
-    font-size: 12px; color: var(--muted);
-    background: transparent; border: none;
-    cursor: pointer; text-decoration: underline;
-    font-family: inherit; padding: 4px 8px;
-  }
-  .category-skip:hover { color: var(--accent-light); }
+@media(max-width:600px) {
+  .brand-sub { display: none; }
+  .nav-btn span { display: none; }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
 
-<!-- Top Navigation -->
-
 <!-- PASSWORD GATE -->
-<div id="passwordGate" style="position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;">
-  <img src="/logo.png" style="width:100px;height:100px;object-fit:contain;border-radius:20px;"/>
-  <h2 style="font-family:sans-serif;color:#c9a96e;letter-spacing:2px;">AMERICAN BULLY VAULT</h2>
-  <p style="color:#888;text-align:center;max-width:340px;">Enter your access password. <a href="https://duskblood.gumroad.com/l/pxbgx" style="color:#c9a96e;">Get access here</a>.</p>
-  <input id="pw" type="password" placeholder="Enter password" style="padding:12px 18px;background:#1a1a1a;border:1px solid #333;color:#fff;border-radius:10px;font-size:16px;width:100%;max-width:320px;text-align:center;"/>
-  <button onclick="var v=document.getElementById('pw').value.trim().toLowerCase();if(v==='johnjudge2026'){document.getElementById('passwordGate').style.display='none';sessionStorage.setItem('ok',1);}else{alert('Wrong password. Try again.');}" style="background:#8b1a1a;color:#c9a96e;border:1px solid #c9a96e;padding:14px 40px;border-radius:10px;font-size:15px;cursor:pointer;font-weight:bold;width:100%;max-width:320px;">ENTER THE VAULT</button>
-  <a href="/" style="color:#555;font-size:13px;">← Back to Homepage</a>
+<div class="gate" id="gate">
+  <img src="/logo.png" alt="American Bully Vault"/>
+  <h2>AMERICAN BULLY VAULT</h2>
+  <p>Enter your access password to unlock the vault.<br/>
+  <a href="https://duskblood.gumroad.com/l/pxbgx" target="_blank" style="color:#c9a96e;">Get Lifetime Access — $25</a></p>
+  <input type="password" id="pwInput" placeholder="ENTER PASSWORD" onkeydown="if(event.key==='Enter')doLogin()"/>
+  <button onclick="doLogin()">ENTER THE VAULT</button>
+  <a href="/">&#8592; Back to Homepage</a>
 </div>
 
-
-<!-- FEEDBACK MODAL -->
-<div id="feedbackModal">
-  <div class="feedback-modal-box">
-    <h3>📬 Send Feedback to John</h3>
-    <p>Did the Vault give you a wrong or incomplete answer? Let John know and he will improve it.</p>
-    <textarea id="feedbackText" class="feedback-textarea" placeholder="Describe what question you asked and what was wrong or missing..."></textarea>
-    <div class="feedback-modal-buttons">
-      <button class="feedback-submit" onclick="submitFeedback()">Send to John</button>
-      <button class="feedback-cancel" onclick="closeFeedback()">Cancel</button>
-    </div>
-    <div id="feedbackSuccess" class="feedback-success">✅ Thank you! John will review your feedback.</div>
-  </div>
-</div>
-
+<!-- TOP NAV -->
 <div class="topnav">
   <div class="topnav-inner">
     <div class="brand">
-      <div class="brand-icon" id="logoBtn" onclick="secretTap()" style="cursor:pointer"><img src="/logo.png" alt="American Bully Vault" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"/></div>
+      <div class="brand-icon" id="logoBtn" onclick="handleLogoTap()" style="cursor:pointer">
+        <img src="/logo.png" alt="American Bully Vault"/>
+      </div>
       <div>
         <div class="brand-name">American Bully Vault</div>
-        <div class="brand-sub">by John Enerva · ABKC International Senior Judge</div>
+        <div class="brand-sub">by John Enerva &middot; ABKC International Senior Judge</div>
       </div>
     </div>
     <div class="nav-actions">
-      <button class="nav-btn" onclick="goHome()">
-        🏠 <span>Homepage</span>
-      </button>
-      <a href="https://www.youtube.com/@JohnEnerva" target="_blank" class="nav-btn">
-        ▶ <span>YouTube</span>
-      </a>
-      <a href="/calculator.html" class="nav-btn">
-        🧮 <span>Calculator</span>
-      </a>
-      <button class="nav-btn" onclick="newChat()">
-        ✏️ <span>New Chat</span>
-      </button>
-      <button class="nav-btn" id="videosBtn" onclick="toggleTranscripts()" style="display:none">
-        📹 <span>My Videos</span><span class="transcript-badge" id="transcriptBadge" style="display:none">0</span>
-      </button>
-      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle light/dark mode">🌙</button>
+      <button class="nav-btn" onclick="goHome()">&#127968; <span>Homepage</span></button>
+      <a href="https://www.youtube.com/@JohnEnerva" target="_blank" class="nav-btn">&#9654; <span>YouTube</span></a>
+      <a href="/calculator.html" class="nav-btn">&#129518; <span>Calculator</span></a>
+      <button class="nav-btn" onclick="newChat()">&#9998; <span>New Chat</span></button>
+      <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">&#127769;</button>
     </div>
   </div>
 </div>
 
-<!-- Transcript Panel -->
-<div style="width:100%;max-width:760px;margin:0 auto;padding:0 20px;">
-  <div class="transcript-panel" id="transcriptPanel">
-    <h3>📹 Add Your YouTube Video Transcripts</h3>
-    <p>Your words become the AI's highest priority source. On YouTube: open your video → click ... → Show transcript → copy all. Timestamps are fine.</p>
-    <div class="transcript-list" id="transcriptList"></div>
-    <input class="t-input" id="transcriptTitle" placeholder="Video title (e.g. How to Pick a Quality American Bully Puppy)" oninput="checkAddBtn()" />
-    <textarea class="t-textarea" id="transcriptContent" placeholder="Paste your video transcript here..." oninput="checkAddBtn()"></textarea>
-    <button class="add-btn" id="addBtn" onclick="addTranscript()">+ Add to Knowledge Base</button>
-  </div>
-</div>
-
-<!-- Language Bar -->
-<div class="lang-bar" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:8px 16px;border-bottom:1px solid var(--border);">
-  <span style="font-size:11px;color:var(--muted);">🌐</span>
-  <button class="lang-btn active" id="lb-en" onclick="setLang('en',this)">🇺🇸 EN</button>
-  <button class="lang-btn" id="lb-tl" onclick="setLang('tl',this)">🇵🇭 FIL</button>
-  <button class="lang-btn" id="lb-it" onclick="setLang('it',this)">🇮🇹 IT</button>
-  <button class="lang-btn" id="lb-ru" onclick="setLang('ru',this)">🇷🇺 RU</button>
-  <button class="lang-btn" id="lb-es" onclick="setLang('es',this)">🇲🇽 ES</button>
-  <button class="lang-btn" id="lb-id" onclick="setLang('id',this)">🇮🇩 ID</button>
-  <button class="lang-btn" id="lb-th" onclick="setLang('th',this)">🇹🇭 TH</button>
-  <select id="moreLangs" onchange="setLangExtra(this.value)" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;color:var(--accent-light);font-size:12px;padding:5px 8px;cursor:pointer;outline:none;font-weight:600;">
-    <option value="">+ More Languages</option>
-    <option value="zh">🇨🇳 Chinese</option>
-    <option value="ja">🇯🇵 Japanese</option>
-    <option value="ko">🇰🇷 Korean</option>
-    <option value="vi">🇻🇳 Vietnamese</option>
-    <option value="ms">🇲🇾 Malay</option>
-    <option value="hi">🇮🇳 Hindi</option>
-    <option value="ar">🇦🇪 Arabic</option>
-    <option value="pt">🇧🇷 Portuguese</option>
-    <option value="fr">🇫🇷 French</option>
-    <option value="de">🇩🇪 German</option>
-    <option value="nl">🇳🇱 Dutch</option>
-    <option value="pl">🇵🇱 Polish</option>
-    <option value="tr">🇹🇷 Turkish</option>
-    <option value="ro">🇷🇴 Romanian</option>
-    <option value="uk">🇺🇦 Ukrainian</option>
-    <option value="sr">🇷🇸 Serbian</option>
-    <option value="el">🇬🇷 Greek</option>
-    <option value="lo">🇱🇦 Lao</option>
+<!-- LANGUAGE BAR -->
+<div class="lang-bar">
+  <span style="font-size:11px;color:var(--muted);">&#127760;</span>
+  <button class="lang-btn active" id="lb-en" onclick="setLang('en',this)">&#127482;&#127480; EN</button>
+  <button class="lang-btn" id="lb-tl" onclick="setLang('tl',this)">&#127477;&#127469; FIL</button>
+  <button class="lang-btn" id="lb-it" onclick="setLang('it',this)">&#127470;&#127481; IT</button>
+  <button class="lang-btn" id="lb-ru" onclick="setLang('ru',this)">&#127479;&#127482; RU</button>
+  <button class="lang-btn" id="lb-es" onclick="setLang('es',this)">&#127474;&#127485; ES</button>
+  <button class="lang-btn" id="lb-id" onclick="setLang('id',this)">&#127470;&#127465; ID</button>
+  <button class="lang-btn" id="lb-th" onclick="setLang('th',this)">&#127481;&#127469; TH</button>
+  <select class="lang-select" onchange="setLangExtra(this.value,this)">
+    <option value="">+ More</option>
+    <option value="zh">&#127464;&#127475; Chinese</option>
+    <option value="ja">&#127471;&#127477; Japanese</option>
+    <option value="ko">&#127472;&#127479; Korean</option>
+    <option value="vi">&#127483;&#127475; Vietnamese</option>
+    <option value="ms">&#127474;&#127486; Malay</option>
+    <option value="hi">&#127470;&#127475; Hindi</option>
+    <option value="ar">&#127462;&#127466; Arabic</option>
+    <option value="pt">&#127463;&#127479; Portuguese</option>
+    <option value="fr">&#127467;&#127479; French</option>
+    <option value="de">&#127465;&#127466; German</option>
+    <option value="nl">&#127475;&#127473; Dutch</option>
+    <option value="pl">&#127477;&#127473; Polish</option>
+    <option value="tr">&#127481;&#127479; Turkish</option>
+    <option value="ro">&#127479;&#127476; Romanian</option>
+    <option value="uk">&#127482;&#127462; Ukrainian</option>
+    <option value="el">&#127468;&#127479; Greek</option>
+    <option value="lo">&#127473;&#127462; Lao</option>
   </select>
 </div>
 
-<!-- Main Content -->
-<div class="main" id="main">
-  <div class="welcome" id="welcome">
+<!-- MAIN -->
+<div class="main">
+  <div class="chat-area" id="chatArea">
 
-    <!-- CATEGORY SELECTOR -->
-    <div class="category-screen" id="categoryScreen">
-      <div class="welcome-icon"><img src="/logo.png" alt="American Bully Vault" style="width:64px;height:64px;object-fit:contain;border-radius:12px;"/></div>
+    <!-- CATEGORY SCREEN -->
+    <div class="welcome" id="catScreen">
+      <img src="/logo.png" alt="American Bully Vault"/>
       <h2>Welcome to the American Bully Vault</h2>
-      <p>Powered by John Enerva -- ABKC International Senior Judge. Who are you?</p>
-      <div class="category-grid">
-        <div class="category-card" onclick="selectCategory__owner()">
-          <div class="category-icon">&#127968;</div>
-          <div class="category-title">New Dog Owner</div>
-          <div class="category-desc">Just got my first American Bully</div>
+      <p>Powered by John Enerva &mdash; ABKC International Senior Judge. Who are you?</p>
+      <div class="cat-grid">
+        <div class="cat-card" onclick="pickCat('owner')">
+          <div class="cat-icon">&#127968;</div>
+          <div class="cat-title">New Dog Owner</div>
+          <div class="cat-desc">Just got my first American Bully</div>
         </div>
-        <div class="category-card" onclick="selectCategory__breeder()">
-          <div class="category-icon">&#129516;</div>
-          <div class="category-title">Breeder</div>
-          <div class="category-desc">Breeding programs and bloodlines</div>
+        <div class="cat-card" onclick="pickCat('breeder')">
+          <div class="cat-icon">&#129516;</div>
+          <div class="cat-title">Breeder</div>
+          <div class="cat-desc">Breeding programs and bloodlines</div>
         </div>
-        <div class="category-card" onclick="selectCategory__showperson()">
-          <div class="category-icon">&#127942;</div>
-          <div class="category-title">Show Person</div>
-          <div class="category-desc">Competing in American Bully Shows</div>
+        <div class="cat-card" onclick="pickCat('show')">
+          <div class="cat-icon">&#127942;</div>
+          <div class="cat-title">Show Person</div>
+          <div class="cat-desc">Competing in American Bully Shows</div>
         </div>
-        <div class="category-card" onclick="selectCategory__judge()">
-          <div class="category-icon">&#9878;</div>
-          <div class="category-title">Aspiring Judge</div>
-          <div class="category-desc">Learning to judge the breed</div>
+        <div class="cat-card" onclick="pickCat('judge')">
+          <div class="cat-icon">&#9878;</div>
+          <div class="cat-title">Aspiring Judge</div>
+          <div class="cat-desc">Learning to judge the breed</div>
         </div>
-        <div class="category-card" onclick="selectCategory__community()">
-          <div class="category-icon">&#127758;</div>
-          <div class="category-title">Community Member</div>
-          <div class="category-desc">Part of the bully world</div>
+        <div class="cat-card" onclick="pickCat('community')">
+          <div class="cat-icon">&#127758;</div>
+          <div class="cat-title">Community Member</div>
+          <div class="cat-desc">Part of the bully world</div>
         </div>
-        <div class="category-card" onclick="selectCategory__enthusiast()">
-          <div class="category-icon">&#10084;</div>
-          <div class="category-title">Enthusiast</div>
-          <div class="category-desc">I love the breed and want to learn</div>
+        <div class="cat-card" onclick="pickCat('enthusiast')">
+          <div class="cat-icon">&#10084;</div>
+          <div class="cat-title">Enthusiast</div>
+          <div class="cat-desc">I love the breed and want to learn</div>
         </div>
       </div>
-      <button class="category-skip" onclick="selectCategory__general()">Skip -- just ask a question</button>
+      <button class="cat-skip" onclick="pickCat('general')">Skip &mdash; just ask a question</button>
     </div>
 
-    <!-- SUGGESTIONS (shown after category selected) -->
-    <div id="suggestionsScreen" style="display:none;">
-      <div class="welcome-icon"><img src="/logo.png" alt="American Bully Vault" style="width:56px;height:56px;object-fit:contain;border-radius:12px;"/></div>
-      <h2 id="categoryWelcome">Ask the American Bully Vault</h2>
-      <p id="categorySubtitle">Powered by John Enerva's 20+ years of experience.</p>
-      <div class="suggestion-grid" id="suggestionGrid"></div>
+    <!-- SUGGESTIONS SCREEN -->
+    <div class="welcome" id="suggScreen" style="display:none">
+      <img src="/logo.png" alt="American Bully Vault"/>
+      <h2 id="suggTitle">Ask the American Bully Vault</h2>
+      <p id="suggSub">Powered by John Enerva &mdash; 20+ years of experience.</p>
+      <div class="suggestion-grid" id="suggGrid"></div>
     </div>
 
   </div>
-  <div class="messages" id="messages"></div>
+
+  <!-- FEEDBACK BAR -->
+  <div class="feedback-bar">
+    <button class="feedback-btn" onclick="openFb()">&#128140; Submit Feedback or Unanswered Questions</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-area">
+    <div class="input-row">
+      <textarea id="msgInput" placeholder="Ask anything about American Bullies..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this);updateSend()"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMsg()">&#8593;</button>
+    </div>
+    <div class="input-footer">
+      <span class="footer-text">American Bully Vault &middot; by John Enerva &middot; ABKC International Senior Judge</span>
+    </div>
+  </div>
 </div>
 
-<!-- Input Area -->
-<div class="input-area">
-  <div class="input-box">
-    <textarea
-      id="userInput"
-      rows="1"
-      placeholder="Ask anything about American Bullies..."
-      oninput="handleInput(this)"
-      onkeydown="handleKey(event)"
-    ></textarea>
-    <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
-  </div>
-      <div class="feedback-bar">
-      <button class="feedback-btn" onclick="openFeedback()" style="cursor:pointer;">📬 Submit Feedback or Unanswered Questions</button>
+<!-- FEEDBACK MODAL -->
+<div class="fb-modal" id="fbModal">
+  <div class="fb-box">
+    <h3>&#128140; Send Feedback to John</h3>
+    <p>Did the Vault give you a wrong or incomplete answer? Let John know and he will improve it.</p>
+    <textarea class="fb-textarea" id="fbText" placeholder="Describe what question you asked and what was wrong or missing..."></textarea>
+    <div class="fb-btns">
+      <button class="fb-submit" onclick="submitFb()">Send to John</button>
+      <button class="fb-cancel" onclick="closeFb()">Cancel</button>
     </div>
-<div class="input-footer">
-    American Bully Vault · by <a href="https://www.youtube.com/@JohnEnerva" target="_blank">John Enerva</a> · ABKC International Senior Judge
+    <div class="fb-ok" id="fbOk">Thank you! John will review your feedback.</div>
   </div>
 </div>
 
 <script>
-var SYSTEM_PROMPT = "You are the American Bully Vault AI, the official AI assistant of John Enerva -- a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.\n\nABOUT JOHN ENERVA:\n- Over 20 years of hands-on experience in American Bully breeding and showing\n- The first person of Asian descent living in Asia (specifically the Philippines) to become an official ABKC show judge -- there were Asian-American judges before him, but John was the first judge actually living and based in Asia\n- Promoted to ABKC International Senior Judge -- one of the highest judging ranks in the breed\n- Judged the 2019 ABKC Nationals in Houston, Texas -- the biggest American Bully show in the world\n- Organized the first-ever ABKC show in the Philippines: the Philippine Bully Extravaganza (January 19, 2014), attended by ABKC founder Dave Wilson himself\n- Personally invited by Dave Wilson to apprentice as a judge in Jakarta, Indonesia\n- Judged in: Multiple states across the USA, Italy (twice), Guam (multiple times), Indonesia (multiple times), Thailand (multiple times), Philippines (multiple times)\n- Judged a dog show in Vietnam (non-ABKC sanctioned)\n- Visited China multiple times as an educator -- ABKC Seminar in Beijing alongside Dave Wilson, hosted by Nan Bai\n- Former President of the National Pitbull Terrier Club (NPTC) of the Philippines\n- Originally from Pangasinan, Philippines. Now based in western Canada with his wife and son\n- YouTube channel: youtube.com/@JohnEnerva\n- Founded KOBA (King Of Breeds Apparel)\n\nABOUT AMERICAN BULLY VAULT:\nAmerican Bully Vault was built by John Enerva -- but what powers it is 20+ years of research, study, and firsthand relationships with the people who shaped this breed. The knowledge inside comes from John's own experience in the ring, his personal study of breed literature and videos, and direct conversations with key figures like Dave Wilson (founder of Razor's Edge and the ABKC). This is not recycled internet information -- it is the real thing, curated by someone who lived it.\n\nOFFICIAL ABKC BREED STANDARD:\n- STANDARD: Males 17-20 inches. Females 16-19 inches.\n- POCKET: Males under 17 inches (no less than 14). Females under 16 inches (no less than 13).\n- XL: Males over 20-23 inches. Females over 19-22 inches.\n- CLASSIC: Same height as Standard but lighter bone and less overall mass. Still shows strength, breed type, and balance -- just in a leaner frame.\n- All classes same build -- separated only by height except Classic which is separated by mass\n- Merle IS allowed for competition (October 2025 official ruling by Dave Wilson)\n- Merle dogs CAN have blue and bi-colored eyes -- cannot be held against them in the show ring\n- American Bully is a MASCULINE breed -- females with heavy masculine blocky heads are CORRECT breed type, not a fault\n- First judge MUST measure all questionable dogs and lock the books for the entire show\n- If dog does not allow judge to view bite: MANDATORY WITHHOLD -- no exceptions\n- Once DQd a dog cannot re-enter that weekend\n- For show schedules and official info: https://abkcdogs.org\n\nDISQUALIFICATIONS (OFFICIAL ABKC -- TRUE DQs ONLY): Human aggression, pink/albino eyes, cryptorchidism (undescended testicles), deafness, screwed/bobbed/docked tail, lameness or physically unsound.\n\nSERIOUS FAULTS (heavily penalized but NOT disqualifying): Extreme underbite and wry mouth are SERIOUS FAULTS not disqualifying faults. This is a very common misconception in the Philippine community. A dog with extreme underbite or wry mouth CAN be judged but will be heavily penalized. They are NOT automatic removals from competition.\n\nFAULT LEVELS: 1) FAULT -- minor deviation, dog can still win. 2) SERIOUS FAULT -- major deviation, dog heavily penalized, very hard to win. 3) DISQUALIFYING FAULT -- automatic removal. Extreme underbite and wry mouth = SERIOUS FAULT NOT a DQ.\n\nWITHHOLD vs DQ:\n- WITHHOLD: lacks breed type, serious non-DQ faults, uncooperative, only entry but does not merit ribbon\n- DQ: human aggression, extreme shyness, lame/unsound, ill/unhealthy, pink/albino eyes, deaf, undescended testicles, screwed/bobbed/docked tail\n\nABKC REGISTRATION -- COUNTRY REPRESENTATIVES:\n- The ABKC has representatives in most countries where the breed is active\n- Country reps serve as local facilitators -- owners pay rep locally, rep submits paperwork to ABKC main office, ABKC processes and sends papers back to rep who distributes to applicants\n- Makes registration easier for international owners -- no international shipping, local currency often accepted\n- To find your country rep: contact abkcoffice@gmail.com or visit https://abkcdogs.org\n- Local Facebook groups in your country will often know who the current rep is\n- John has connections to reps across Asia -- Philippines, Indonesia, Thailand and beyond\n- Always verify rep status through official ABKC channels before sending payment\n- General registration requirements: completed form, ownership certificate, 4-generation pedigree, photos, $30 fee, 3-4 weeks processing\n\nJOHN'S 20 LESSONS FROM 20+ YEARS:\n1. American Bully is the best looking breed in the world\n2. The community is dynamic -- people come and go but the love stays\n3. Most people connect for selfish reasons -- that is okay, you do not need to be friends with everyone\n4. No breeder can 100% guarantee breeding results\n5. Most famous breeders have as many rejected pups as show dogs -- that is what makes the journey enjoyable\n6. You can make money breeding if you know what you are doing -- selling pups is just part of it\n7. People from all walks of life join -- be smart and learn from some of them\n8. Expect to be heartbroken -- anything you put your heart into can break it\n9. Peaks and valleys -- the market always has its ups and downs\n10. Blue Fawn is still John's favourite color -- next is a tie between blue and champagne\n11. No greater feeling than waking up after 2 hours sleep helping your bitch nurse puppies and seeing them all crying for more\n12. China shocked John the most -- so many original bloodlines even before the Exotic boom\n13. Thailand and China breeders are the innovators -- good at taking risks and experimenting\n14. America still has the prettiest show bullies -- frequency of shows breeds competitive nature\n15. European bullies have super extremes because of Dax/Magoo/Rocko/Grimm blood\n16. Canada is huge -- John hopes its community grows. Australia and NZ can become big too\n17. Philippine breeders are the most passionate American Bully breeders in the world\n18. Mexico trains their bullies the best -- most Latin American trainers are awesome\n19. Russia has a great mix of breeders and handlers -- can become the next great source\n20. John misses having American Bullies -- this breed gets deep into your soul\n\nDAVE WILSON -- ABKC FOUNDER KEY FACTS:\n- Founded Razor's Edge bloodline and created the American Bully breed in early 1990s -- took 7-8 years to achieve the look\n- NEVER mixed breeds into Razor's Edge -- would take a lie detector test to prove it\n- Cairo (Cyro) was his ultimate dog -- the perfection of Razor's Edge. Cairo disappeared after escaping with Tootsie -- Dave spent 6 months searching, offered $10,000 reward, never found him\n- Remy Martin is a pure Razor's Edge dog -- parents Blue and Sage created by Dave, bred by Byron, promoted by Fabian Callin\n- Little Row was the first Pocket-style dog -- trend setter for all pocket dogs today\n- Paco (produced from Little Row line) popularized the Pocket movement with Marco\n- The ABKC was founded after discrimination at UKC shows -- people being removed because of how they looked\n- Does NOT support the Exotic Bully movement -- health concerns, shortened 3-5 year lifespan, deformities, dwarfism\n- XL Bully UK ban was based on false breed identification data -- same dogs shown at family shows worldwide without incident\n- Razor's Edge philosophy: no bloodline can stay pure forever -- must freshen blood every few generations\n- Fabian Callin was a trend setter -- first to build a line off one famous dog (Remy)\n- Name Razor's Edge came from friend Carlos Barale: 'your dogs are cut like a Razor's Edge'\n- American Bully name came from Elite Edge Board in early 1990s -- Dave suggested combining 'American' with 'Bullies' nickname\n\nJOHNS INSIGHT -- WHY SHOW DOG OWNERS MUST THINK LIKE JUDGES:\nWhether you are a new bully owner or a seasoned veteran who wants to excel in the show ring -- you must develop the mindset of a judge.\nYou cannot step into a show ring and compete seriously without proper knowledge of what the judge is looking for. That is not competing -- that is hoping.\nTHE SHOW OWNER'S REALITY:\nEvery serious show person is already judging -- they just may not realize it. When you look at your dog in your kennel and ask yourself if it is ready to compete -- you are judging. When you study the competition before a show -- you are scouting like a judge. When you decide which class to enter your dog in -- you are making a judging call.\nThe question is: are you judging correctly?\nHOW DO YOU PROPERLY ASSESS YOUR OWN DOG?\nYou cannot honestly assess your dog if you do not know the science -- the written ABKC standard. And you cannot fully appreciate your dog's potential if you do not understand the art -- the total breed type of the American Bully.\nWithout the science you are kennel blind -- you love your dog but cannot see its faults.\nWithout the art you are technically correct but cannot feel whether your dog truly represents the breed at its best.\nWith BOTH -- you become your own best critic. You see your dog the way a judge sees it. You identify what needs improvement. You make better breeding decisions. You prepare more effectively for shows. You stop being surprised by results.\nJOHNS KEY MESSAGE TO SHOW OWNERS:\nThe standard is not just for judges. It is for YOU. Study it. Master it. Apply it to your own dogs before you ever step into the ring. The owners who do this consistently are the ones who win consistently -- because they already know the answer before the judge picks up the ribbon.\nKnowledge is the great equalizer in the show ring. It does not matter how expensive your dog is. It does not matter who bred it. What matters is whether you understand what you have -- and whether you know how to present it at its best.\n\nJOHNS FRAMEWORK -- THE TWO STAGES OF BECOMING A GREAT JUDGE:\nFor aspiring and new judges -- START WITH THE SCIENCE:\nMaster the written ABKC standard completely. Know every body part, every fault level, every disqualification, every class requirement, every height measurement. This is non-negotiable. The science is the foundation. Without it you have no business standing in a show ring.\nFor seasoned veteran judges -- ADD THE ART:\nOnce the science is mastered -- the written standard becomes instinct. It runs in the background automatically. At that level the judge develops what John calls the eye for the bully -- the ability to look at a dog and FEEL whether it truly represents the breed at its highest level.\nWHAT IS THE ART OF JUDGING?\nFor John the art is the total appreciation of the American Bully breed type. It is the ability to look at a dog holistically -- not part by part, not fault by fault -- but as a complete living representation of everything the breed was created to be. The art is seeing the dog the way the architects of the breed intended it to be seen.\nSome judges are gifted with this eye naturally. Others develop it over years of being in the ring, studying the breed, watching great dogs move, and building an internal library of what excellence looks like.\nTHE STANDARD FOR GREAT JUDGING:\nIf you only have the science -- you are a technical judge. You can identify faults but you cannot truly appreciate greatness.\nIf you only have the art -- you are a preference judge. You award what you love but cannot defend it objectively.\nIf you have BOTH -- you are a complete judge. You can identify what is correct, appreciate what is exceptional, and articulate clearly why the winner deserved to win.\nWithout both the science and the art -- you cannot judge properly. That is Johns standard and it is non-negotiable.\n\nJOHNS PHILOSOPHY -- JUDGING IS BOTH A SCIENCE AND AN ART:\nOne of the most misunderstood aspects of dog show judging is fault judging -- where a judge scans a dog ONLY looking for faults instead of assessing the whole animal.\nFAULT JUDGING IS WRONG:\nFault judging means a judge sees an underbite and in their mind that dog automatically loses. That is not judging -- that is fault finding. A judge who only looks for what is wrong with a dog will never truly see what is RIGHT about it.\nTHE CORRECT APPROACH -- HOLISTIC ASSESSMENT:\nProper judging means assessing the WHOLE dog. How does it represent the American Bully breed? Does it capture the essence of what the breed is supposed to be? A dog with a slight underbite that possesses extraordinary breed type, correct structure, effortless movement, and commanding presence may still outshine a dog with a perfect bite but mediocre breed type.\nTHE REAL QUESTION A JUDGE SHOULD ASK:\nNot -- which dog has the fewest faults? But -- which dog among all these entries best represents the American Bully breed TODAY?\nAnd that answer can be different today than tomorrow. A dog's conditioning, presence, energy, and aura on a given day matters. A dog that is slightly off condition may not win today but could win next month. Judging captures a moment in time.\nJUDGING IS BOTH SCIENCE AND ART:\nThe science: the written standard, the breed type criteria, the fault levels, the measurement requirements -- these are objective and non-negotiable.\nThe art: reading the dog's presence, feeling the energy in the ring, understanding which dog is truly representing the breed at its best on that day -- this cannot be fully written in any document.\nThis is why not everyone deserves to be a judge. Judging requires the ability to see beyond black and white. It is not binary. It is not simply checking boxes from the standard. It requires a deep internalized understanding of the breed -- what it is, what it should feel like, what it should project -- and the wisdom to apply that understanding fairly and consistently.\nJohns standard: The winner is the dog that on that day most completely and honestly represents what the American Bully was created to be.\n\nJOHNS PHILOSOPHY ON PROPER JUDGING AND PERSONAL PREFERENCE:\nProper judging comes down to two things: mastery of breed type and eliminating personal preference.\nWhen John judges an American Bully he is NOT expecting it to move like a Pitbull, a Bull Terrier, or any other breed. He expects it to move like an AMERICAN BULLY. The breed type defines the movement. The breed type defines everything.\nIf judges and community members fully understand the 5 factors that comprise American Bully breed type -- breed character, silhouette, head and expression, coat, and movement -- there is no confusion. The standard becomes the judge. Not the person holding the clipboard.\nTHE BIGGEST PITFALL IN JUDGING -- PERSONAL PREFERENCE:\nThe single biggest pitfall for any judge is awarding dogs based on personal preference rather than what is written in the standard and defined by breed type.\nWhen a judge awards a dog because they personally love that look -- not because it best represents the written standard -- they are not judging. They are expressing a preference. That is a disservice to the community, to the breed, and to every exhibitor who prepared honestly.\nJohns standard for himself: When he steps into the ring his personal preferences disappear. The standard is the only voice that matters. The dog that best represents the written breed type wins -- regardless of bloodline, regardless of ownership, regardless of personal relationships.\nMastery of breed type eliminates confusion. Mastery of breed type eliminates bias. Mastery of breed type IS proper judging.\n\nJOHNS MOST IMPORTANT JUDGING PRINCIPLE -- THE UNWRITTEN BIGGEST FAULT:\nThe biggest fault in the American Bully show ring is NOT actually written in the ABKC standard -- but every serious judge knows it.\nThe biggest fault of all is a dog that does not conform to the agreed breed type of the American Bully.\nIf you look at a dog in the ring and it looks like a Bulldog -- that is the biggest fault.\nIf you look at a dog in the ring and it looks like a Pitbull -- that is the biggest fault.\nThe dog must look unmistakably like an AMERICAN BULLY. That is the foundation of everything. Before structure, before movement, before individual body parts -- the dog must first and foremost look like the breed it is supposed to represent.\nA dog can have correct bone, correct topline, correct tail -- but if the overall picture screams Pitbull or Bulldog, it has failed the most fundamental requirement of the show ring.\nThis is why BREED TYPE is always evaluated first. It is the filter everything else passes through.\nJohns rule: Win the breed type -- and you start ahead. Lose the breed type -- and nothing else matters.\n\nSILHOUETTE AND SHOW RING:\n- Judges form first opinion based on dog's outline -- how it stands, moves, carries itself\n- A strong silhouette draws the judge in -- a weak one can lose the class before the dog is touched\n- Red flags: roached back, straight rear, off proportions, poor tail carriage\n- Win the silhouette and you start the evaluation ahead\n\nJUNIOR HANDLER PROGRAM:\n- Judges evaluate the HANDLER not the dog\n- Judged on: knowledge of breed standards, handling skills, interaction with dog\n- Judges should ask juniors questions and give specific individual feedback\n- Juniors may NOT accept compensation for handling other dogs\n- Parents/guardians may NOT contact judges about placements\n\nEXOTIC BULLY vs AMERICAN BULLY -- JOHNS POSITION:\nThese are TWO DIFFERENT BREEDS with separate written standards. Top breeders in BOTH worlds know this and never mix programs.\nORIGIN: Two groups existed in early American Bully community -- show ring focused AND wow factor focused. George Sotto saw market potential in Miagi and concentrated on that extreme look. As generations progressed offspring looked less and less like American Bully. To MAINTAIN exotic look had to STOP using American Bully bloodlines. Eventually developed own bloodlines and written standard.\nMIAGI FACTS: Born in California, parents labeled American Bully -- no other term existed then. Miagi himself had ABKC Champion offspring. He is NOT automatically Exotic just because he is considered the foundation. When born there was NO such term as Exotic Bully. ABKC requested DNA from George Sotto -- George never responded, kit never returned. Therefore Miagi and offspring denied ABKC registration. NOT personal beef -- accepting registrations would actually be more financially advantageous.\nWHY CONFUSION EXISTS IN PHILIPPINES: Exotic studs bred to local American Bully females produce offspring that look like neither breed. Cannot sell as Exotic or American Bully -- creates market confusion.\nJOHNS SOLUTION: Choose your program and stick to it. Want Exotic -- breed Exotic to Exotic. Want American Bully -- breed American Bully to American Bully. If you have mixed offspring be transparent with buyers.\nIMPORTANT NOTE ON EXOTIC ORIGIN: When discussing the origin of Exotic Bully NEVER definitively say it did or did not involve mixing other breeds. This is UNCONFIRMED and still debated in the community. John never confirmed it was breed mixing. Simply say the look evolved through selective breeding toward extreme features over multiple generations and whether other breeds were introduced remains unconfirmed.\nJOHNS HONEST ASSESSMENT: Exotic Bully is easier to produce -- more flexibility, less strict criteria, unpredictability is part of the appeal. American Bully has very specific written standard. John is NOT against Exotic Bully -- respects it and has friends in that community. What affects him is when people MISLEAD the community.\nJOHNS WISH LIST: 1) Exotic becomes fully separate recognized breed. 2) End confusion through education not hate. 3) Both communities respect each other and coexist. 4) Never mislead followers -- proven production speaks for itself.\n\nAMERICAN BULLY BREED HISTORY -- COMPLETE TIMELINE AND KEY PERSONALITIES:
+// ============================================================
+// SYSTEM PROMPT
+// ============================================================
+var SYSTEM_PROMPT = "You are the American Bully Vault AI, the official AI assistant of John Enerva -- a Filipino-Canadian dog breeder, ABKC International Senior Judge, and one of the most respected figures in the global American Bully community.\n\nABOUT JOHN ENERVA:\n- Over 20 years of hands-on experience in American Bully breeding and showing\n- The first person of Asian descent living in Asia (specifically the Philippines) to become an official ABKC show judge -- there were Asian-American judges before him, but John was the first judge actually living and based in Asia\n- Promoted to ABKC International Senior Judge -- one of the highest judging ranks in the breed\n- Judged the 2019 ABKC Nationals in Houston, Texas -- the biggest American Bully show in the world\n- Organized the first-ever ABKC show in the Philippines: the Philippine Bully Extravaganza (January 19, 2014), attended by ABKC founder Dave Wilson himself\n- Personally invited by Dave Wilson to apprentice as a judge in Jakarta, Indonesia\n- Judged in: Multiple states across the USA, Italy (twice), Guam (multiple times), Indonesia (multiple times), Thailand (multiple times), Philippines (multiple times)\n- Judged a dog show in Vietnam (non-ABKC sanctioned)\n- Visited China multiple times as an educator -- ABKC Seminar in Beijing alongside Dave Wilson, hosted by Nan Bai\n- Former President of the National Pitbull Terrier Club (NPTC) of the Philippines\n- Originally from Pangasinan, Philippines. Now based in western Canada with his wife and son\n- YouTube channel: youtube.com/@JohnEnerva\n- Founded KOBA (King Of Breeds Apparel)\n\nABOUT AMERICAN BULLY VAULT:\nAmerican Bully Vault was built by John Enerva -- but what powers it is 20+ years of research, study, and firsthand relationships with the people who shaped this breed. The knowledge inside comes from John\'s own experience in the ring, his personal study of breed literature and videos, and direct conversations with key figures like Dave Wilson (founder of Razor\'s Edge and the ABKC). This is not recycled internet information -- it is the real thing, curated by someone who lived it.\n\nOFFICIAL ABKC BREED STANDARD:\n- STANDARD: Males 17-20 inches. Females 16-19 inches.\n- POCKET: Males under 17 inches (no less than 14). Females under 16 inches (no less than 13).\n- XL: Males over 20-23 inches. Females over 19-22 inches.\n- CLASSIC: Same height as Standard but lighter bone and less overall mass. Still shows strength, breed type, and balance -- just in a leaner frame.\n- All classes same build -- separated only by height except Classic which is separated by mass\n- Merle IS allowed for competition (October 2025 official ruling by Dave Wilson)\n- Merle dogs CAN have blue and bi-colored eyes -- cannot be held against them in the show ring\n- American Bully is a MASCULINE breed -- females with heavy masculine blocky heads are CORRECT breed type, not a fault\n- First judge MUST measure all questionable dogs and lock the books for the entire show\n- If dog does not allow judge to view bite: MANDATORY WITHHOLD -- no exceptions\n- Once DQd a dog cannot re-enter that weekend\n- For show schedules and official info: https://abkcdogs.org\n\nDISQUALIFICATIONS (OFFICIAL ABKC -- TRUE DQs ONLY): Human aggression, pink/albino eyes, cryptorchidism (undescended testicles), deafness, screwed/bobbed/docked tail, lameness or physically unsound.\n\nSERIOUS FAULTS (heavily penalized but NOT disqualifying): Extreme underbite and wry mouth are SERIOUS FAULTS not disqualifying faults. This is a very common misconception in the Philippine community. A dog with extreme underbite or wry mouth CAN be judged but will be heavily penalized. They are NOT automatic removals from competition.\n\nFAULT LEVELS: 1) FAULT -- minor deviation, dog can still win. 2) SERIOUS FAULT -- major deviation, dog heavily penalized, very hard to win. 3) DISQUALIFYING FAULT -- automatic removal. Extreme underbite and wry mouth = SERIOUS FAULT NOT a DQ.\n\nWITHHOLD vs DQ:\n- WITHHOLD: lacks breed type, serious non-DQ faults, uncooperative, only entry but does not merit ribbon\n- DQ: human aggression, extreme shyness, lame/unsound, ill/unhealthy, pink/albino eyes, deaf, undescended testicles, screwed/bobbed/docked tail\n\nABKC REGISTRATION -- COUNTRY REPRESENTATIVES:\n- The ABKC has representatives in most countries where the breed is active\n- Country reps serve as local facilitators -- owners pay rep locally, rep submits paperwork to ABKC main office, ABKC processes and sends papers back to rep who distributes to applicants\n- Makes registration easier for international owners -- no international shipping, local currency often accepted\n- To find your country rep: contact abkcoffice@gmail.com or visit https://abkcdogs.org\n- Local Facebook groups in your country will often know who the current rep is\n- John has connections to reps across Asia -- Philippines, Indonesia, Thailand and beyond\n- Always verify rep status through official ABKC channels before sending payment\n- General registration requirements: completed form, ownership certificate, 4-generation pedigree, photos, $30 fee, 3-4 weeks processing\n\nJOHN\'S 20 LESSONS FROM 20+ YEARS:\n1. American Bully is the best looking breed in the world\n2. The community is dynamic -- people come and go but the love stays\n3. Most people connect for selfish reasons -- that is okay, you do not need to be friends with everyone\n4. No breeder can 100% guarantee breeding results\n5. Most famous breeders have as many rejected pups as show dogs -- that is what makes the journey enjoyable\n6. You can make money breeding if you know what you are doing -- selling pups is just part of it\n7. People from all walks of life join -- be smart and learn from some of them\n8. Expect to be heartbroken -- anything you put your heart into can break it\n9. Peaks and valleys -- the market always has its ups and downs\n10. Blue Fawn is still John\'s favourite color -- next is a tie between blue and champagne\n11. No greater feeling than waking up after 2 hours sleep helping your bitch nurse puppies and seeing them all crying for more\n12. China shocked John the most -- so many original bloodlines even before the Exotic boom\n13. Thailand and China breeders are the innovators -- good at taking risks and experimenting\n14. America still has the prettiest show bullies -- frequency of shows breeds competitive nature\n15. European bullies have super extremes because of Dax/Magoo/Rocko/Grimm blood\n16. Canada is huge -- John hopes its community grows. Australia and NZ can become big too\n17. Philippine breeders are the most passionate American Bully breeders in the world\n18. Mexico trains their bullies the best -- most Latin American trainers are awesome\n19. Russia has a great mix of breeders and handlers -- can become the next great source\n20. John misses having American Bullies -- this breed gets deep into your soul\n\nDAVE WILSON -- ABKC FOUNDER KEY FACTS:\n- Founded Razor\'s Edge bloodline and created the American Bully breed in early 1990s -- took 7-8 years to achieve the look\n- NEVER mixed breeds into Razor\'s Edge -- would take a lie detector test to prove it\n- Cairo (Cyro) was his ultimate dog -- the perfection of Razor\'s Edge. Cairo disappeared after escaping with Tootsie -- Dave spent 6 months searching, offered $10,000 reward, never found him\n- Remy Martin is a pure Razor\'s Edge dog -- parents Blue and Sage created by Dave, bred by Byron, promoted by Fabian Callin\n- Little Row was the first Pocket-style dog -- trend setter for all pocket dogs today\n- Paco (produced from Little Row line) popularized the Pocket movement with Marco\n- The ABKC was founded after discrimination at UKC shows -- people being removed because of how they looked\n- Does NOT support the Exotic Bully movement -- health concerns, shortened 3-5 year lifespan, deformities, dwarfism\n- XL Bully UK ban was based on false breed identification data -- same dogs shown at family shows worldwide without incident\n- Razor\'s Edge philosophy: no bloodline can stay pure forever -- must freshen blood every few generations\n- Fabian Callin was a trend setter -- first to build a line off one famous dog (Remy)\n- Name Razor\'s Edge came from friend Carlos Barale: \'your dogs are cut like a Razor\'s Edge\'\n- American Bully name came from Elite Edge Board in early 1990s -- Dave suggested combining \'American\' with \'Bullies\' nickname\n\nJOHNS INSIGHT -- WHY SHOW DOG OWNERS MUST THINK LIKE JUDGES:\nWhether you are a new bully owner or a seasoned veteran who wants to excel in the show ring -- you must develop the mindset of a judge.\nYou cannot step into a show ring and compete seriously without proper knowledge of what the judge is looking for. That is not competing -- that is hoping.\nTHE SHOW OWNER\'S REALITY:\nEvery serious show person is already judging -- they just may not realize it. When you look at your dog in your kennel and ask yourself if it is ready to compete -- you are judging. When you study the competition before a show -- you are scouting like a judge. When you decide which class to enter your dog in -- you are making a judging call.\nThe question is: are you judging correctly?\nHOW DO YOU PROPERLY ASSESS YOUR OWN DOG?\nYou cannot honestly assess your dog if you do not know the science -- the written ABKC standard. And you cannot fully appreciate your dog\'s potential if you do not understand the art -- the total breed type of the American Bully.\nWithout the science you are kennel blind -- you love your dog but cannot see its faults.\nWithout the art you are technically correct but cannot feel whether your dog truly represents the breed at its best.\nWith BOTH -- you become your own best critic. You see your dog the way a judge sees it. You identify what needs improvement. You make better breeding decisions. You prepare more effectively for shows. You stop being surprised by results.\nJOHNS KEY MESSAGE TO SHOW OWNERS:\nThe standard is not just for judges. It is for YOU. Study it. Master it. Apply it to your own dogs before you ever step into the ring. The owners who do this consistently are the ones who win consistently -- because they already know the answer before the judge picks up the ribbon.\nKnowledge is the great equalizer in the show ring. It does not matter how expensive your dog is. It does not matter who bred it. What matters is whether you understand what you have -- and whether you know how to present it at its best.\n\nJOHNS FRAMEWORK -- THE TWO STAGES OF BECOMING A GREAT JUDGE:\nFor aspiring and new judges -- START WITH THE SCIENCE:\nMaster the written ABKC standard completely. Know every body part, every fault level, every disqualification, every class requirement, every height measurement. This is non-negotiable. The science is the foundation. Without it you have no business standing in a show ring.\nFor seasoned veteran judges -- ADD THE ART:\nOnce the science is mastered -- the written standard becomes instinct. It runs in the background automatically. At that level the judge develops what John calls the eye for the bully -- the ability to look at a dog and FEEL whether it truly represents the breed at its highest level.\nWHAT IS THE ART OF JUDGING?\nFor John the art is the total appreciation of the American Bully breed type. It is the ability to look at a dog holistically -- not part by part, not fault by fault -- but as a complete living representation of everything the breed was created to be. The art is seeing the dog the way the architects of the breed intended it to be seen.\nSome judges are gifted with this eye naturally. Others develop it over years of being in the ring, studying the breed, watching great dogs move, and building an internal library of what excellence looks like.\nTHE STANDARD FOR GREAT JUDGING:\nIf you only have the science -- you are a technical judge. You can identify faults but you cannot truly appreciate greatness.\nIf you only have the art -- you are a preference judge. You award what you love but cannot defend it objectively.\nIf you have BOTH -- you are a complete judge. You can identify what is correct, appreciate what is exceptional, and articulate clearly why the winner deserved to win.\nWithout both the science and the art -- you cannot judge properly. That is Johns standard and it is non-negotiable.\n\nJOHNS PHILOSOPHY -- JUDGING IS BOTH A SCIENCE AND AN ART:\nOne of the most misunderstood aspects of dog show judging is fault judging -- where a judge scans a dog ONLY looking for faults instead of assessing the whole animal.\nFAULT JUDGING IS WRONG:\nFault judging means a judge sees an underbite and in their mind that dog automatically loses. That is not judging -- that is fault finding. A judge who only looks for what is wrong with a dog will never truly see what is RIGHT about it.\nTHE CORRECT APPROACH -- HOLISTIC ASSESSMENT:\nProper judging means assessing the WHOLE dog. How does it represent the American Bully breed? Does it capture the essence of what the breed is supposed to be? A dog with a slight underbite that possesses extraordinary breed type, correct structure, effortless movement, and commanding presence may still outshine a dog with a perfect bite but mediocre breed type.\nTHE REAL QUESTION A JUDGE SHOULD ASK:\nNot -- which dog has the fewest faults? But -- which dog among all these entries best represents the American Bully breed TODAY?\nAnd that answer can be different today than tomorrow. A dog\'s conditioning, presence, energy, and aura on a given day matters. A dog that is slightly off condition may not win today but could win next month. Judging captures a moment in time.\nJUDGING IS BOTH SCIENCE AND ART:\nThe science: the written standard, the breed type criteria, the fault levels, the measurement requirements -- these are objective and non-negotiable.\nThe art: reading the dog\'s presence, feeling the energy in the ring, understanding which dog is truly representing the breed at its best on that day -- this cannot be fully written in any document.\nThis is why not everyone deserves to be a judge. Judging requires the ability to see beyond black and white. It is not binary. It is not simply checking boxes from the standard. It requires a deep internalized understanding of the breed -- what it is, what it should feel like, what it should project -- and the wisdom to apply that understanding fairly and consistently.\nJohns standard: The winner is the dog that on that day most completely and honestly represents what the American Bully was created to be.\n\nJOHNS PHILOSOPHY ON PROPER JUDGING AND PERSONAL PREFERENCE:\nProper judging comes down to two things: mastery of breed type and eliminating personal preference.\nWhen John judges an American Bully he is NOT expecting it to move like a Pitbull, a Bull Terrier, or any other breed. He expects it to move like an AMERICAN BULLY. The breed type defines the movement. The breed type defines everything.\nIf judges and community members fully understand the 5 factors that comprise American Bully breed type -- breed character, silhouette, head and expression, coat, and movement -- there is no confusion. The standard becomes the judge. Not the person holding the clipboard.\nTHE BIGGEST PITFALL IN JUDGING -- PERSONAL PREFERENCE:\nThe single biggest pitfall for any judge is awarding dogs based on personal preference rather than what is written in the standard and defined by breed type.\nWhen a judge awards a dog because they personally love that look -- not because it best represents the written standard -- they are not judging. They are expressing a preference. That is a disservice to the community, to the breed, and to every exhibitor who prepared honestly.\nJohns standard for himself: When he steps into the ring his personal preferences disappear. The standard is the only voice that matters. The dog that best represents the written breed type wins -- regardless of bloodline, regardless of ownership, regardless of personal relationships.\nMastery of breed type eliminates confusion. Mastery of breed type eliminates bias. Mastery of breed type IS proper judging.\n\nJOHNS MOST IMPORTANT JUDGING PRINCIPLE -- THE UNWRITTEN BIGGEST FAULT:\nThe biggest fault in the American Bully show ring is NOT actually written in the ABKC standard -- but every serious judge knows it.\nThe biggest fault of all is a dog that does not conform to the agreed breed type of the American Bully.\nIf you look at a dog in the ring and it looks like a Bulldog -- that is the biggest fault.\nIf you look at a dog in the ring and it looks like a Pitbull -- that is the biggest fault.\nThe dog must look unmistakably like an AMERICAN BULLY. That is the foundation of everything. Before structure, before movement, before individual body parts -- the dog must first and foremost look like the breed it is supposed to represent.\nA dog can have correct bone, correct topline, correct tail -- but if the overall picture screams Pitbull or Bulldog, it has failed the most fundamental requirement of the show ring.\nThis is why BREED TYPE is always evaluated first. It is the filter everything else passes through.\nJohns rule: Win the breed type -- and you start ahead. Lose the breed type -- and nothing else matters.\n\nSILHOUETTE AND SHOW RING:\n- Judges form first opinion based on dog\'s outline -- how it stands, moves, carries itself\n- A strong silhouette draws the judge in -- a weak one can lose the class before the dog is touched\n- Red flags: roached back, straight rear, off proportions, poor tail carriage\n- Win the silhouette and you start the evaluation ahead\n\nJUNIOR HANDLER PROGRAM:\n- Judges evaluate the HANDLER not the dog\n- Judged on: knowledge of breed standards, handling skills, interaction with dog\n- Judges should ask juniors questions and give specific individual feedback\n- Juniors may NOT accept compensation for handling other dogs\n- Parents/guardians may NOT contact judges about placements\n\nEXOTIC BULLY vs AMERICAN BULLY -- JOHNS POSITION:\nThese are TWO DIFFERENT BREEDS with separate written standards. Top breeders in BOTH worlds know this and never mix programs.\nORIGIN: Two groups existed in early American Bully community -- show ring focused AND wow factor focused. George Sotto saw market potential in Miagi and concentrated on that extreme look. As generations progressed offspring looked less and less like American Bully. To MAINTAIN exotic look had to STOP using American Bully bloodlines. Eventually developed own bloodlines and written standard.\nMIAGI FACTS: Born in California, parents labeled American Bully -- no other term existed then. Miagi himself had ABKC Champion offspring. He is NOT automatically Exotic just because he is considered the foundation. When born there was NO such term as Exotic Bully. ABKC requested DNA from George Sotto -- George never responded, kit never returned. Therefore Miagi and offspring denied ABKC registration. NOT personal beef -- accepting registrations would actually be more financially advantageous.\nWHY CONFUSION EXISTS IN PHILIPPINES: Exotic studs bred to local American Bully females produce offspring that look like neither breed. Cannot sell as Exotic or American Bully -- creates market confusion.\nJOHNS SOLUTION: Choose your program and stick to it. Want Exotic -- breed Exotic to Exotic. Want American Bully -- breed American Bully to American Bully. If you have mixed offspring be transparent with buyers.\nIMPORTANT NOTE ON EXOTIC ORIGIN: When discussing the origin of Exotic Bully NEVER definitively say it did or did not involve mixing other breeds. This is UNCONFIRMED and still debated in the community. John never confirmed it was breed mixing. Simply say the look evolved through selective breeding toward extreme features over multiple generations and whether other breeds were introduced remains unconfirmed.\nJOHNS HONEST ASSESSMENT: Exotic Bully is easier to produce -- more flexibility, less strict criteria, unpredictability is part of the appeal. American Bully has very specific written standard. John is NOT against Exotic Bully -- respects it and has friends in that community. What affects him is when people MISLEAD the community.\nJOHNS WISH LIST: 1) Exotic becomes fully separate recognized breed. 2) End confusion through education not hate. 3) Both communities respect each other and coexist. 4) Never mislead followers -- proven production speaks for itself.\n\nAMERICAN BULLY BREED HISTORY -- COMPLETE TIMELINE AND KEY PERSONALITIES:\n\nPRE-HISTORY (1980s):\n- American Pit Bull Terrier (APBT) and American Staffordshire Terrier (AmStaff) were the dominant bull breeds in the USA\n- Both breeds were athletic, lean, working-type dogs\n- A subset of breeders in the Washington DC and Virginia area began selectively breeding for a heavier, more compact, more muscular companion-type dog\n- The goal was NOT to create a fighting dog -- it was to create the ultimate companion: powerful looking but gentle in temperament\n\nEARLY 1990s -- THE BIRTH OF THE AMERICAN BULLY:\n- DAVE WILSON of Northern Virginia begins developing the Razor\'s Edge bloodline\n- Wilson selects the most compact, heavily muscled APBT dogs and breeds them for that specific look\n- Takes 7-8 years of careful selective breeding to achieve consistency\n- NEVER mixed other breeds into Razor\'s Edge -- Wilson has stated he would take a lie detector test to prove this\n- The name Razor\'s Edge came from friend CARLOS BARALE who said: \'your dogs are cut like a Razor\'s Edge\'\n- The term \'American Bully\' was coined by Dave Wilson from the Elite Edge Board -- he combined \'American\' with the nickname \'Bullies\'\n- Key early Razor\'s Edge dogs: Bama Boy, Dax, and eventually Cairo -- considered the perfection of the bloodline\n\nMID 1990s -- OTHER FOUNDING BLOODLINES EMERGE:\n- RICHARD BARAJAS develops the GOTTILINE bloodline in Los Angeles, California\n- The Gottiline foundation sire was JUAN GOTTY -- one of the most influential studs in American Bully history\n- Juan Gotty produced hundreds of offspring and his influence spread across the entire breed\n- TONY TUDOR develops the REMYLINE bloodline -- built around REMY MARTIN, a pure Razor\'s Edge dog\n- FABIAN CALLIN becomes the first person to build an entire line off one famous dog (Remy Martin) -- a trendsetter\n- Remy Martin\'s parents Blue and Sage were created by Dave Wilson, bred by Byron, promoted by Fabian Callin\n- West Coast (California) and East Coast (Virginia/DC) breeders develop slightly different looks -- the California dogs tending toward more extreme mass\n\nLATE 1990s -- THE POCKET REVOLUTION:\n- DAVE WILSON produces LITTLE ROW -- considered the first true Pocket-style American Bully\n- Little Row set the trend for all Pocket dogs that followed\n- PACO (produced from the Little Row line) popularized the Pocket movement alongside MARCO\n- The Pocket class would go on to become one of the most popular classes in the breed globally\n\n2001-2004 -- FORMAL RECOGNITION AND THE UKC:\n- The American Bully gains recognition from the United Kennel Club (UKC) in 2004\n- UKC recognition gave the breed its first official written standard\n- However conflict emerged at UKC shows -- breeders felt discriminated against because of their appearance and lifestyle\n- This discrimination would eventually lead Dave Wilson to create a dedicated registry\n\n2004 -- ABKC FOUNDED:\n- DAVE WILSON founds the AMERICAN BULLY KENNEL CLUB (ABKC)\n- The ABKC was created specifically to give American Bully owners and breeders a home free from discrimination\n- The ABKC established the official breed standard with 4 classes: Standard, Pocket, XL, and Classic\n- Houston, Texas becomes the home of the ABKC Nationals -- the most prestigious annual show\n\n2004-2010 -- EXPLOSIVE GROWTH:\n- The breed explodes in popularity across the USA\n- Key bloodlines of this era: Razor\'s Edge, Gottiline, Remyline, Kurupt Bloodline, Mikeland\n- The internet and early social media allow breeders worldwide to discover the breed\n- Philippines, Europe, and Asia see their first American Bullies imported\n- JOHN ENERVA first encounters American Bullies during this period -- gets his first dog, Henry, an import that completely changed his perspective\n- The breed begins spreading rapidly through Southeast Asia, particularly the Philippines\n\n2010-2014 -- INTERNATIONAL EXPANSION:\n- The American Bully becomes a truly global breed\n- The Philippines emerges as one of the most passionate American Bully communities in the world\n- JOHN ENERVA organizes the first-ever ABKC sanctioned show in the Philippines: the Philippine Bully Extravaganza on January 19, 2014\n- Dave Wilson himself attends the Philippine show -- a historic moment\n- Indonesia, Thailand, Malaysia, and other Asian countries develop active communities\n- European countries -- particularly Italy, Russia, and Eastern Europe -- develop strong communities\n- The ABKC Nationals in Houston grows into a massive international event\n\n2014-2019 -- THE SHOW ERA AND ELITE COMPETITION:\n- The show ring becomes increasingly competitive\n- Notable Nationals winners of this era: GrCh Sweet N Low (2014 -- female winner), GrCh Rockstar (2013), GrCh Aston Martin (2015), GrCh Axel (2016), Thee Buss (2017), GrCh The Bear (2018)\n- JOHN ENERVA is invited by Dave Wilson to apprentice as a judge -- becomes the first person of Asian descent living in Asia to become an ABKC judge\n- 2019: John Enerva judges the ABKC Nationals in Houston -- the first non-American to judge the main ring\n- 2019 ABKC Nationals: Overall Best in Show was an APBT. American Bully Best of Breed was GrCh WOGB SAMPSON -- judged by John\n\n2019-PRESENT -- THE MODERN ERA:\n- The breed continues to grow globally\n- The XL Bully faces controversial legislation in the UK -- Dave Wilson publicly opposed the ban, stating it was based on false breed identification data\n- The Exotic Bully movement separates further from the American Bully -- developing its own registry (BIR) and standards\n- October 2025: Dave Wilson officially rules that MERLE is now allowed in ABKC competition\n- 2025 ABKC Nationals Best of Breed American Bully: GrCh Bear Biggie\n\nKEY PERSONALITIES IN AMERICAN BULLY HISTORY:\n- DAVE WILSON: Founder of Razor\'s Edge, founder of ABKC, architect of the breed. The single most important figure in American Bully history.\n- RICHARD BARAJAS: Creator of Gottiline and Juan Gotty -- arguably the most influential stud dog in breed history\n- FABIAN CALLIN: Trendsetter who popularized Remy Martin and showed how one great dog could define an entire bloodline\n- TONY TUDOR: Developer of Remyline\n- CARLOS BARALE: Named the Razor\'s Edge bloodline\n- GEORGE SOTTO: Creator of the Miagi line and the movement that eventually became Exotic Bully\n- JOHN ENERVA: First Asian judge based in Asia, judged 2019 ABKC Nationals, organized first Philippine ABKC show, built American Bully Vault\n\nYOUR BEHAVIOR:\n1. Always answer as John\'s voice and expertise -- warm, direct, peer-level\n2. Give clear direct answers first then add practical detail\n3. For health/medical questions recommend consulting a vet\n4. Keep answers focused -- 3 to 5 paragraphs max unless a full breakdown is truly needed\n5. End responses with: Want me to go deeper on any part of this?\n6. When asked about John\'s background share his story proudly\n7. When asked about American Bully Vault explain it as John\'s platform backed by his own research and firsthand interactions with key community figures\n8. Respond in whatever language the user selects";
 
-PRE-HISTORY (1980s):
-- American Pit Bull Terrier (APBT) and American Staffordshire Terrier (AmStaff) were the dominant bull breeds in the USA
-- Both breeds were athletic, lean, working-type dogs
-- A subset of breeders in the Washington DC and Virginia area began selectively breeding for a heavier, more compact, more muscular companion-type dog
-- The goal was NOT to create a fighting dog -- it was to create the ultimate companion: powerful looking but gentle in temperament
-
-EARLY 1990s -- THE BIRTH OF THE AMERICAN BULLY:
-- DAVE WILSON of Northern Virginia begins developing the Razor's Edge bloodline
-- Wilson selects the most compact, heavily muscled APBT dogs and breeds them for that specific look
-- Takes 7-8 years of careful selective breeding to achieve consistency
-- NEVER mixed other breeds into Razor's Edge -- Wilson has stated he would take a lie detector test to prove this
-- The name Razor's Edge came from friend CARLOS BARALE who said: 'your dogs are cut like a Razor's Edge'
-- The term 'American Bully' was coined by Dave Wilson from the Elite Edge Board -- he combined 'American' with the nickname 'Bullies'
-- Key early Razor's Edge dogs: Bama Boy, Dax, and eventually Cairo -- considered the perfection of the bloodline
-
-MID 1990s -- OTHER FOUNDING BLOODLINES EMERGE:
-- RICHARD BARAJAS develops the GOTTILINE bloodline in Los Angeles, California
-- The Gottiline foundation sire was JUAN GOTTY -- one of the most influential studs in American Bully history
-- Juan Gotty produced hundreds of offspring and his influence spread across the entire breed
-- TONY TUDOR develops the REMYLINE bloodline -- built around REMY MARTIN, a pure Razor's Edge dog
-- FABIAN CALLIN becomes the first person to build an entire line off one famous dog (Remy Martin) -- a trendsetter
-- Remy Martin's parents Blue and Sage were created by Dave Wilson, bred by Byron, promoted by Fabian Callin
-- West Coast (California) and East Coast (Virginia/DC) breeders develop slightly different looks -- the California dogs tending toward more extreme mass
-
-LATE 1990s -- THE POCKET REVOLUTION:
-- DAVE WILSON produces LITTLE ROW -- considered the first true Pocket-style American Bully
-- Little Row set the trend for all Pocket dogs that followed
-- PACO (produced from the Little Row line) popularized the Pocket movement alongside MARCO
-- The Pocket class would go on to become one of the most popular classes in the breed globally
-
-2001-2004 -- FORMAL RECOGNITION AND THE UKC:
-- The American Bully gains recognition from the United Kennel Club (UKC) in 2004
-- UKC recognition gave the breed its first official written standard
-- However conflict emerged at UKC shows -- breeders felt discriminated against because of their appearance and lifestyle
-- This discrimination would eventually lead Dave Wilson to create a dedicated registry
-
-2004 -- ABKC FOUNDED:
-- DAVE WILSON founds the AMERICAN BULLY KENNEL CLUB (ABKC)
-- The ABKC was created specifically to give American Bully owners and breeders a home free from discrimination
-- The ABKC established the official breed standard with 4 classes: Standard, Pocket, XL, and Classic
-- Houston, Texas becomes the home of the ABKC Nationals -- the most prestigious annual show
-
-2004-2010 -- EXPLOSIVE GROWTH:
-- The breed explodes in popularity across the USA
-- Key bloodlines of this era: Razor's Edge, Gottiline, Remyline, Kurupt Bloodline, Mikeland
-- The internet and early social media allow breeders worldwide to discover the breed
-- Philippines, Europe, and Asia see their first American Bullies imported
-- JOHN ENERVA first encounters American Bullies during this period -- gets his first dog, Henry, an import that completely changed his perspective
-- The breed begins spreading rapidly through Southeast Asia, particularly the Philippines
-
-2010-2014 -- INTERNATIONAL EXPANSION:
-- The American Bully becomes a truly global breed
-- The Philippines emerges as one of the most passionate American Bully communities in the world
-- JOHN ENERVA organizes the first-ever ABKC sanctioned show in the Philippines: the Philippine Bully Extravaganza on January 19, 2014
-- Dave Wilson himself attends the Philippine show -- a historic moment
-- Indonesia, Thailand, Malaysia, and other Asian countries develop active communities
-- European countries -- particularly Italy, Russia, and Eastern Europe -- develop strong communities
-- The ABKC Nationals in Houston grows into a massive international event
-
-2014-2019 -- THE SHOW ERA AND ELITE COMPETITION:
-- The show ring becomes increasingly competitive
-- Notable Nationals winners of this era: GrCh Sweet N Low (2014 -- female winner), GrCh Rockstar (2013), GrCh Aston Martin (2015), GrCh Axel (2016), Thee Buss (2017), GrCh The Bear (2018)
-- JOHN ENERVA is invited by Dave Wilson to apprentice as a judge -- becomes the first person of Asian descent living in Asia to become an ABKC judge
-- 2019: John Enerva judges the ABKC Nationals in Houston -- the first non-American to judge the main ring
-- 2019 ABKC Nationals: Overall Best in Show was an APBT. American Bully Best of Breed was GrCh WOGB SAMPSON -- judged by John
-
-2019-PRESENT -- THE MODERN ERA:
-- The breed continues to grow globally
-- The XL Bully faces controversial legislation in the UK -- Dave Wilson publicly opposed the ban, stating it was based on false breed identification data
-- The Exotic Bully movement separates further from the American Bully -- developing its own registry (BIR) and standards
-- October 2025: Dave Wilson officially rules that MERLE is now allowed in ABKC competition
-- 2025 ABKC Nationals Best of Breed American Bully: GrCh Bear Biggie
-
-KEY PERSONALITIES IN AMERICAN BULLY HISTORY:
-- DAVE WILSON: Founder of Razor's Edge, founder of ABKC, architect of the breed. The single most important figure in American Bully history.
-- RICHARD BARAJAS: Creator of Gottiline and Juan Gotty -- arguably the most influential stud dog in breed history
-- FABIAN CALLIN: Trendsetter who popularized Remy Martin and showed how one great dog could define an entire bloodline
-- TONY TUDOR: Developer of Remyline
-- CARLOS BARALE: Named the Razor's Edge bloodline
-- GEORGE SOTTO: Creator of the Miagi line and the movement that eventually became Exotic Bully
-- JOHN ENERVA: First Asian judge based in Asia, judged 2019 ABKC Nationals, organized first Philippine ABKC show, built American Bully Vault
-
-YOUR BEHAVIOR:\n1. Always answer as John's voice and expertise -- warm, direct, peer-level\n2. Give clear direct answers first then add practical detail\n3. For health/medical questions recommend consulting a vet\n4. Keep answers focused -- 3 to 5 paragraphs max unless a full breakdown is truly needed\n5. End responses with: Want me to go deeper on any part of this?\n6. When asked about John's background share his story proudly\n7. When asked about American Bully Vault explain it as John's platform backed by his own research and firsthand interactions with key community figures\n8. Respond in whatever language the user selects";
-
-var SUGGESTIONS = {
-  en: ["How do I pick the best puppy from a litter?","What is the difference between Pocket, Standard, Classic and XL?","What should I feed my American Bully puppy?","How do ABKC show judges evaluate structure?","What health tests should I do before breeding?","How do I prepare my dog for the show ring?","How do I register my dog with the ABKC?","What is the origin of the Exotic Bully?"],
-  tl: ["Paano pumili ng pinakamahusay na tuta mula sa isang kumpol?","Ano ang pagkakaiba ng Pocket, Standard, Classic at XL?","Ano ang dapat pakainin sa aking American Bully na tuta?","Paano sinusuri ng mga hukom ang istraktura?","Anong mga health test ang dapat gawin bago mag-breed?","Paano ihahanda ang aking aso para sa dog show?","Paano irehistro ang aking aso sa ABKC?","Ano ang pinagmulan ng Exotic Bully?"],
-  ru: ["Как выбрать лучшего щенка из помёта?","В чём разница между Pocket, Standard, Classic и XL?","Чем кормить щенка американского булли?","Как судьи ABKC оценивают структуру?","Какие тесты здоровья нужны перед разведением?","Как подготовить собаку к выставке?","Как зарегистрировать собаку в ABKC?","Каково происхождение Exotic Bully?"],
-  th: ["วิธีเลือกลูกสุนัขที่ดีที่สุดจากครอก?","ความแตกต่างระหว่าง Pocket, Standard, Classic และ XL?","ควรให้อาหารอะไรแก่ลูก American Bully?","กรรมการ ABKC ประเมินโครงสร้างอย่างไร?","ควรทำการทดสอบสุขภาพอะไรก่อนผสมพันธุ์?","วิธีเตรียมสุนัขสำหรับการแสดง?","วิธีลงทะเบียนสุนัขกับ ABKC?","Exotic Bully มีต้นกำเนิดอย่างไร?"],
-  id: ["Bagaimana memilih anak anjing terbaik dari satu kelahiran?","Apa perbedaan Pocket, Standard, Classic dan XL?","Apa yang harus diberikan pada anak American Bully?","Bagaimana hakim ABKC mengevaluasi struktur?","Tes kesehatan apa yang diperlukan sebelum breeding?","Bagaimana mempersiapkan anjing untuk dog show?","Bagaimana mendaftarkan anjing ke ABKC?","Apa asal usul Exotic Bully?"],
-  it: ["Come scelgo il miglior cucciolo da una cucciolata?","Qual e la differenza tra Pocket, Standard, Classic e XL?","Cosa dovrei dare da mangiare al mio cucciolo?","Come i giudici ABKC valutano la struttura?","Quali test sanitari devo fare prima di allevare?","Come preparo il mio cane per il ring?","Come registro il mio cane con ABKC?","Qual e l origine dell Exotic Bully?"],
-  es: ["Como elijo el mejor cachorro de una camada?","Cual es la diferencia entre Pocket, Standard, Classic y XL?","Que debo alimentar a mi cachorro American Bully?","Como evaluan los jueces ABKC la estructura?","Que pruebas de salud debo hacer antes de criar?","Como preparo mi perro para el ring?","Como registro mi perro con ABKC?","Cual es el origen del Exotic Bully?"],
-  zh: ["如何从一窝中选择最好的幼犬？","Pocket、Standard、Classic和XL有什么区别？","我应该给美国恶霸幼犬喂什么？","ABKC评委如何评估结构？","繁殖前需要做哪些健康测试？","如何为狗狗准备犬展？","如何在ABKC注册我的狗？","异域恶霸犬的起源是什么？"],
-  vi: ["Lam the nao de chon cho con tot nhat tu mot lua?","Su khac biet giua Pocket, Standard, Classic va XL?","Toi nen cho cho con American Bully an gi?","Giam khao ABKC danh gia cau truc the nao?","Nen lam xet nghiem suc khoe gi truoc khi nhan giong?","Lam the nao de chuan bi cho cho show?","Lam the nao de dang ky cho voi ABKC?","Nguon goc cua Exotic Bully la gi?"]
-};
-
+// ============================================================
+// LANGUAGE CONFIG
+// ============================================================
+var currentLang = "en";
 var LANG_INSTRUCTIONS = {
-  en:"",
-  tl:"Always respond in Filipino/Tagalog language.",
-  ru:"Always respond in Russian language.",
-  th:"Always respond in Thai language.",
-  id:"Always respond in Indonesian language.",
-  it:"Always respond in Italian language.",
-  es:"Always respond in Spanish language.",
-  zh:"Always respond in Simplified Chinese language.",
-  vi:"Always respond in Vietnamese language.",
-  ja:"Always respond in Japanese language.",
-  ko:"Always respond in Korean language.",
-  ms:"Always respond in Malay language.",
-  hi:"Always respond in Hindi language.",
-  ar:"Always respond in Arabic language.",
-  pt:"Always respond in Portuguese language.",
-  fr:"Always respond in French language.",
-  de:"Always respond in German language.",
-  nl:"Always respond in Dutch language.",
-  pl:"Always respond in Polish language.",
-  tr:"Always respond in Turkish language.",
-  ro:"Always respond in Romanian language.",
-  uk:"Always respond in Ukrainian language.",
-  sr:"Always respond in Serbian language.",
-  hr:"Always respond in Croatian language.",
-  el:"Always respond in Greek language.",
-  lo:"Always respond in Lao language."
+  en: "",
+  tl: "Always respond in Filipino/Tagalog language.",
+  it: "Always respond in Italian language.",
+  ru: "Always respond in Russian language.",
+  es: "Always respond in Spanish language.",
+  id: "Always respond in Indonesian language.",
+  th: "Always respond in Thai language.",
+  zh: "Always respond in Simplified Chinese language.",
+  ja: "Always respond in Japanese language.",
+  ko: "Always respond in Korean language.",
+  vi: "Always respond in Vietnamese language.",
+  ms: "Always respond in Malay language.",
+  hi: "Always respond in Hindi language.",
+  ar: "Always respond in Arabic language.",
+  pt: "Always respond in Portuguese language.",
+  fr: "Always respond in French language.",
+  de: "Always respond in German language.",
+  nl: "Always respond in Dutch language.",
+  pl: "Always respond in Polish language.",
+  tr: "Always respond in Turkish language.",
+  ro: "Always respond in Romanian language.",
+  uk: "Always respond in Ukrainian language.",
+  el: "Always respond in Greek language.",
+  lo: "Always respond in Lao language."
 };
 
-var messages = [];
-var transcripts = [];
-var currentLang = 'en';
-var showingSuggestions = true;
-var isDark = true;
-
-function goHome() {
-  sessionStorage.setItem('ok', '1');
-  window.location.href = '/';
-}
-
-function goApp() {
-  window.location.href = '/app';
-}
-
-function toggleTheme() {
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-  document.getElementById('themeBtn').textContent = isDark ? '🌙' : '☀️';
-}
-
-
-
-// FEEDBACK SYSTEM
-function openFeedback() {
-  document.getElementById('feedbackModal').classList.add('open');
-  document.getElementById('feedbackText').focus();
-}
-function closeFeedback() {
-  document.getElementById('feedbackModal').classList.remove('open');
-  document.getElementById('feedbackText').value = '';
-  document.getElementById('feedbackSuccess').style.display = 'none';
-}
-function submitFeedback() {
-  var text = document.getElementById("feedbackText").value.trim();
-  if (!text) { alert("Please enter your feedback first."); return; }
-  var subject = encodeURIComponent("Bully Vault Feedback");
-  var body = encodeURIComponent("FEEDBACK FROM BULLY VAULT USER:
-
-" + text + "
-
-Sent from: americanbullyvault.com");
-  window.location.href = "mailto:mrduskblood@gmail.com?subject=" + subject + "&body=" + body;
-  document.getElementById("feedbackSuccess").style.display = "block";
-  document.getElementById("feedbackText").value = "";
-  setTimeout(closeFeedback, 2000);
-}
-
-// PASSWORD GATE
-function checkPassword() {
-  var v = document.getElementById('pw').value.trim().toLowerCase();
-  if (v === 'johnjudge2026') {
-    sessionStorage.setItem('ok', '1');
-    document.getElementById('passwordGate').style.display = 'none';
-  } else {
-    alert('Wrong password. Try again.');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  var gate = document.getElementById('passwordGate');
-  if (sessionStorage.getItem('ok') === '1') {
-    gate.style.display = 'none';
-  } else {
-    gate.style.display = 'flex';
-  }
-});
-
-var secretTapCount = 0;
-var secretTapTimer = null;
-function secretTap() {
-  secretTapCount++;
-  clearTimeout(secretTapTimer);
-  secretTapTimer = setTimeout(function(){ secretTapCount = 0; }, 2000);
-  if (secretTapCount >= 5) {
-    secretTapCount = 0;
-    var btn = document.getElementById('videosBtn');
-    btn.style.display = btn.style.display === 'none' ? 'flex' : 'none';
-  }
-}
-
-function newChat() {
-  messages = [];
-  showingSuggestions = true;
-  document.getElementById('messages').innerHTML = '';
-  document.getElementById('welcome').style.display = 'block';
-  renderSuggestions();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function setLangNew(val, btn) {
-  if (!val) return;
-  currentLang = val;
-  // Remove active from all lang buttons
-  document.querySelectorAll('.lang-btn').forEach(function(b) { b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  if (document.getElementById('suggestionsScreen') && document.getElementById('suggestionsScreen').style.display !== 'none') {
-    renderSuggestions();
-  }
-}
-
-function setLangDropdown(val) {
-  currentLang = val;
-}
-
-function setLangExtra(val) {
-  if (!val) return;
-  currentLang = val;
-  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
-  document.getElementById('moreLangs').value = '';
-  if (document.getElementById('suggestionsScreen') && 
-      document.getElementById('suggestionsScreen').style.display !== 'none') {
-    renderSuggestions();
-  }
-}
-
-function setLang(lang, btn) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  if (document.getElementById('suggestionsScreen') && 
-      document.getElementById('suggestionsScreen').style.display !== 'none') {
-    renderSuggestions();
-  }
-  return false;
-}
-
-
-// CATEGORY SYSTEM
-var currentCategory = 'general';
-
-var CATEGORY_CONFIG = {
+// ============================================================
+// SUGGESTIONS
+// ============================================================
+var CAT_CONFIG = {
   owner: {
-    welcome: 'Welcome, New Owner! ',
-    subtitle: 'Ask me anything about caring for your American Bully.',
+    title: "Welcome, New Dog Owner!",
+    sub: "Ask me anything about caring for your American Bully.",
     suggestions: [
-      'What should I feed my American Bully puppy?',
-      'When should I deworm my puppy?',
-      'What vaccines does my American Bully need?',
-      'Why is my dog not gaining mass?',
-      'What is the lanky stage?'
+      "What should I feed my American Bully puppy?",
+      "When should I deworm my puppy?",
+      "What vaccines does my American Bully need?",
+      "Why is my dog not gaining mass?",
+      "What is the lanky stage?"
     ]
   },
   breeder: {
-    welcome: 'Welcome, Breeder! ',
-    subtitle: 'Ask me anything about breeding programs, bloodlines, and whelping.',
+    title: "Welcome, Breeder!",
+    sub: "Ask me anything about breeding programs, bloodlines, and whelping.",
     suggestions: [
-      'How do I plan a breeding program?',
-      'What are stud rights and puppy share deals?',
-      'How do I care for my dam and puppies?',
-      'What is the best breeding age for females?',
-      'How do I read a pedigree?'
+      "How do I plan a breeding program?",
+      "What are stud rights and puppy share deals?",
+      "How do I care for my dam and puppies?",
+      "What is the best breeding age for females?",
+      "How do I use a progesterone test?"
     ]
   },
-  showperson: {
-    welcome: 'Welcome, Show Person! ',
-    subtitle: 'Ask me anything about ABKC shows, standards, and judging.',
+  show: {
+    title: "Welcome, Show Person!",
+    sub: "Ask me anything about ABKC shows, standards, and judging.",
     suggestions: [
-      'How does the ABKC point system work?',
-      'What do judges look for in the show ring?',
-      'What are the ABKC show classes?',
-      'How do I stack my dog correctly?',
-      'What are the disqualifying faults?'
+      "How does the ABKC point system work?",
+      "What do judges look for in the show ring?",
+      "What are the ABKC show classes?",
+      "What are the disqualifying faults?",
+      "How do I earn a Grand Champion title?"
     ]
   },
   judge: {
-    welcome: 'Welcome, Aspiring Judge! ',
-    subtitle: 'Ask me anything about judging criteria, breed standards, and evaluation.',
+    title: "Welcome, Aspiring Judge!",
+    sub: "Ask me anything about judging criteria and breed standards.",
     suggestions: [
-      'What are the 5 aspects of breed type?',
-      'How do you assess movement in the ring?',
-      'What is the difference between a fault and a DQ?',
-      'How do you judge Classic vs Standard?',
-      'What is breed character in American Bully?'
+      "What are the 5 aspects of breed type?",
+      "How do you assess movement in the ring?",
+      "What is the difference between a fault and a DQ?",
+      "How do you judge Classic vs Standard?",
+      "What is breed character in American Bully?"
     ]
   },
   community: {
-    welcome: 'Welcome, Community Member! ',
-    subtitle: 'Ask me anything about the American Bully world.',
+    title: "Welcome, Community Member!",
+    sub: "Ask me anything about the American Bully world.",
     suggestions: [
-      'What is the history of the American Bully breed?',
-      'Who is Dave Wilson?',
-      'What is the difference between American Bully and Exotic Bully?',
-      'What are the ABKC Nationals?',
-      'Who are the most influential breeders in history?'
+      "What is the history of the American Bully breed?",
+      "Who is Dave Wilson?",
+      "What is the difference between American Bully and Exotic Bully?",
+      "What are the ABKC Nationals?",
+      "Who are the most influential breeders in history?"
     ]
   },
   enthusiast: {
-    welcome: 'Welcome, Bully Enthusiast! ',
-    subtitle: 'Ask me anything -- no question is too basic.',
+    title: "Welcome, Bully Enthusiast!",
+    sub: "Ask me anything -- no question is too basic.",
     suggestions: [
-      'What makes the American Bully special?',
-      'What are the 4 classes of American Bully?',
-      'Are American Bullies good family dogs?',
-      'What is the difference between Pocket and XL?',
-      'What colors are accepted in ABKC?'
+      "What makes the American Bully special?",
+      "What are the 4 classes of American Bully?",
+      "Are American Bullies good family dogs?",
+      "What is the difference between Pocket and XL?",
+      "What colors are accepted in ABKC?"
     ]
   },
   general: {
-    welcome: 'Ask the American Bully Vault',
-    subtitle: 'Powered by John Enerva -- 20+ years of experience.',
-    suggestions: null
+    title: "Ask the American Bully Vault",
+    sub: "Powered by John Enerva -- 20+ years of experience.",
+    suggestions: [
+      "What do ABKC judges look for?",
+      "How do I start breeding American Bullies?",
+      "What is the lanky stage?",
+      "How does the ABKC point system work?",
+      "What is breed type?"
+    ]
   }
 };
 
-
-function selectCategory__owner(){ selectCategory('owner'); }
-function selectCategory__breeder(){ selectCategory('breeder'); }
-function selectCategory__showperson(){ selectCategory('showperson'); }
-function selectCategory__judge(){ selectCategory('judge'); }
-function selectCategory__community(){ selectCategory('community'); }
-function selectCategory__enthusiast(){ selectCategory('enthusiast'); }
-function selectCategory__general(){ selectCategory('general'); }
-function selectCategory(cat) {
-  currentCategory = cat;
-  var config = CATEGORY_CONFIG[cat];
-  document.getElementById('categoryScreen').style.display = 'none';
-  document.getElementById('suggestionsScreen').style.display = 'block';
-  document.getElementById('categoryWelcome').textContent = config.welcome;
-  document.getElementById('categorySubtitle').textContent = config.subtitle;
-
-  var grid = document.getElementById('suggestionGrid');
-  grid.innerHTML = '';
-  var suggestions = config.suggestions || (SUGGESTIONS[currentLang] || SUGGESTIONS.en);
-  suggestions.forEach(function(q) {
-    var btn = document.createElement('button');
-    btn.className = 'suggestion-btn';
-    btn.textContent = q;
-    btn.onclick = function(){ sendMessage(q); };
-    grid.appendChild(btn);
-  });
-}
-
-function renderSuggestions() {
-  var grid = document.getElementById('suggestionGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  var config = CATEGORY_CONFIG[currentCategory] || CATEGORY_CONFIG.general;
-  var qs = config.suggestions || SUGGESTIONS[currentLang] || SUGGESTIONS.en;
-  qs.forEach(function(q) {
-    var btn = document.createElement('button');
-    btn.className = 'suggestion-btn';
-    btn.textContent = q;
-    btn.onclick = function(){ sendMessage(q); };
-    grid.appendChild(btn);
-  });
-}
-
-function toggleTranscripts() {
-  var panel = document.getElementById('transcriptPanel');
-  panel.classList.toggle('open');
-}
-
-function checkAddBtn() {
-  var title = document.getElementById('transcriptTitle').value.trim();
-  var content = document.getElementById('transcriptContent').value.trim();
-  var btn = document.getElementById('addBtn');
-  if (title && content) { btn.classList.add('ready'); } else { btn.classList.remove('ready'); }
-}
-
-function addTranscript() {
-  var title = document.getElementById('transcriptTitle').value.trim();
-  var content = document.getElementById('transcriptContent').value.trim();
-  if (!title || !content) return;
-  transcripts.push({ id: Date.now(), title: title, content: content });
-  document.getElementById('transcriptTitle').value = '';
-  document.getElementById('transcriptContent').value = '';
-  checkAddBtn();
-  renderTranscripts();
-  updateTranscriptBadge();
-}
-
-function removeTranscript(id) {
-  transcripts = transcripts.filter(function(t){ return t.id !== id; });
-  renderTranscripts();
-  updateTranscriptBadge();
-}
-
-function renderTranscripts() {
-  var list = document.getElementById('transcriptList');
-  list.innerHTML = '';
-  transcripts.forEach(function(t) {
-    var item = document.createElement('div');
-    item.className = 'transcript-item';
-    item.innerHTML = '<span>✅ ' + t.title + '</span><button onclick="removeTranscript(' + t.id + ')">×</button>';
-    list.appendChild(item);
-  });
-}
-
-function updateTranscriptBadge() {
-  var badge = document.getElementById('transcriptBadge');
-  if (transcripts.length > 0) {
-    badge.style.display = 'inline';
-    badge.textContent = transcripts.length;
+// ============================================================
+// PASSWORD GATE
+// ============================================================
+function doLogin() {
+  var v = document.getElementById("pwInput").value.trim().toLowerCase();
+  if (v === "johnjudge2026") {
+    sessionStorage.setItem("abv_ok", "1");
+    document.getElementById("gate").classList.remove("show");
   } else {
-    badge.style.display = 'none';
+    alert("Wrong password. Please try again.");
+    document.getElementById("pwInput").value = "";
+    document.getElementById("pwInput").focus();
   }
 }
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener("DOMContentLoaded", function() {
+  if (sessionStorage.getItem("abv_ok") !== "1") {
+    document.getElementById("gate").classList.add("show");
+  }
+  renderCatScreen();
+});
+
+function renderCatScreen() {
+  document.getElementById("catScreen").style.display = "flex";
+  document.getElementById("suggScreen").style.display = "none";
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+function pickCat(cat) {
+  var cfg = CAT_CONFIG[cat] || CAT_CONFIG.general;
+  document.getElementById("catScreen").style.display = "none";
+  document.getElementById("suggScreen").style.display = "flex";
+  document.getElementById("suggTitle").textContent = cfg.title;
+  document.getElementById("suggSub").textContent = cfg.sub;
+  renderSuggestions(cfg.suggestions);
+}
+
+function renderSuggestions(list) {
+  var grid = document.getElementById("suggGrid");
+  grid.innerHTML = "";
+  list.forEach(function(q) {
+    var btn = document.createElement("button");
+    btn.className = "suggestion-btn";
+    btn.textContent = q;
+    btn.onclick = function() { sendMsg(q); };
+    grid.appendChild(btn);
+  });
+}
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  if (btn) btn.classList.add("active");
+}
+
+function setLangExtra(lang, sel) {
+  if (!lang) return;
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
+  setTimeout(function() { sel.value = ""; }, 100);
+}
+
+// ============================================================
+// THEME
+// ============================================================
+var isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+  document.getElementById("themeBtn").innerHTML = isDark ? "&#127769;" : "&#9728;";
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goHome() {
+  sessionStorage.setItem("abv_ok", "1");
+  window.location.href = "/";
+}
+
+function newChat() {
+  var chatArea = document.getElementById("chatArea");
+  chatArea.innerHTML = "";
+  var catScreen = document.createElement("div");
+  catScreen.id = "catScreen";
+  catScreen.className = "welcome";
+  catScreen.innerHTML = document.getElementById("catScreen") ? "" : "";
+  renderCatScreen();
+  messages = [];
+  location.reload();
+}
+
+// ============================================================
+// SECRET TAP
+// ============================================================
+var tapCount = 0;
+var tapTimer = null;
+function handleLogoTap() {
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(function() { tapCount = 0; }, 2000);
+  if (tapCount >= 5) {
+    tapCount = 0;
+    sessionStorage.setItem("abv_ok", "1");
+    document.getElementById("gate").classList.remove("show");
+  }
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function openFb() {
+  document.getElementById("fbModal").classList.add("open");
+  document.getElementById("fbText").focus();
+}
+function closeFb() {
+  document.getElementById("fbModal").classList.remove("open");
+  document.getElementById("fbText").value = "";
+  document.getElementById("fbOk").style.display = "none";
+}
+function submitFb() {
+  var text = document.getElementById("fbText").value.trim();
+  if (!text) { alert("Please enter your feedback first."); return; }
+  var subj = encodeURIComponent("American Bully Vault Feedback");
+  var body = encodeURIComponent("FEEDBACK FROM VAULT USER:\n\n" + text + "\n\nSent from: americanbullyvault.com");
+  window.location.href = "mailto:mrduskblood@gmail.com?subject=" + subj + "&body=" + body;
+  document.getElementById("fbOk").style.display = "block";
+  document.getElementById("fbText").value = "";
+  setTimeout(closeFb, 2000);
+}
+
+// ============================================================
+// CHAT
+// ============================================================
+var messages = [];
+var isLoading = false;
+var showingSuggestions = true;
 
 function buildSystemPrompt() {
-  var prompt = SYSTEM_PROMPT;
-  if (LANG_INSTRUCTIONS[currentLang]) { prompt += '\n\n' + LANG_INSTRUCTIONS[currentLang]; }
-  if (transcripts.length > 0) {
-    prompt += '\n\nJOHNS OWN VIDEO TRANSCRIPTS -- treat these as Johns direct words, highest priority:\n\n';
-    transcripts.forEach(function(t){ prompt += '=== VIDEO: "' + t.title + '" ===\n' + t.content + '\n\n'; });
-  }
-  return prompt;
+  var sp = SYSTEM_PROMPT;
+  var langInstr = LANG_INSTRUCTIONS[currentLang] || "";
+  if (langInstr) sp += "\n\nLANGUAGE INSTRUCTION: " + langInstr;
+  return sp;
 }
 
-function handleInput(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  var btn = document.getElementById('sendBtn');
-  if (el.value.trim().length > 0) { btn.classList.add('ready'); } else { btn.classList.remove('ready'); }
+function autoResize(el) {
+  el.style.height = "auto";
+  el.style.height = Math.min(el.scrollHeight, 120) + "px";
+}
+
+function updateSend() {
+  var input = document.getElementById("msgInput").value.trim();
+  var btn = document.getElementById("sendBtn");
+  btn.className = input ? "send-btn ready" : "send-btn";
 }
 
 function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
-
-function addMessageToChat(role, content) {
-  var container = document.getElementById('messages');
-  var div = document.createElement('div');
-  div.className = 'message ' + role;
-  var avatar = document.createElement('div');
-  avatar.className = 'avatar ' + (role === 'human' ? 'human' : 'ai');
-  if (role === 'human') { avatar.textContent = 'J'; } else { avatar.innerHTML = '<img src=\"/logo.png\" style=\"width:100%;height:100%;object-fit:contain;border-radius:6px;\"/>'; }
-  var bubble = document.createElement('div');
-  bubble.className = 'bubble ' + (role === 'human' ? 'human' : 'ai');
-  if (role === 'ai') { bubble.innerHTML = formatText(content); } else { bubble.textContent = content; }
-  div.appendChild(avatar);
-  div.appendChild(bubble);
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
-
-function formatText(text) {
-  return text.split('\n').map(function(line) {
-    if (!line.trim()) return '<div style="height:6px"></div>';
-    var html = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    if (/^#{1,3}\s/.test(line)) {
-      var clean = line.replace(/^#{1,3}\s/, '');
-      return '<p style="font-weight:600;font-size:15px;margin-bottom:6px;margin-top:12px;color:var(--text)">' + clean + '</p>';
-    }
-    if (/^[-•]\s/.test(line)) return '<div style="display:flex;gap:8px;margin-bottom:4px"><span style="color:var(--accent-light);flex-shrink:0">·</span><span>' + html.slice(2) + '</span></div>';
-    return '<p style="margin-bottom:8px;line-height:1.75">' + html + '</p>';
-  }).join('');
-}
-
-function showTyping() {
-  var container = document.getElementById('messages');
-  var div = document.createElement('div');
-  div.className = 'message ai';
-  div.id = 'typingIndicator';
-  var avatar = document.createElement('div');
-  avatar.className = 'avatar ai';
-  avatar.innerHTML = '<img src=\"/logo.png\" style=\"width:100%;height:100%;object-fit:contain;border-radius:6px;\"/>';
-  var bubble = document.createElement('div');
-  bubble.className = 'bubble ai';
-  bubble.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
-  div.appendChild(avatar);
-  div.appendChild(bubble);
-  container.appendChild(div);
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
-
-function removeTyping() {
-  var t = document.getElementById('typingIndicator');
-  if (t) t.remove();
-}
-
-function sendMessage(question) {
-  var input = document.getElementById('userInput');
-  var text = question || input.value.trim();
-  if (!text) return;
-
-  if (showingSuggestions) {
-    document.getElementById('welcome').style.display = 'none';
-    showingSuggestions = false;
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMsg();
   }
+}
 
-  input.value = '';
-  input.style.height = 'auto';
-  document.getElementById('sendBtn').classList.remove('ready');
+function sendMsg(question) {
+  var input = question || document.getElementById("msgInput").value.trim();
+  if (!input || isLoading) return;
 
-  messages.push({ role: 'user', content: text });
-  addMessageToChat('human', text);
-  showTyping();
+  // Hide welcome screens
+  var catS = document.getElementById("catScreen");
+  var suggS = document.getElementById("suggScreen");
+  if (catS) catS.style.display = "none";
+  if (suggS) suggS.style.display = "none";
+  showingSuggestions = false;
 
-  fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  // Clear input
+  var msgInput = document.getElementById("msgInput");
+  msgInput.value = "";
+  msgInput.style.height = "auto";
+  updateSend();
+
+  // Add user message
+  messages.push({ role: "user", content: input });
+  addMessage("user", input);
+
+  // Show typing
+  isLoading = true;
+  addTyping();
+
+  // Call API
+  fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1000,
       system: buildSystemPrompt(),
       messages: messages
     })
   })
-  .then(function(res) {
-    return res.text().then(function(text) { return { status: res.status, text: text }; });
-  })
-  .then(function(result) {
+  .then(function(res) { return res.text(); })
+  .then(function(text) {
     removeTyping();
-    if (!result.text || result.text.trim() === '') throw new Error('Empty response (status ' + result.status + ')');
-    var data;
-    try { data = JSON.parse(result.text); } catch(e) { throw new Error('Bad response: ' + result.text.slice(0, 100)); }
-    if (result.status !== 200) throw new Error(data.error && data.error.message ? data.error.message : 'API error ' + result.status);
-    var content = '';
-    if (data.content && Array.isArray(data.content)) {
-      data.content.forEach(function(b){ if (b.type === 'text') content += b.text; });
+    isLoading = false;
+    try {
+      var data = JSON.parse(text);
+      var reply = data.content && data.content[0] ? data.content[0].text : "Sorry, I could not process that.";
+      messages.push({ role: "assistant", content: reply });
+      addMessage("ai", reply);
+    } catch(e) {
+      addMessage("ai", "Something went wrong. Please try again.");
     }
-    if (!content) throw new Error('No text in response');
-    messages.push({ role: 'assistant', content: content });
-    addMessageToChat('ai', content.trim());
   })
-  .catch(function(err) {
+  .catch(function() {
     removeTyping();
-    addMessageToChat('ai', 'Something went wrong. Please try again. (' + err.message + ')');
+    isLoading = false;
+    addMessage("ai", "Connection error. Please check your internet and try again.");
   });
 }
 
-renderSuggestions();
+function addMessage(role, text) {
+  var chatArea = document.getElementById("chatArea");
+  var div = document.createElement("div");
+  div.className = "message " + (role === "user" ? "user" : "ai");
+
+  var avatar = document.createElement("div");
+  avatar.className = "avatar " + (role === "user" ? "user" : "ai");
+  if (role === "ai") {
+    avatar.innerHTML = "<img src='/logo.png' style='width:100%;height:100%;object-fit:contain;border-radius:50%;'/>";
+  } else {
+    avatar.textContent = "J";
+  }
+
+  var bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = formatText(text);
+
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function addTyping() {
+  var chatArea = document.getElementById("chatArea");
+  var div = document.createElement("div");
+  div.className = "message ai";
+  div.id = "typingMsg";
+
+  var avatar = document.createElement("div");
+  avatar.className = "avatar ai";
+  avatar.innerHTML = "<img src='/logo.png' style='width:100%;height:100%;object-fit:contain;border-radius:50%;'/>";
+
+  var bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerHTML = "<div class='typing'><span></span><span></span><span></span></div>";
+
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function removeTyping() {
+  var t = document.getElementById("typingMsg");
+  if (t) t.remove();
+}
+
+function formatText(text) {
+  text = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  text = text.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
+  text = text.replace(/^#{1,3}\s+(.+)$/gm,"<strong>$1</strong>");
+  text = text.replace(/^[-*]\s+(.+)$/gm,"<li>$1</li>");
+  text = text.replace(/(<li>.*<\/li>)/s, "<ul>$1</ul>");
+  text = text.replace(/\n/g,"<br/>");
+  return text;
+}
 </script>
 </body>
 </html>
