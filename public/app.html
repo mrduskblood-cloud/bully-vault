@@ -1030,12 +1030,6 @@ function setLang(lang, btn) {
   }
   return false;
 }
-function setLang_orig(lang, btn) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
-  btn.classList.add('active');
-  if (showingSuggestions) renderSuggestions();
-}
 
 
 // CATEGORY SYSTEM
