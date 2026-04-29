@@ -331,84 +331,120 @@ var LANG_INSTRUCTIONS = {
 // ============================================================
 // SUGGESTIONS
 // ============================================================
-var CAT_CONFIG = {
-  owner: {
-    title: "Welcome, New Dog Owner!",
-    sub: "Suggested questions -- ask me anything about caring for your American Bully.",
-    suggestions: [
-      "What should I feed my American Bully puppy?",
-      "When should I deworm my puppy?",
-      "What vaccines does my American Bully need?",
-      "Why is my dog not gaining mass?",
-      "What is the lanky stage?"
-    ]
+// TRANSLATIONS FOR UI
+var UI_TRANSLATIONS = {
+  en: {
+    welcome: "Welcome to the American Bully Vault",
+    who: "Powered by John Enerva -- ABKC International Senior Judge. Who are you?",
+    skip: "Skip -- just ask a question",
+    suggested: "Suggested questions -- or type your own below",
+    cats: {
+      owner: { title: "New Owner", desc: "Learning about my American Bully" },
+      breeder: { title: "Breeder", desc: "Breeding programs and bloodlines" },
+      show: { title: "Show Person", desc: "Competing in American Bully Shows" },
+      judge: { title: "Aspiring Judge", desc: "Learning to judge the breed" },
+      community: { title: "Community Member", desc: "Part of the bully world" },
+      enthusiast: { title: "Enthusiast", desc: "I love the breed and want to learn" }
+    }
   },
-  breeder: {
-    title: "Welcome, Breeder!",
-    sub: "Suggested questions below -- or ask me anything about breeding.",
-    suggestions: [
-      "How do I plan a breeding program?",
-      "What are stud rights and puppy share deals?",
-      "How do I care for my dam and puppies?",
-      "What is the best breeding age for females?",
-      "How do I use a progesterone test?"
-    ]
+  tl: {
+    welcome: "Maligayang pagdating sa American Bully Vault",
+    who: "Pinapagana ni John Enerva -- ABKC International Senior Judge. Sino ka?",
+    skip: "Laktawan -- magtanong na lang",
+    suggested: "Mga mungkahing tanong -- o mag-type ng sarili mo",
+    cats: {
+      owner: { title: "Bagong May-ari", desc: "Natututo tungkol sa aking American Bully" },
+      breeder: { title: "Breeder", desc: "Mga programa sa pagpapalaki at bloodlines" },
+      show: { title: "Show Person", desc: "Nakikipagkumpetensya sa American Bully Shows" },
+      judge: { title: "Aspiring Judge", desc: "Natututo kung paano mag-judge ng breed" },
+      community: { title: "Miyembro ng Komunidad", desc: "Bahagi ng bully world" },
+      enthusiast: { title: "Mahilig sa Bully", desc: "Mahal ko ang breed at gusto kong matuto" }
+    }
   },
-  show: {
-    title: "Welcome, Show Person!",
-    sub: "Suggested questions below -- or ask me anything about showing.",
-    suggestions: [
-      "How does the ABKC point system work?",
-      "What do judges look for in the show ring?",
-      "What are the ABKC show classes?",
-      "What are the disqualifying faults?",
-      "How do I earn a Grand Champion title?"
-    ]
+  it: {
+    welcome: "Benvenuto nell American Bully Vault",
+    who: "Alimentato da John Enerva -- Giudice Senior Internazionale ABKC. Chi sei?",
+    skip: "Salta -- fai una domanda",
+    suggested: "Domande suggerite -- o digita la tua",
+    cats: {
+      owner: { title: "Nuovo Proprietario", desc: "Sto imparando sul mio American Bully" },
+      breeder: { title: "Allevatore", desc: "Programmi di allevamento e bloodlines" },
+      show: { title: "Espositore", desc: "Gareggiare nelle mostre American Bully" },
+      judge: { title: "Aspirante Giudice", desc: "Imparare a giudicare la razza" },
+      community: { title: "Membro della Comunita", desc: "Parte del mondo bully" },
+      enthusiast: { title: "Appassionato", desc: "Amo la razza e voglio imparare" }
+    }
   },
-  judge: {
-    title: "Welcome, Aspiring Judge!",
-    sub: "Suggested questions below -- or ask me anything about judging.",
-    suggestions: [
-      "What are the 5 aspects of breed type?",
-      "How do you assess movement in the ring?",
-      "What is the difference between a fault and a DQ?",
-      "How do you judge Classic vs Standard?",
-      "What is breed character in American Bully?"
-    ]
+  ru: {
+    welcome: "Dobro pozhalovat v American Bully Vault",
+    who: "Sozdano Dzhonom Enerva -- starshiy mezhdunarodnyy sud ABKC. Kto vy?",
+    skip: "Propustit -- zadat vopros",
+    suggested: "Predlozhennyye voprosy -- ili vvedite svoy",
+    cats: {
+      owner: { title: "Novyy vladel", desc: "Izuchayu svoego American Bully" },
+      breeder: { title: "Zavodchik", desc: "Programmy razvedeniya i krovnyye linii" },
+      show: { title: "Uchastnik vystavok", desc: "Uchastiye v shou American Bully" },
+      judge: { title: "Nachinayushchiy sud", desc: "Uchus sudit porodu" },
+      community: { title: "Chlen soobshchestva", desc: "Chast mira bully" },
+      enthusiast: { title: "Entuzíast", desc: "Ya lyublyu porodu i khochu uchitsya" }
+    }
   },
-  community: {
-    title: "Welcome, Community Member!",
-    sub: "Suggested questions below -- or ask me anything about the breed.",
-    suggestions: [
-      "What is the history of the American Bully breed?",
-      "Who is Dave Wilson?",
-      "What is the difference between American Bully and Exotic Bully?",
-      "What are the ABKC Nationals?",
-      "Who are the most influential breeders in history?"
-    ]
+  es: {
+    welcome: "Bienvenido al American Bully Vault",
+    who: "Impulsado por John Enerva -- Juez Senior Internacional ABKC. Quien eres?",
+    skip: "Omitir -- solo hacer una pregunta",
+    suggested: "Preguntas sugeridas -- o escribe la tuya",
+    cats: {
+      owner: { title: "Nuevo Dueno", desc: "Aprendiendo sobre mi American Bully" },
+      breeder: { title: "Criador", desc: "Programas de cria y lineas de sangre" },
+      show: { title: "Expositor", desc: "Compitiendo en shows de American Bully" },
+      judge: { title: "Juez Aspirante", desc: "Aprendiendo a juzgar la raza" },
+      community: { title: "Miembro de la Comunidad", desc: "Parte del mundo bully" },
+      enthusiast: { title: "Entusiasta", desc: "Amo la raza y quiero aprender" }
+    }
   },
-  enthusiast: {
-    title: "Welcome, Bully Enthusiast!",
-    sub: "Suggested questions below -- no question is too basic, ask anything!",
-    suggestions: [
-      "What makes the American Bully special?",
-      "What are the 4 classes of American Bully?",
-      "Are American Bullies good family dogs?",
-      "What is the difference between Pocket and XL?",
-      "What colors are accepted in ABKC?"
-    ]
+  id: {
+    welcome: "Selamat datang di American Bully Vault",
+    who: "Didukung oleh John Enerva -- Hakim Senior Internasional ABKC. Siapa Anda?",
+    skip: "Lewati -- langsung tanya",
+    suggested: "Pertanyaan yang disarankan -- atau ketik sendiri",
+    cats: {
+      owner: { title: "Pemilik Baru", desc: "Belajar tentang American Bully saya" },
+      breeder: { title: "Peternak", desc: "Program peternakan dan bloodlines" },
+      show: { title: "Peserta Show", desc: "Berkompetisi di American Bully Shows" },
+      judge: { title: "Calon Juri", desc: "Belajar menjadi juri ras" },
+      community: { title: "Anggota Komunitas", desc: "Bagian dari dunia bully" },
+      enthusiast: { title: "Penggemar", desc: "Saya suka ras ini dan ingin belajar" }
+    }
   },
-  general: {
-    title: "Ask the American Bully Vault",
-    sub: "Suggested questions below -- or type your own question anytime.",
-    suggestions: [
-      "What do ABKC judges look for?",
-      "How do I start breeding American Bullies?",
-      "What is the lanky stage?",
-      "How does the ABKC point system work?",
-      "What is breed type?"
-    ]
+  th: {
+    welcome: "Yin dee ton rap su American Bully Vault",
+    who: "Khap khluan doi John Enerva -- Phutadsin ABKC. Khun pen khrai?",
+    skip: "Kham -- tham kham tham dai leoy",
+    suggested: "Kham tham naenam -- rue phim kham tham khong khun eng",
+    cats: {
+      owner: { title: "Chao khong mai", desc: "Kamlang rian ru cheang American Bully" },
+      breeder: { title: "Phu liang", desc: "Khrong kan liang lae bloodlines" },
+      show: { title: "Phu ru am show", desc: "Khaeng khan nai American Bully Shows" },
+      judge: { title: "Phu tadsin mai", desc: "Rian pen phu tadsin phan phan" },
+      community: { title: "Samachiik chumchon", desc: "Suan nueng khong lok bully" },
+      enthusiast: { title: "Phu chun chop", desc: "Chan rak phan phan ni lae yak rian" }
+    }
   }
+};
+
+function getUI() {
+  return UI_TRANSLATIONS[currentLang] || UI_TRANSLATIONS["en"];
+}
+
+var CAT_CONFIG = {
+  owner: { suggestions: ["What should I feed my American Bully puppy?","When should I deworm my puppy?","What vaccines does my American Bully need?","Why is my dog not gaining mass?","What is the lanky stage?"] },
+  breeder: { suggestions: ["How do I plan a breeding program?","What are stud rights and puppy share deals?","How do I care for my dam and puppies?","What is the best breeding age for females?","How do I use a progesterone test?"] },
+  show: { suggestions: ["How does the ABKC point system work?","What do judges look for in the show ring?","What are the ABKC show classes?","What are the disqualifying faults?","How do I earn a Grand Champion title?"] },
+  judge: { suggestions: ["What are the 5 aspects of breed type?","How do you assess movement in the ring?","What is the difference between a fault and a DQ?","How do you judge Classic vs Standard?","What is breed character in American Bully?"] },
+  community: { suggestions: ["What is the history of the American Bully breed?","Who is Dave Wilson?","What is the difference between American Bully and Exotic Bully?","What are the ABKC Nationals?","Who are the most influential breeders in history?"] },
+  enthusiast: { suggestions: ["What makes the American Bully special?","What are the 4 classes of American Bully?","Are American Bullies good family dogs?","What is the difference between Pocket and XL?","What colors are accepted in ABKC?"] },
+  general: { suggestions: ["What do ABKC judges look for?","How do I start breeding American Bullies?","What is the lanky stage?","How does the ABKC point system work?","What is breed type?"] }
 };
 
 // ============================================================
@@ -450,6 +486,21 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function renderCatScreen() {
+  var ui = getUI();
+  // Update welcome text
+  document.querySelector("#catScreen h2").textContent = ui.welcome;
+  document.querySelector("#catScreen p").textContent = ui.who;
+  document.querySelector(".cat-skip").textContent = ui.skip;
+  // Update category cards
+  var cards = document.querySelectorAll(".cat-card");
+  var catKeys = ["owner","breeder","show","judge","community","enthusiast"];
+  cards.forEach(function(card, i) {
+    var key = catKeys[i];
+    if (ui.cats[key]) {
+      card.querySelector(".cat-title").textContent = ui.cats[key].title;
+      card.querySelector(".cat-desc").textContent = ui.cats[key].desc;
+    }
+  });
   document.getElementById("catScreen").style.display = "flex";
   document.getElementById("suggScreen").style.display = "none";
 }
@@ -459,11 +510,15 @@ function renderCatScreen() {
 // ============================================================
 function pickCat(cat) {
   var cfg = CAT_CONFIG[cat] || CAT_CONFIG.general;
+  var ui = getUI();
   document.getElementById("catScreen").style.display = "none";
   document.getElementById("suggScreen").style.display = "flex";
-  document.getElementById("suggTitle").textContent = cfg.title;
-  document.getElementById("suggSub").textContent = cfg.sub;
+  // Set title from translation
+  var catTitle = ui.cats[cat] ? ui.cats[cat].title : "Ask the American Bully Vault";
+  document.getElementById("suggTitle").textContent = catTitle;
+  document.getElementById("suggSub").textContent = ui.suggested;
   renderSuggestions(cfg.suggestions);
+  currentCat = cat;
 }
 
 function renderSuggestions(list) {
@@ -486,6 +541,8 @@ function setLang(lang, btn) {
   localStorage.setItem("abv_lang", lang);
   document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
   if (btn) btn.classList.add("active");
+  // Refresh UI with new language
+  renderCatScreen();
   // Show confirmation
   var bar = document.querySelector(".lang-bar");
   if (bar) {
@@ -595,6 +652,7 @@ function submitFb() {
 // CHAT
 // ============================================================
 var messages = [];
+var currentCat = "general";
 var isLoading = false;
 var showingSuggestions = true;
 
