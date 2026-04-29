@@ -182,28 +182,10 @@ textarea#msgInput { flex: 1; background: transparent; border: none; outline: non
   <button class="lang-btn" id="lb-it" onclick="setLang('it',this)">&#127470;&#127481; IT</button>
   <button class="lang-btn" id="lb-ru" onclick="setLang('ru',this)">&#127479;&#127482; RU</button>
   <button class="lang-btn" id="lb-es" onclick="setLang('es',this)">&#127474;&#127485; ES</button>
-  <button class="lang-btn" id="lb-id" onclick="setLang('id',this)">&#127470;&#127465; ID</button>
+  <button class="lang-btn" id="lb-fr" onclick="setLang('fr',this)">&#127467;&#127479; FR</button>
   <button class="lang-btn" id="lb-th" onclick="setLang('th',this)">&#127481;&#127469; TH</button>
-  <select class="lang-select" onchange="setLangExtra(this.value,this)">
-    <option value="">+ More</option>
-    <option value="zh">&#127464;&#127475; Chinese</option>
-    <option value="ja">&#127471;&#127477; Japanese</option>
-    <option value="ko">&#127472;&#127479; Korean</option>
-    <option value="vi">&#127483;&#127475; Vietnamese</option>
-    <option value="ms">&#127474;&#127486; Malay</option>
-    <option value="hi">&#127470;&#127475; Hindi</option>
-    <option value="ar">&#127462;&#127466; Arabic</option>
-    <option value="pt">&#127463;&#127479; Portuguese</option>
-    <option value="fr">&#127467;&#127479; French</option>
-    <option value="de">&#127465;&#127466; German</option>
-    <option value="nl">&#127475;&#127473; Dutch</option>
-    <option value="pl">&#127477;&#127473; Polish</option>
-    <option value="tr">&#127481;&#127479; Turkish</option>
-    <option value="ro">&#127479;&#127476; Romanian</option>
-    <option value="uk">&#127482;&#127462; Ukrainian</option>
-    <option value="el">&#127468;&#127479; Greek</option>
-    <option value="lo">&#127473;&#127462; Lao</option>
-  </select>
+  <button class="lang-btn" id="lb-zh" onclick="setLang('zh',this)">&#127464;&#127475; ZH</button>
+  <button class="lang-btn" id="lb-ar" onclick="setLang('ar',this)">&#127462;&#127466; AR</button>
 </div>
 
 <!-- MAIN -->
@@ -334,7 +316,7 @@ var LANG_INSTRUCTIONS = {
   it: "Always respond in Italian language.",
   ru: "Always respond in Russian language.",
   es: "Always respond in Spanish language.",
-  id: "Always respond in Indonesian language.",
+  fr: "Always respond in French language.",
   th: "Always respond in Thai language.",
   zh: "Always respond in Simplified Chinese language.",
   ja: "Always respond in Japanese language.",
@@ -430,18 +412,18 @@ var UI_TRANSLATIONS = {
       enthusiast: { title: "Entusiasta", desc: "Amo la raza y quiero aprender" }
     }
   },
-  id: {
-    welcome: "Selamat datang di American Bully Vault",
-    who: "Didukung oleh John Enerva -- Hakim Senior Internasional ABKC. Siapa Anda?",
-    skip: "Lewati -- langsung tanya",
-    suggested: "Pertanyaan yang disarankan -- atau ketik sendiri",
+  fr: {
+    welcome: "Bienvenue sur American Bully Vault",
+    who: "Propulse par John Enerva -- Juge Senior International ABKC. Qui etes-vous?",
+    skip: "Passer -- poser une question",
+    suggested: "Questions suggerees -- ou tapez la votre",
     cats: {
-      owner: { title: "Pemilik Baru", desc: "Belajar tentang American Bully saya" },
-      breeder: { title: "Peternak", desc: "Program peternakan dan bloodlines" },
-      show: { title: "Peserta Show", desc: "Berkompetisi di American Bully Shows" },
-      judge: { title: "Calon Juri", desc: "Belajar menjadi juri ras" },
-      community: { title: "Anggota Komunitas", desc: "Bagian dari dunia bully" },
-      enthusiast: { title: "Penggemar", desc: "Saya suka ras ini dan ingin belajar" }
+      owner: { title: "Nouveau Proprietaire", desc: "J apprends sur mon American Bully" },
+      breeder: { title: "Eleveur", desc: "Programmes d elevage et bloodlines" },
+      show: { title: "Exposant", desc: "Participer aux shows American Bully" },
+      judge: { title: "Juge Aspirant", desc: "Apprendre a juger la race" },
+      community: { title: "Membre de la Communaute", desc: "Partie du monde bully" },
+      enthusiast: { title: "Passionné", desc: "J aime la race et veux apprendre" }
     }
   },
   th: {
@@ -501,14 +483,14 @@ var SUGGESTIONS_BY_LANG = {
     enthusiast: ["Que hace especial al American Bully?","Cuales son las 4 clases de American Bully?","Son los American Bullies buenos perros de familia?","Cual es la diferencia entre Pocket y XL?","Que colores acepta el ABKC?"],
     general: ["Que buscan los jueces ABKC?","Como empezar a criar American Bullies?","Que es la etapa lanky?","Como funciona el sistema de puntos ABKC?","Que es el tipo de raza?"]
   },
-  id: {
-    owner: ["Apa yang harus saya berikan pada puppy American Bully saya?","Kapan saya harus cacing puppy saya?","Vaksin apa yang dibutuhkan American Bully saya?","Mengapa anjing saya tidak bertambah berat?","Apa itu tahap lanky?"],
-    breeder: ["Bagaimana merencanakan program penangkaran?","Apa itu hak pejantan dan kesepakatan puppy share?","Bagaimana merawat induk dan anak anjing saya?","Berapa usia terbaik untuk mengembangbiakkan betina?","Bagaimana menggunakan tes progesteron?"],
-    show: ["Bagaimana sistem poin ABKC bekerja?","Apa yang dicari juri di ring show?","Apa saja kelas show ABKC?","Apa saja cacat diskualifikasi?","Bagaimana mendapatkan gelar Grand Champion?"],
-    judge: ["Apa 5 aspek tipe ras?","Bagaimana menilai gerakan di ring?","Apa perbedaan antara cacat dan DQ?","Bagaimana menilai Classic vs Standard?","Apa karakter ras American Bully?"],
-    community: ["Apa sejarah ras American Bully?","Siapa Dave Wilson?","Apa perbedaan American Bully dan Exotic Bully?","Apa itu ABKC Nationals?","Siapa peternak paling berpengaruh?"],
-    enthusiast: ["Apa yang membuat American Bully istimewa?","Apa 4 kelas American Bully?","Apakah American Bullies anjing keluarga yang baik?","Apa perbedaan Pocket dan XL?","Warna apa yang diterima ABKC?"],
-    general: ["Apa yang dicari juri ABKC?","Bagaimana memulai penangkaran American Bullies?","Apa itu tahap lanky?","Bagaimana sistem poin ABKC bekerja?","Apa itu tipe ras?"]
+  fr: {
+    owner: ["Que donner a manger a mon chiot American Bully?","Quand vermifuger mon chiot?","Quels vaccins pour mon American Bully?","Pourquoi mon chien ne prend pas de masse?","C est quoi le stade lanky?"],
+    breeder: ["Comment planifier un programme d elevage?","C est quoi les droits de saillie et puppy share?","Comment soigner ma lice et ses chiots?","Quel age ideal pour reproduire une femelle?","Comment utiliser le test de progesterone?"],
+    show: ["Comment fonctionne le systeme de points ABKC?","Que cherchent les juges dans le ring?","Quelles sont les classes du show ABKC?","Quelles sont les fautes eliminatoires?","Comment obtenir le titre Grand Champion?"],
+    judge: ["Quels sont les 5 aspects du type de race?","Comment evaluer le mouvement dans le ring?","Difference entre une faute et une DQ?","Comment juger Classic vs Standard?","C est quoi le caractere de race?"],
+    community: ["Quelle est l histoire de l American Bully?","Qui est Dave Wilson?","Difference entre American Bully et Exotic Bully?","C est quoi les ABKC Nationals?","Qui sont les eleveurs les plus influents?"],
+    enthusiast: ["Qu est-ce qui rend l American Bully special?","Quelles sont les 4 classes?","Bon chien de famille l American Bully?","Difference entre Pocket et XL?","Quelles couleurs acceptees par l ABKC?"],
+    general: ["Que cherchent les juges ABKC?","Comment commencer l elevage American Bully?","C est quoi le stade lanky?","Comment fonctionne le systeme de points ABKC?","C est quoi le type de race?"]
   }
 };
 
@@ -561,33 +543,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function renderCatScreen() {
-  try {
-    var ui = getUI();
-    var h2 = document.querySelector("#catScreen h2");
-    var p = document.querySelector("#catScreen p");
-    var skip = document.querySelector(".cat-skip");
-    if (h2) h2.textContent = ui.welcome;
-    if (p) p.textContent = ui.who;
-    if (skip) skip.textContent = ui.skip;
-    var cards = document.querySelectorAll(".cat-card");
-    var catKeys = ["owner","breeder","show","judge","community","enthusiast"];
-    cards.forEach(function(card, i) {
-      var key = catKeys[i];
-      if (ui.cats[key]) {
-        var t = card.querySelector(".cat-title");
-        var d = card.querySelector(".cat-desc");
-        if (t) t.textContent = ui.cats[key].title;
-        if (d) d.textContent = ui.cats[key].desc;
-      }
-    });
-    document.getElementById("catScreen").style.display = "flex";
-    document.getElementById("suggScreen").style.display = "none";
-  } catch(e) { console.log("renderCatScreen error:", e); }
+  document.getElementById("catScreen").style.display = "flex";
+  document.getElementById("suggScreen").style.display = "none";
+  updateCatScreenText();
 }
 
-// ============================================================
-// CATEGORIES
-// ============================================================
 function pickCat(cat) {
   var cfg = CAT_CONFIG[cat] || CAT_CONFIG.general;
   var ui = getUI();
@@ -621,54 +581,47 @@ function setLang(lang, btn) {
   localStorage.setItem("abv_lang", lang);
   document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
   if (btn) btn.classList.add("active");
-  // Refresh UI with new language
-  try {
-    var catScreen = document.getElementById("catScreen");
-    var suggScreen = document.getElementById("suggScreen");
-    if (catScreen && catScreen.style.display !== "none") {
-      renderCatScreen();
-    }
-    if (suggScreen && suggScreen.style.display !== "none") {
-      pickCat(currentCat || "general");
-    }
-  } catch(e) { console.log("setLang refresh error:", e); }
-  // Show confirmation
-  var bar = document.querySelector(".lang-bar");
-  if (bar) {
-    bar.style.borderBottom = "2px solid var(--accent)";
-    setTimeout(function() { bar.style.borderBottom = "1px solid var(--border)"; }, 800);
+  // Refresh category screen if visible
+  var catScreen = document.getElementById("catScreen");
+  var suggScreen = document.getElementById("suggScreen");
+  if (catScreen && catScreen.style.display !== "none") {
+    updateCatScreenText();
+  }
+  if (suggScreen && suggScreen.style.display !== "none") {
+    updateSuggestions();
   }
 }
 
-function setLangExtra(lang, sel) {
-  if (!lang) return;
-  currentLang = lang;
-  localStorage.setItem("abv_lang", lang);
-  document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
-  // Safely refresh UI
-  try {
-    var catScreen = document.getElementById("catScreen");
-    var suggScreen = document.getElementById("suggScreen");
-    if (catScreen && catScreen.style.display !== "none") {
-      renderCatScreen();
+function updateCatScreenText() {
+  var ui = UI_TRANSLATIONS[currentLang] || UI_TRANSLATIONS["en"];
+  var h2 = document.querySelector("#catScreen h2");
+  var p = document.querySelector("#catScreen p");
+  var skip = document.querySelector(".cat-skip");
+  if (h2) h2.textContent = ui.welcome;
+  if (p) p.textContent = ui.who;
+  if (skip) skip.textContent = ui.skip;
+  var cards = document.querySelectorAll(".cat-card");
+  var keys = ["owner","breeder","show","judge","community","enthusiast"];
+  cards.forEach(function(card, i) {
+    var key = keys[i];
+    if (ui.cats && ui.cats[key]) {
+      var t = card.querySelector(".cat-title");
+      var d = card.querySelector(".cat-desc");
+      if (t) t.textContent = ui.cats[key].title;
+      if (d) d.textContent = ui.cats[key].desc;
     }
-    if (suggScreen && suggScreen.style.display !== "none") {
-      pickCat(currentCat || "general");
-    }
-  } catch(e) { console.log("Lang refresh error:", e); }
-  // Show confirmation
-  var bar = document.querySelector(".lang-bar");
-  if (bar) {
-    bar.style.borderBottom = "2px solid var(--accent)";
-    setTimeout(function() { bar.style.borderBottom = "1px solid var(--border)"; }, 800);
-  }
-  setTimeout(function() { if(sel) sel.value = ""; }, 100);
+  });
 }
 
-// ============================================================
-// THEME
-// ============================================================
-var isDark = true;
+function updateSuggestions() {
+  var langSugg = SUGGESTIONS_BY_LANG[currentLang] || SUGGESTIONS_BY_LANG["en"];
+  var suggs = langSugg[currentCat] || langSugg["general"];
+  renderSuggestions(suggs);
+  var ui = UI_TRANSLATIONS[currentLang] || UI_TRANSLATIONS["en"];
+  var sub = document.getElementById("suggSub");
+  if (sub) sub.textContent = ui.suggested;
+}
+
 function toggleTheme() {
   isDark = !isDark;
   document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
