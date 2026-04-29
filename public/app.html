@@ -30,27 +30,27 @@ body{background:var(--bg);color:var(--text);font-family:"Crimson Pro",Georgia,se
 .welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 16px;gap:10px;}
 .welcome img{width:64px;height:64px;object-fit:contain;border-radius:14px;}
 .welcome h2{font-family:Oswald,sans-serif;font-size:20px;color:var(--text);}
-.welcome p{font-size:14px;color:var(--muted);max-width:380px;line-height:1.5;}
+.welcome p{font-size:15px;color:var(--muted);max-width:380px;line-height:1.5;}
 .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%;max-width:440px;margin-top:6px;}
 .cat-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:16px 12px;cursor:pointer;text-align:center;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
 .cat-card:hover,.cat-card:active{border-color:var(--accent);transform:translateY(-2px);}
 .cat-icon{font-size:26px;margin-bottom:8px;}
-.cat-title{font-family:Oswald,sans-serif;font-size:14px;color:var(--text);margin-bottom:4px;}
-.cat-desc{font-size:12px;color:var(--muted);}
+.cat-title{font-family:Oswald,sans-serif;font-size:15px;color:var(--text);margin-bottom:4px;}
+.cat-desc{font-size:13px;color:var(--muted);}
 .cat-skip{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;text-decoration:underline;font-family:inherit;margin-top:6px;padding:4px 8px;}
 .cat-skip:hover{color:var(--acl);}
 .sugg-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px;gap:8px;width:100%;}
 .sugg-wrap h2{font-family:Oswald,sans-serif;font-size:18px;}
 .sugg-wrap p{font-size:13px;color:var(--muted);}
 .sugg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;width:100%;max-width:600px;}
-.sugg-btn{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:14px;cursor:pointer;text-align:left;font-family:inherit;line-height:1.4;transition:all 0.2s;}
+.sugg-btn{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:16px;cursor:pointer;text-align:left;font-family:inherit;line-height:1.4;transition:all 0.2s;}
 .sugg-btn:hover{border-color:var(--accent);}
 .message{display:flex;gap:10px;max-width:800px;width:100%;}
 .message.user{flex-direction:row-reverse;margin-left:auto;}
 .avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;overflow:hidden;}
 .avatar.ai{background:var(--accent);color:#000;}
 .avatar.user{background:var(--surf);border:1px solid var(--border);}
-.bubble{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:12px 16px;font-size:16px;line-height:1.7;max-width:calc(100% - 44px);}
+.bubble{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:12px 16px;font-size:18px;line-height:1.8;max-width:calc(100% - 44px);}
 .message.user .bubble{background:var(--accent);border-color:var(--accent);color:#fff;}
 .bubble strong{color:var(--acl);}
 .bubble ul,.bubble ol{padding-left:20px;margin:8px 0;}
@@ -66,7 +66,7 @@ body{background:var(--bg);color:var(--text);font-family:"Crimson Pro",Georgia,se
 .input-area{padding:10px 16px;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;}
 .input-row{display:flex;gap:8px;align-items:flex-end;background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:8px 12px;}
 .input-row:focus-within{border-color:var(--accent);}
-textarea#msgInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:16px;font-family:inherit;resize:none;line-height:1.5;max-height:120px;overflow-y:auto;}
+textarea#msgInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:17px;font-family:inherit;resize:none;line-height:1.5;max-height:120px;overflow-y:auto;}
 .send-btn{background:var(--surf);border:1px solid var(--border);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
 .send-btn.ready{background:var(--accent);border-color:var(--accent);color:#fff;}
 .fb-modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;padding:20px;}
