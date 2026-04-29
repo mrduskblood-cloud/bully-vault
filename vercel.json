@@ -6,7 +6,9 @@
   ],
   "routes": [
     { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/hero.png", "dest": "/public/hero.png" },
     { "src": "/logo.png", "dest": "/public/logo.png" },
+    { "src": "/hero.png", "dest": "/public/hero.png" },
     { "src": "/john1.jpg.jpeg", "dest": "/public/john1.jpg.jpeg" },
     { "src": "/john2.jpg.jpeg", "dest": "/public/john2.jpg.jpeg" },
     { "src": "/john3.jpg.jpeg", "dest": "/public/john3.jpg.jpeg" },
