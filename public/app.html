@@ -561,23 +561,28 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function renderCatScreen() {
-  var ui = getUI();
-  // Update welcome text
-  document.querySelector("#catScreen h2").textContent = ui.welcome;
-  document.querySelector("#catScreen p").textContent = ui.who;
-  document.querySelector(".cat-skip").textContent = ui.skip;
-  // Update category cards
-  var cards = document.querySelectorAll(".cat-card");
-  var catKeys = ["owner","breeder","show","judge","community","enthusiast"];
-  cards.forEach(function(card, i) {
-    var key = catKeys[i];
-    if (ui.cats[key]) {
-      card.querySelector(".cat-title").textContent = ui.cats[key].title;
-      card.querySelector(".cat-desc").textContent = ui.cats[key].desc;
-    }
-  });
-  document.getElementById("catScreen").style.display = "flex";
-  document.getElementById("suggScreen").style.display = "none";
+  try {
+    var ui = getUI();
+    var h2 = document.querySelector("#catScreen h2");
+    var p = document.querySelector("#catScreen p");
+    var skip = document.querySelector(".cat-skip");
+    if (h2) h2.textContent = ui.welcome;
+    if (p) p.textContent = ui.who;
+    if (skip) skip.textContent = ui.skip;
+    var cards = document.querySelectorAll(".cat-card");
+    var catKeys = ["owner","breeder","show","judge","community","enthusiast"];
+    cards.forEach(function(card, i) {
+      var key = catKeys[i];
+      if (ui.cats[key]) {
+        var t = card.querySelector(".cat-title");
+        var d = card.querySelector(".cat-desc");
+        if (t) t.textContent = ui.cats[key].title;
+        if (d) d.textContent = ui.cats[key].desc;
+      }
+    });
+    document.getElementById("catScreen").style.display = "flex";
+    document.getElementById("suggScreen").style.display = "none";
+  } catch(e) { console.log("renderCatScreen error:", e); }
 }
 
 // ============================================================
@@ -617,16 +622,16 @@ function setLang(lang, btn) {
   document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
   if (btn) btn.classList.add("active");
   // Refresh UI with new language
-  renderCatScreen();
-  // If suggestions screen is visible refresh it too
-  if (document.getElementById("suggScreen").style.display !== "none") {
-    pickCat(currentCat || "general");
-  }
-  // Translate any visible messages by re-rendering suggestion grid
-  var suggGrid = document.getElementById("suggGrid");
-  if (suggGrid && suggGrid.children.length > 0) {
-    renderSuggestions(getSuggestions(currentCat || "general"));
-  }
+  try {
+    var catScreen = document.getElementById("catScreen");
+    var suggScreen = document.getElementById("suggScreen");
+    if (catScreen && catScreen.style.display !== "none") {
+      renderCatScreen();
+    }
+    if (suggScreen && suggScreen.style.display !== "none") {
+      pickCat(currentCat || "general");
+    }
+  } catch(e) { console.log("setLang refresh error:", e); }
   // Show confirmation
   var bar = document.querySelector(".lang-bar");
   if (bar) {
@@ -640,22 +645,24 @@ function setLangExtra(lang, sel) {
   currentLang = lang;
   localStorage.setItem("abv_lang", lang);
   document.querySelectorAll(".lang-btn").forEach(function(b) { b.classList.remove("active"); });
-  // Refresh UI with new language - same as setLang
-  renderCatScreen();
-  if (document.getElementById("suggScreen").style.display !== "none") {
-    pickCat(currentCat || "general");
-  }
-  var suggGrid = document.getElementById("suggGrid");
-  if (suggGrid && suggGrid.children.length > 0) {
-    renderSuggestions(getSuggestions(currentCat || "general"));
-  }
+  // Safely refresh UI
+  try {
+    var catScreen = document.getElementById("catScreen");
+    var suggScreen = document.getElementById("suggScreen");
+    if (catScreen && catScreen.style.display !== "none") {
+      renderCatScreen();
+    }
+    if (suggScreen && suggScreen.style.display !== "none") {
+      pickCat(currentCat || "general");
+    }
+  } catch(e) { console.log("Lang refresh error:", e); }
   // Show confirmation
   var bar = document.querySelector(".lang-bar");
   if (bar) {
     bar.style.borderBottom = "2px solid var(--accent)";
     setTimeout(function() { bar.style.borderBottom = "1px solid var(--border)"; }, 800);
   }
-  setTimeout(function() { sel.value = ""; }, 100);
+  setTimeout(function() { if(sel) sel.value = ""; }, 100);
 }
 
 // ============================================================
