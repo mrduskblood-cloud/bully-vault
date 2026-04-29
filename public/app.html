@@ -437,14 +437,62 @@ function getUI() {
   return UI_TRANSLATIONS[currentLang] || UI_TRANSLATIONS["en"];
 }
 
+var SUGGESTIONS_BY_LANG = {
+  en: {
+    owner: ["What should I feed my American Bully puppy?","When should I deworm my puppy?","What vaccines does my American Bully need?","Why is my dog not gaining mass?","What is the lanky stage?"],
+    breeder: ["How do I plan a breeding program?","What are stud rights and puppy share deals?","How do I care for my dam and puppies?","What is the best breeding age for females?","How do I use a progesterone test?"],
+    show: ["How does the ABKC point system work?","What do judges look for in the show ring?","What are the ABKC show classes?","What are the disqualifying faults?","How do I earn a Grand Champion title?"],
+    judge: ["What are the 5 aspects of breed type?","How do you assess movement in the ring?","What is the difference between a fault and a DQ?","How do you judge Classic vs Standard?","What is breed character in American Bully?"],
+    community: ["What is the history of the American Bully breed?","Who is Dave Wilson?","What is the difference between American Bully and Exotic Bully?","What are the ABKC Nationals?","Who are the most influential breeders?"],
+    enthusiast: ["What makes the American Bully special?","What are the 4 classes of American Bully?","Are American Bullies good family dogs?","What is the difference between Pocket and XL?","What colors are accepted in ABKC?"],
+    general: ["What do ABKC judges look for?","How do I start breeding American Bullies?","What is the lanky stage?","How does the ABKC point system work?","What is breed type?"]
+  },
+  tl: {
+    owner: ["Ano ang dapat kong pakainin ang aking American Bully puppy?","Kailan ko dapat i-deworm ang aking puppy?","Anong bakuna ang kailangan ng aking American Bully?","Bakit hindi tumataba ang aking aso?","Ano ang lanky stage?"],
+    breeder: ["Paano ako mag-plano ng breeding program?","Ano ang stud rights at puppy share deals?","Paano alagaan ang aking dam at mga tuta?","Anong edad ang pinakamainam para sa breeding ng babae?","Paano gamitin ang progesterone test?"],
+    show: ["Paano gumagana ang ABKC point system?","Ano ang hinahanap ng mga hukom sa show ring?","Ano ang mga klase sa ABKC show?","Ano ang mga disqualifying faults?","Paano maging Grand Champion?"],
+    judge: ["Ano ang 5 aspeto ng breed type?","Paano i-assess ang galaw sa show ring?","Ano ang pagkakaiba ng fault at DQ?","Paano i-judge ang Classic vs Standard?","Ano ang breed character ng American Bully?"],
+    community: ["Ano ang kasaysayan ng American Bully breed?","Sino si Dave Wilson?","Ano ang pagkakaiba ng American Bully at Exotic Bully?","Ano ang ABKC Nationals?","Sino ang pinaka-influential na mga breeder?"],
+    enthusiast: ["Ano ang espesyal sa American Bully?","Ano ang 4 na klase ng American Bully?","Magandang family dogs ba ang mga American Bully?","Ano ang pagkakaiba ng Pocket at XL?","Anong kulay ang tinatanggap sa ABKC?"],
+    general: ["Ano ang hinahanap ng mga ABKC judge?","Paano magsimula ng American Bully breeding?","Ano ang lanky stage?","Paano gumagana ang ABKC point system?","Ano ang breed type?"]
+  },
+  it: {
+    owner: ["Cosa devo dare da mangiare al mio cucciolo American Bully?","Quando devo sverminare il mio cucciolo?","Quali vaccini ha bisogno il mio American Bully?","Perche il mio cane non aumenta di massa?","Cos e lo stadio lanky?"],
+    breeder: ["Come pianificare un programma di allevamento?","Cosa sono i diritti dello stallone e i puppy share deals?","Come prendermi cura della mia fattrice e cuccioli?","Qual e la migliore eta per la riproduzione delle femmine?","Come usare il test del progesterone?"],
+    show: ["Come funziona il sistema di punti ABKC?","Cosa cercano i giudici nel ring?","Quali sono le classi dello show ABKC?","Quali sono le colpe di squalifica?","Come guadagnare il titolo Grand Champion?"],
+    judge: ["Quali sono i 5 aspetti del tipo di razza?","Come valutare il movimento nel ring?","Qual e la differenza tra un difetto e una DQ?","Come giudicare Classic vs Standard?","Cos e il carattere della razza American Bully?"],
+    community: ["Qual e la storia della razza American Bully?","Chi e Dave Wilson?","Qual e la differenza tra American Bully ed Exotic Bully?","Cosa sono i Nazionali ABKC?","Chi sono gli allevatori piu influenti?"],
+    enthusiast: ["Cosa rende speciale l American Bully?","Quali sono le 4 classi di American Bully?","Gli American Bully sono buoni cani di famiglia?","Qual e la differenza tra Pocket e XL?","Quali colori sono accettati nell ABKC?"],
+    general: ["Cosa cercano i giudici ABKC?","Come iniziare l allevamento di American Bullies?","Cos e lo stadio lanky?","Come funziona il sistema di punti ABKC?","Cos e il tipo di razza?"]
+  },
+  es: {
+    owner: ["Que debo alimentar a mi cachorro American Bully?","Cuando debo desparasitar a mi cachorro?","Que vacunas necesita mi American Bully?","Por que mi perro no gana masa?","Que es la etapa lanky?"],
+    breeder: ["Como planificar un programa de cria?","Que son los derechos del semental y los acuerdos de cachorro compartido?","Como cuidar a mi hembra y cachorros?","Cual es la mejor edad para criar hembras?","Como usar la prueba de progesterona?"],
+    show: ["Como funciona el sistema de puntos ABKC?","Que buscan los jueces en el ring?","Cuales son las clases del show ABKC?","Cuales son las faltas descalificadoras?","Como ganar el titulo Grand Champion?"],
+    judge: ["Cuales son los 5 aspectos del tipo de raza?","Como evaluar el movimiento en el ring?","Cual es la diferencia entre una falta y una DQ?","Como juzgar Classic vs Standard?","Que es el caracter de raza del American Bully?"],
+    community: ["Cual es la historia de la raza American Bully?","Quien es Dave Wilson?","Cual es la diferencia entre American Bully y Exotic Bully?","Que son los Nacionales ABKC?","Quienes son los criadores mas influyentes?"],
+    enthusiast: ["Que hace especial al American Bully?","Cuales son las 4 clases de American Bully?","Son los American Bullies buenos perros de familia?","Cual es la diferencia entre Pocket y XL?","Que colores acepta el ABKC?"],
+    general: ["Que buscan los jueces ABKC?","Como empezar a criar American Bullies?","Que es la etapa lanky?","Como funciona el sistema de puntos ABKC?","Que es el tipo de raza?"]
+  },
+  id: {
+    owner: ["Apa yang harus saya berikan pada puppy American Bully saya?","Kapan saya harus cacing puppy saya?","Vaksin apa yang dibutuhkan American Bully saya?","Mengapa anjing saya tidak bertambah berat?","Apa itu tahap lanky?"],
+    breeder: ["Bagaimana merencanakan program penangkaran?","Apa itu hak pejantan dan kesepakatan puppy share?","Bagaimana merawat induk dan anak anjing saya?","Berapa usia terbaik untuk mengembangbiakkan betina?","Bagaimana menggunakan tes progesteron?"],
+    show: ["Bagaimana sistem poin ABKC bekerja?","Apa yang dicari juri di ring show?","Apa saja kelas show ABKC?","Apa saja cacat diskualifikasi?","Bagaimana mendapatkan gelar Grand Champion?"],
+    judge: ["Apa 5 aspek tipe ras?","Bagaimana menilai gerakan di ring?","Apa perbedaan antara cacat dan DQ?","Bagaimana menilai Classic vs Standard?","Apa karakter ras American Bully?"],
+    community: ["Apa sejarah ras American Bully?","Siapa Dave Wilson?","Apa perbedaan American Bully dan Exotic Bully?","Apa itu ABKC Nationals?","Siapa peternak paling berpengaruh?"],
+    enthusiast: ["Apa yang membuat American Bully istimewa?","Apa 4 kelas American Bully?","Apakah American Bullies anjing keluarga yang baik?","Apa perbedaan Pocket dan XL?","Warna apa yang diterima ABKC?"],
+    general: ["Apa yang dicari juri ABKC?","Bagaimana memulai penangkaran American Bullies?","Apa itu tahap lanky?","Bagaimana sistem poin ABKC bekerja?","Apa itu tipe ras?"]
+  }
+};
+
+// Get suggestions for current language and category
+function getSuggestions(cat) {
+  var langSugg = SUGGESTIONS_BY_LANG[currentLang] || SUGGESTIONS_BY_LANG["en"];
+  return langSugg[cat] || langSugg["general"];
+}
+
 var CAT_CONFIG = {
-  owner: { suggestions: ["What should I feed my American Bully puppy?","When should I deworm my puppy?","What vaccines does my American Bully need?","Why is my dog not gaining mass?","What is the lanky stage?"] },
-  breeder: { suggestions: ["How do I plan a breeding program?","What are stud rights and puppy share deals?","How do I care for my dam and puppies?","What is the best breeding age for females?","How do I use a progesterone test?"] },
-  show: { suggestions: ["How does the ABKC point system work?","What do judges look for in the show ring?","What are the ABKC show classes?","What are the disqualifying faults?","How do I earn a Grand Champion title?"] },
-  judge: { suggestions: ["What are the 5 aspects of breed type?","How do you assess movement in the ring?","What is the difference between a fault and a DQ?","How do you judge Classic vs Standard?","What is breed character in American Bully?"] },
-  community: { suggestions: ["What is the history of the American Bully breed?","Who is Dave Wilson?","What is the difference between American Bully and Exotic Bully?","What are the ABKC Nationals?","Who are the most influential breeders in history?"] },
-  enthusiast: { suggestions: ["What makes the American Bully special?","What are the 4 classes of American Bully?","Are American Bullies good family dogs?","What is the difference between Pocket and XL?","What colors are accepted in ABKC?"] },
-  general: { suggestions: ["What do ABKC judges look for?","How do I start breeding American Bullies?","What is the lanky stage?","How does the ABKC point system work?","What is breed type?"] }
+  owner: {}, breeder: {}, show: {}, judge: {}, community: {}, enthusiast: {}, general: {}
 };
 
 // ============================================================
@@ -517,7 +565,7 @@ function pickCat(cat) {
   var catTitle = ui.cats[cat] ? ui.cats[cat].title : "Ask the American Bully Vault";
   document.getElementById("suggTitle").textContent = catTitle;
   document.getElementById("suggSub").textContent = ui.suggested;
-  renderSuggestions(cfg.suggestions);
+  renderSuggestions(getSuggestions(cat));
   currentCat = cat;
 }
 
@@ -543,6 +591,15 @@ function setLang(lang, btn) {
   if (btn) btn.classList.add("active");
   // Refresh UI with new language
   renderCatScreen();
+  // If suggestions screen is visible refresh it too
+  if (document.getElementById("suggScreen").style.display !== "none") {
+    pickCat(currentCat || "general");
+  }
+  // Translate any visible messages by re-rendering suggestion grid
+  var suggGrid = document.getElementById("suggGrid");
+  if (suggGrid && suggGrid.children.length > 0) {
+    renderSuggestions(getSuggestions(currentCat || "general"));
+  }
   // Show confirmation
   var bar = document.querySelector(".lang-bar");
   if (bar) {
