@@ -412,22 +412,23 @@ footer {
     display: none;
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    z-index: 99;
+    z-index: 9999;
     background: linear-gradient(135deg, #8b1a1a, #6b1a1a);
-    color: #c9a96e;
+    color: #c9a96e !important;
     border: none;
-    border-top: 1px solid #c9a96e;
-    padding: 16px;
+    border-top: 2px solid #c9a96e;
+    padding: 18px 16px;
     font-family: 'Oswald', sans-serif;
-    font-size: 15px; font-weight: 700;
+    font-size: 16px; font-weight: 700;
     letter-spacing: 2px; text-transform: uppercase;
     text-align: center;
-    text-decoration: none;
+    text-decoration: none !important;
     cursor: pointer;
+    box-shadow: 0 -4px 20px rgba(139,26,26,0.5);
   }
   @media(max-width: 768px) {
-    .mobile-cta { display: block; }
-    body { padding-bottom: 56px; }
+    .mobile-cta { display: block !important; }
+    body { padding-bottom: 60px; }
   }
 </style>
 </head>
@@ -449,21 +450,26 @@ footer {
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div style="position:relative;z-index:1;">
-    <img src="/logo.png" alt="American Bully Vault" class="hero-logo"/>
+<div class="hero" style="padding:80px 40px 60px;min-height:auto;">
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;max-width:900px;margin:0 auto;">
+    
+    <!-- HERO IMAGE -->
+    <div style="width:100%;max-width:500px;margin-bottom:40px;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(201,169,110,0.2);">
+      <img src="/hero.png" alt="John Enerva -- American Bully Vault" style="width:100%;display:block;"/>
+    </div>
+
     <div class="hero-eyebrow">ABKC International Senior Judge · 20+ Years</div>
     <h1>The American Bully Vault puts a real<br/><span>ABKC International Senior Judge</span><br/>in your pocket.</h1>
-    <p class="hero-tagline">Answering every question about breeding, showing, health, and standards. Instantly.</p>
+    <p class="hero-tagline">Ask the Judge. Learn the Breed. Master the Game.</p>
     <p class="hero-sub">20+ Years of Firsthand Experience -- Now in Your Pocket</p>
-    <p style="font-size:16px;color:#c9a96e;max-width:560px;margin:0 auto 12px;font-weight:600;">Is that worth $25 to you? Less than a mid-quality t-shirt.</p>
-    <p style="font-size:13px;color:#888;max-width:500px;margin:0 auto 12px;">A t-shirt fades. This knowledge stays with you forever.</p>
+    <p style="font-size:16px;color:#c9a96e;max-width:560px;margin:0 auto 8px;font-weight:600;">Is that worth $25 to you? Less than a mid-quality t-shirt.</p>
+    <p style="font-size:13px;color:#888;max-width:500px;margin:0 auto 32px;">A t-shirt fades. This knowledge stays with you forever.</p>
     <div class="hero-buttons">
-      <a href="#pricing" class="btn-primary">Get Lifetime App Access -- $25</a>
+      <a href="https://duskblood.gumroad.com/l/pxbgx" target="_blank" class="btn-primary">Get Lifetime App Access -- $25</a>
       <a href="#consultations" class="btn-secondary">Book a Consultation</a>
     </div>
   </div>
-</div>
+</div></div>
 
 <!-- CREDENTIALS STRIP -->
 <div class="creds">
@@ -566,13 +572,13 @@ footer {
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌍</div>
-        <div class="feature-title">Dave Wilson's Knowledge</div>
-        <div class="feature-desc">Direct insights from the ABKC founder -- Razor's Edge history, breed origins, official rulings, and philosophy.</div>
+        <div class="feature-title">Breed Pioneers Knowledge</div>
+        <div class="feature-desc">Direct insights from ABKC founder Dave Wilson, Arlon Berberabe, Marco Suarez, Ron Ramos and other key figures -- Razor's Edge history, breed origins, official rulings, and philosophy.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🗣️</div>
         <div class="feature-title">9 Languages</div>
-        <div class="feature-desc">Ask questions in English, Filipino, Russian, Thai, Indonesian, Italian, Spanish, Chinese, or Vietnamese.</div>
+        <div class="feature-desc">Ask questions in 25+ languages including English, Filipino, Italian, Russian, Spanish, Indonesian, Thai, Chinese, Japanese, Korean, Arabic, French, German and more.</div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🧮</div>
