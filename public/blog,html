@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>American Bully Blog | Expert Insights from an ABKC Judge | American Bully Vault</title>
+<meta name="description" content="Expert American Bully articles by ABKC International Senior Judge John Enerva. Breeding, showing, standards, bloodlines, health and community insights."/>
+<meta property="og:title" content="American Bully Blog | American Bully Vault"/>
+<meta property="og:description" content="Expert insights from a real ABKC International Senior Judge. Breeding, showing, standards, bloodlines."/>
+<meta property="og:image" content="https://americanbullyvault.com/hero.png"/>
+<link rel="canonical" href="https://americanbullyvault.com/blog"/>
+
+<style>
+:root{--bg:#0a0a0a;--surf:#141414;--border:#222;--text:#e8d5b0;--muted:#666;--accent:#c9830a;--acl:#f5a623;--red:#8b1a1a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:"Crimson Pro",Georgia,serif;line-height:1.7;}
+nav{background:var(--surf);border-bottom:1px solid var(--border);padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand img{width:38px;height:38px;border-radius:8px;object-fit:contain;}
+.brand-name{font-family:Oswald,sans-serif;font-size:15px;font-weight:700;color:var(--acl);}
+.nav-links{display:flex;gap:16px;align-items:center;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-family:Oswald,sans-serif;letter-spacing:1px;}
+.nav-links a:hover{color:var(--acl);}
+.nav-cta{background:var(--red);color:var(--acl)!important;border:1px solid var(--acl);padding:8px 18px;border-radius:8px;font-weight:700;}
+.container{max-width:900px;margin:0 auto;padding:40px 20px;}
+h1{font-family:Oswald,sans-serif;font-size:42px;color:var(--acl);margin-bottom:16px;line-height:1.2;}
+h2{font-family:Oswald,sans-serif;font-size:28px;color:var(--acl);margin:32px 0 12px;}
+h3{font-family:Oswald,sans-serif;font-size:22px;color:var(--text);margin:24px 0 10px;}
+p{font-size:18px;margin-bottom:16px;color:var(--text);}
+.eyebrow{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;}
+.meta{font-size:13px;color:var(--muted);margin-bottom:32px;}
+.divider{border:none;border-top:1px solid var(--border);margin:32px 0;}
+.cta-box{background:var(--surf);border:1px solid var(--accent);border-radius:16px;padding:32px;text-align:center;margin:48px 0;}
+.cta-box h3{color:var(--acl);font-size:24px;margin-bottom:8px;}
+.cta-box p{color:var(--muted);margin-bottom:20px;}
+.cta-btn{background:var(--red);color:var(--acl);border:1px solid var(--acl);padding:14px 40px;border-radius:10px;font-family:Oswald,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;text-decoration:none;display:inline-block;}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;margin-top:32px;}
+.blog-card{background:var(--surf);border:1px solid var(--border);border-radius:16px;padding:24px;text-decoration:none;transition:border-color 0.2s;}
+.blog-card:hover{border-color:var(--accent);}
+.blog-card .tag{font-family:Oswald,sans-serif;font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:10px;}
+.blog-card h3{font-size:18px;color:var(--text);margin:0 0 10px;}
+.blog-card p{font-size:14px;color:var(--muted);margin:0;}
+.author-box{display:flex;align-items:center;gap:16px;background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:20px;margin:48px 0;}
+.author-box img{width:60px;height:60px;border-radius:50%;object-fit:cover;}
+.author-box .name{font-family:Oswald,sans-serif;font-size:15px;color:var(--acl);}
+.author-box .title{font-size:13px;color:var(--muted);}
+ul,ol{padding-left:24px;margin-bottom:16px;}
+li{font-size:18px;margin-bottom:8px;}
+strong{color:var(--acl);}
+footer{background:var(--surf);border-top:1px solid var(--border);padding:32px 40px;text-align:center;margin-top:80px;}
+footer p{font-size:13px;color:var(--muted);}
+footer a{color:var(--acl);text-decoration:none;}
+@media(max-width:600px){h1{font-size:28px;}.container{padding:24px 16px;}nav{padding:0 16px;}.nav-links a:not(.nav-cta){display:none;}}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet"/>
+
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">
+    <img src="/logo.png" alt="American Bully Vault"/>
+    <span class="brand-name">AMERICAN BULLY VAULT</span>
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/blog">Blog</a>
+    <a href="/calculator.html">Calculator</a>
+    <a href="/app" class="nav-cta">Enter the Vault</a>
+  </div>
+</nav>
+<div class="container">
+  <p class="eyebrow">Knowledge Base</p>
+  <h1>American Bully Insights</h1>
+  <p style="font-size:18px;color:var(--muted);max-width:600px;">Expert articles by ABKC International Senior Judge John Enerva. Real knowledge from someone who has been in the ring for 20+ years.</p>
+  <hr class="divider"/>
+  <div class="blog-grid">
+    <a href="/blog/american-bully-vs-exotic-bully" class="blog-card">
+      <div class="tag">BREED KNOWLEDGE</div>
+      <h3>American Bully vs Exotic Bully &mdash; What is the Real Difference?</h3>
+      <p>Two different breeds. Two different standards. Here is what every owner and breeder needs to know.</p>
+    </a>
+    <a href="/blog/abkc-show-classes-explained" class="blog-card">
+      <div class="tag">SHOWING</div>
+      <h3>ABKC Show Classes Explained &mdash; Standard, Pocket, XL and Classic</h3>
+      <p>A complete breakdown of the four American Bully classes, height requirements, and what separates each one.</p>
+    </a>
+    <a href="/blog/what-judges-look-for" class="blog-card">
+      <div class="tag">JUDGING</div>
+      <h3>What Judges Look For in the American Bully Show Ring</h3>
+      <p>An ABKC International Senior Judge explains exactly how dogs are evaluated from the moment they enter the ring.</p>
+    </a>
+  </div>
+  <div class="cta-box">
+  <h3>Want to Ask John Directly?</h3>
+  <p>The American Bully Vault puts 20+ years of firsthand knowledge at your fingertips. Ask anything about breeding, showing, health, and standards. Instant answers in 9 languages.</p>
+  <a href="/app" class="cta-btn">Enter the Vault &mdash; $25 Lifetime Access</a>
+</div>
+</div>
+<footer>
+  <p>&copy; 2026 American Bully Vault &mdash; by <a href="/">John Enerva</a>, ABKC International Senior Judge &mdash; <a href="/">americanbullyvault.com</a></p>
+</footer>
+</body>
+</html>
