@@ -7,6 +7,10 @@
   "routes": [
     { "src": "/api/chat", "dest": "/api/chat.js" },
     { "src": "/hero.png", "dest": "/public/hero.png" },
+    { "src": "/blog", "dest": "/public/blog.html" },
+    { "src": "/blog/american-bully-vs-exotic-bully", "dest": "/public/blog-american-bully-vs-exotic-bully.html" },
+    { "src": "/blog/abkc-show-classes-explained", "dest": "/public/blog-abkc-show-classes-explained.html" },
+    { "src": "/blog/what-judges-look-for", "dest": "/public/blog-what-judges-look-for.html" },
     { "src": "/sitemap.xml", "dest": "/public/sitemap.xml" },
     { "src": "/robots.txt", "dest": "/public/robots.txt" },
     { "src": "/logo.png", "dest": "/public/logo.png" },
